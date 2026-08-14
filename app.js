@@ -1,792 +1,402 @@
+/* =========================================================
+   دليل الحاج
+   نظام رحلة الحج + التقدم + المفضلة + الرجوع + البحث
+   ========================================================= */
+
 const places = [
+  {
+    name: "المسجد الحرام",
+    tag: "مكة المكرمة",
+    image: "images/haram.jpg",
+    text: "أعظم مساجد المسلمين، وفيه الكعبة المشرفة.",
+    details: [
+      "الطواف حول الكعبة سبعة أشواط.",
+      "اتبع تعليمات إدارة الحشود والجهات المنظمة.",
+      "حافظ على هدوئك ولا تزاحم الآخرين."
+    ]
+  },
+  {
+    name: "منى",
+    tag: "المشاعر المقدسة",
+    image: "images/mina.jpg",
+    text: "من مشاعر الحج، وفيها المبيت خلال أيام التشريق ورمي الجمرات.",
+    details: [
+      "الالتزام بمواعيد التفويج.",
+      "اتباع مسارات المجموعة.",
+      "الحرص على الراحة وشرب الماء."
+    ]
+  },
+  {
+    name: "عرفات",
+    tag: "المشاعر المقدسة",
+    image: "images/arafat.jpg",
+    text: "المشعر الذي يقف فيه الحجاج يوم عرفة، والوقوف بعرفة ركن الحج الأعظم.",
+    details: [
+      "الإكثار من الدعاء والذكر.",
+      "عرفة كلها موقف.",
+      "اتباع برنامج التفويج المعتمد."
+    ]
+  },
+  {
+    name: "مزدلفة",
+    tag: "المشاعر المقدسة",
+    image: "images/muzdalifah.jpg",
+    text: "تقع بين عرفات ومنى، وينتقل إليها الحجاج بعد الإفاضة من عرفات.",
+    details: [
+      "الالتزام ببرنامج المجموعة.",
+      "المحافظة على المتعلقات الشخصية.",
+      "الاستعداد للانتقال إلى منى."
+    ]
+  },
+  {
+    name: "جسر الجمرات",
+    tag: "منى",
+    image: "images/jamarat.jpg",
+    text: "منشأة حديثة لتنظيم رمي الجمرات في منى.",
+    details: [
+      "الرمي في أوقاته الشرعية.",
+      "اتباع مواعيد التفويج.",
+      "تجنب الازدحام والمزاحمة."
+    ]
+  },
+  {
+    name: "الصفا والمروة",
+    tag: "المسجد الحرام",
+    image: "images/safa-marwa.jpg",
+    text: "المسعى الذي يكون فيه السعي بين الصفا والمروة.",
+    details: [
+      "السعي سبعة أشواط.",
+      "يبدأ الشوط من الصفا وينتهي بالمروة.",
+      "احرص على متابعة عدد الأشواط."
+    ]
+  }
+];
 
-{
-name:"المسجد الحرام",
-tag:"مكة المكرمة",
-image:"images/haram.jpg",
-text:"أعظم مساجد المسلمين، وفيه الكعبة المشرفة.",
-details:[
-"الطواف حول الكعبة سبعة أشواط.",
-"اتبع تعليمات إدارة الحشود والجهات المنظمة.",
-"يمكن إضافة معرض صور ومعلومات الخدمات في النسخ القادمة."
-]
-},
 
-{
-name:"منى",
-tag:"المشاعر المقدسة",
-image:"images/mina.jpg",
-text:"من مشاعر الحج، وفيها المبيت خلال أيام التشريق ورمي الجمرات.",
-details:[
-"الالتزام بمواعيد التفويج.",
-"اتباع مسارات المجموعة.",
-"الحرص على الراحة وشرب الماء."
-]
-},
+/* =========================================================
+   مراحل رحلة الحج
+   ========================================================= */
 
-{
-name:"عرفات",
-tag:"المشاعر المقدسة",
-image:"images/arafat.jpg",
-text:"المشعر الذي يقف فيه الحجاج يوم عرفة، والوقوف بعرفة ركن الحج الأعظم.",
-details:[
-"الإكثار من الدعاء والذكر.",
-"عرفة كلها موقف.",
-"اتباع برنامج التفويج المعتمد."
-]
-},
+const journey = [
 
-{
-name:"مزدلفة",
-tag:"المشاعر المقدسة",
-image:"images/muzdalifah.jpg",
-text:"تقع بين عرفات ومنى، وينتقل إليها الحجاج بعد الإفاضة من عرفات.",
-details:[
-"الالتزام ببرنامج المجموعة.",
-"المحافظة على المتعلقات الشخصية.",
-"الراحة والاستعداد للانتقال إلى منى."
-]
-},
+  {
+    id: "preparation",
+    title: "الاستعداد للحج",
+    location: "قبل الانطلاق",
+    image: "images/haram.jpg",
+    description:
+      "استعد لرحلتك قبل الانطلاق، وتأكد من الوثائق والتصاريح وترتيبات السكن والنقل ومستلزماتك الشخصية.",
+    steps: [
+      "تأكد من الوثائق والتصاريح المطلوبة.",
+      "جهز حقيبتك ومستلزماتك الشخصية.",
+      "احتفظ بمعلومات المجموعة ونقطة التجمع.",
+      "راجع التعليمات الرسمية الخاصة بموسم الحج."
+    ]
+  },
 
-{
-name:"جسر الجمرات",
-tag:"منى",
-image:"images/jamarat.jpg",
-text:"منشأة حديثة لتنظيم رمي الجمرات في منى.",
-details:[
-"الرمي في الأوقات الشرعية.",
-"اتباع مواعيد التفويج.",
-"تجنب الازدحام والمزاحمة."
-]
-},
+  {
+    id: "ihram",
+    title: "الإحرام",
+    location: "الميقات",
+    image: "images/ihram.jpg",
+    description:
+      "يتهيأ الحاج للإحرام ويدخل في النسك بالنية وفق نوع الحج الذي يؤديه.",
+    steps: [
+      "الاغتسال والتنظف لمن تيسر له ذلك.",
+      "لبس ملابس الإحرام للرجل حسب الأحكام المعروفة.",
+      "النية والدخول في النسك.",
+      "الإكثار من التلبية."
+    ]
+  },
 
-{
-name:"الصفا والمروة",
-tag:"المسجد الحرام",
-image:"images/safa-marwa.jpg",
-text:"المسعى الذي يكون فيه السعي بين الصفا والمروة.",
-details:[
-"السعي سبعة أشواط.",
-"يبدأ الشوط من الصفا وينتهي بالمروة.",
-"احرص على متابعة عدد الأشواط."
-]
-}
+  {
+    id: "mina",
+    title: "يوم التروية",
+    location: "منى",
+    image: "images/mina.jpg",
+    description:
+      "يتوجه الحاج إلى منى وفق النسك والبرنامج التنظيمي المعتمد.",
+    steps: [
+      "التوجه إلى منى وفق برنامج المجموعة.",
+      "الإكثار من التلبية والذكر.",
+      "الالتزام بمواعيد التفويج.",
+      "الراحة والاستعداد ليوم عرفة."
+    ]
+  },
+
+  {
+    id: "arafat",
+    title: "يوم عرفة",
+    location: "عرفات",
+    image: "images/arafat.jpg",
+    description:
+      "الوقوف بعرفة هو ركن الحج الأعظم، ويكثر الحاج فيه من الدعاء والذكر.",
+    steps: [
+      "الوصول إلى عرفات وفق برنامج التفويج.",
+      "الوقوف بعرفة.",
+      "الإكثار من الدعاء والذكر.",
+      "الاستعداد للإفاضة إلى مزدلفة."
+    ]
+  },
+
+  {
+    id: "muzdalifah",
+    title: "مزدلفة",
+    location: "مزدلفة",
+    image: "images/muzdalifah.jpg",
+    description:
+      "بعد الإفاضة من عرفات يتوجه الحجاج إلى مزدلفة وفق التنظيم المعتمد.",
+    steps: [
+      "الإفاضة من عرفات إلى مزدلفة.",
+      "الالتزام بتعليمات المجموعة.",
+      "المبيت بحسب الأحكام الشرعية والبرنامج.",
+      "الاستعداد للانتقال إلى منى."
+    ]
+  },
+
+  {
+    id: "sacrifice",
+    title: "يوم النحر",
+    location: "منى",
+    image: "images/day-sacrifice.jpg",
+    description:
+      "يوم عظيم من أيام الحج، وله أعمال متعددة تختلف تفاصيل ترتيبها بحسب نوع النسك.",
+    steps: [
+      "رمي جمرة العقبة.",
+      "الذبح لمن كان عليه هدي.",
+      "الحلق أو التقصير.",
+      "طواف الإفاضة والسعي بحسب النسك."
+    ]
+  },
+
+  {
+    id: "tawaf",
+    title: "طواف الإفاضة",
+    location: "المسجد الحرام",
+    image: "images/haram.jpg",
+    description:
+      "يطوف الحاج بالبيت سبعة أشواط وفق أحكام الطواف.",
+    steps: [
+      "الاستعداد للطواف.",
+      "الطواف سبعة أشواط.",
+      "الدعاء والذكر بما تيسر.",
+      "الانتقال إلى السعي إذا كان مطلوبًا."
+    ]
+  },
+
+  {
+    id: "sai",
+    title: "السعي",
+    location: "الصفا والمروة",
+    image: "images/safa-marwa.jpg",
+    description:
+      "السعي بين الصفا والمروة سبعة أشواط لمن كان السعي مطلوبًا منه.",
+    steps: [
+      "البدء من الصفا.",
+      "إكمال سبعة أشواط.",
+      "ينتهي الشوط السابع عند المروة.",
+      "المحافظة على الهدوء وعدم إيذاء الآخرين."
+    ]
+  },
+
+  {
+    id: "jamarat",
+    title: "أيام التشريق",
+    location: "منى",
+    image: "images/jamarat.jpg",
+    description:
+      "من أعمال أيام التشريق رمي الجمرات وفق الأحكام والمواعيد التنظيمية.",
+    steps: [
+      "الالتزام بمواعيد التفويج.",
+      "رمي الجمرات في أوقاتها.",
+      "اتباع المسارات المحددة.",
+      "العودة إلى السكن أو المخيم وفق البرنامج."
+    ]
+  },
+
+  {
+    id: "farewell",
+    title: "طواف الوداع",
+    location: "المسجد الحرام",
+    image: "images/farewell-tawaf.jpg",
+    description:
+      "يكون طواف الوداع عند إرادة مغادرة مكة وفق أحكامه والاستثناءات الشرعية.",
+    steps: [
+      "التأكد من موعد المغادرة.",
+      "أداء طواف الوداع وفق الحكم الشرعي.",
+      "الاستعداد للعودة.",
+      "الالتزام بتعليمات النقل والمغادرة."
+    ]
+  }
 
 ];
 
 
-const rituals = [
-
-[
-"الإحرام",
-"النية والدخول في النسك والالتزام بأحكام الإحرام."
-],
-
-[
-"يوم التروية",
-"التوجه إلى منى وفق النسك والبرنامج المعتمد، مع الذكر والتلبية."
-],
-
-[
-"يوم عرفة",
-"الوقوف بعرفة والإكثار من الدعاء والذكر."
-],
-
-[
-"مزدلفة",
-"الإفاضة من عرفة إلى مزدلفة وفق تنظيم المجموعة."
-],
-
-[
-"يوم النحر",
-"رمي جمرة العقبة، ثم بقية أعمال يوم النحر بحسب النسك."
-],
-
-[
-"طواف الإفاضة",
-"الطواف بالبيت سبعة أشواط وفق أحكام الطواف."
-],
-
-[
-"السعي",
-"السعي بين الصفا والمروة سبعة أشواط لمن كان السعي مطلوبًا منه."
-],
-
-[
-"أيام التشريق",
-"رمي الجمرات في أوقاتها وفق الأحكام ومواعيد التفويج."
-],
-
-[
-"طواف الوداع",
-"يكون عند مغادرة مكة وفق أحكامه والاستثناءات الشرعية."
-]
-
-];
-
+/* =========================================================
+   الأدعية
+   ========================================================= */
 
 const duas = [
 
-[
-"التلبية",
-"لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
-],
+  {
+    title: "التلبية",
+    text:
+      "لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
+  },
 
-[
-"دعاء جامع",
-"ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
-],
+  {
+    title: "دعاء جامع",
+    text:
+      "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
+  },
 
-[
-"الذكر",
-"أكثر من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
-]
+  {
+    title: "الدعاء والذكر",
+    text:
+      "يكثر الحاج من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
+  }
 
 ];
 
+
+/* =========================================================
+   الإرشادات
+   ========================================================= */
 
 const guides = [
 
-[
-"قبل السفر",
-"راجع الوثائق والتصاريح وتعليمات الجهة المنظمة، وجهز احتياجاتك الشخصية."
-],
+  [
+    "قبل السفر",
+    "راجع الوثائق والتصاريح وتعليمات الجهة المنظمة، وجهز احتياجاتك الشخصية."
+  ],
 
-[
-"في المشاعر",
-"التزم بمواعيد التفويج ولا تنفصل عن مجموعتك دون معرفة نقطة التجمع."
-],
+  [
+    "في المشاعر",
+    "التزم بمواعيد التفويج ولا تنفصل عن مجموعتك دون معرفة نقطة التجمع."
+  ],
 
-[
-"الحرارة",
-"احرص على الماء والظل وتجنب التعرض الطويل للشمس."
-],
+  [
+    "الحرارة",
+    "احرص على شرب الماء واستخدام وسائل الوقاية من الشمس وتجنب التعرض الطويل للحرارة."
+  ],
 
-[
-"الازدحام",
-"اتبع المسارات ولا تدفع أو تزاحم الآخرين."
-],
+  [
+    "الازدحام",
+    "اتبع المسارات ولا تدفع أو تزاحم الآخرين."
+  ],
 
-[
-"الطوارئ",
-"عند الحاجة اطلب مساعدة الجهات المختصة أو مقدم الخدمة."
-]
+  [
+    "الطوارئ",
+    "عند الحاجة اطلب المساعدة من الجهات المختصة أو مقدم الخدمة."
+  ]
 
 ];
 
 
+/* =========================================================
+   التخزين المحلي
+   ========================================================= */
+
 let favorites =
-JSON.parse(localStorage.getItem("hajjFav") || "[]");
+  JSON.parse(localStorage.getItem("hajjFav") || "[]");
+
+
+let completed =
+  JSON.parse(localStorage.getItem("hajjCompleted") || "[]");
 
 
 const $ = selector =>
-document.querySelector(selector);
+  document.querySelector(selector);
 
 
 const $$ = selector =>
-document.querySelectorAll(selector);
+  document.querySelectorAll(selector);
 
 
-function cards(list = places){
+/* =========================================================
+   بطاقات الأماكن
+   ========================================================= */
 
-const element = $("#placeGrid");
+function cards(list = places) {
 
-if(!element) return;
+  const element = $("#placeGrid");
 
-element.innerHTML = list.map((place,index)=>`
+  if (!element) return;
 
-<article class="card" onclick="openPlace(${index})">
+  element.innerHTML = list.map((place, index) => `
 
-<img
-src="${place.image}"
-onerror="this.src='images/placeholder.svg'"
->
+    <article
+      class="card"
+      onclick="openPlace(${index})"
+    >
 
-<div class="card-body">
+      <img
+        src="${place.image}"
+        onerror="this.src='images/placeholder.svg'"
+      >
 
-<span class="pill">
-${place.tag}
-</span>
+      <div class="card-body">
 
-<h3>
-${place.name}
-</h3>
+        <span class="pill">
+          ${place.tag}
+        </span>
 
-<p>
-${place.text}
-</p>
+        <h3>
+          ${place.name}
+        </h3>
 
-</div>
+        <p>
+          ${place.text}
+        </p>
 
-</article>
+      </div>
 
-`).join("");
+    </article>
 
-}
-
-
-function home(){
-
-$("#main").style.display = "block";
-
-$("#page").hidden = true;
-
-$("#detail").hidden = true;
+  `).join("");
 
 }
 
 
-function showPage(name,push=true){
+/* =========================================================
+   الصفحة الرئيسية
+   ========================================================= */
 
-if(push){
+function home() {
 
-window.history.pushState(
-{type:"page",name:name},
-"",
-"#"+name
-);
+  $("#main").style.display = "block";
 
-}
+  $("#page").hidden = true;
 
-$("#main").style.display = "none";
-
-$("#detail").hidden = true;
-
-$("#page").hidden = false;
-
-
-const titles = {
-
-places:"أماكن الحج",
-
-rituals:"مناسك الحج",
-
-duas:"الأدعية والأذكار",
-
-guide:"إرشادات الحاج",
-
-favorites:"المفضلة",
-
-settings:"الإعدادات"
-
-};
-
-
-$("#pageTitle").textContent =
-titles[name] || "دليل الحاج";
-
-
-let html = "";
-
-
-if(name === "places"){
-
-html = places.map((place,index)=>`
-
-<div
-class="list-item"
-onclick="openPlace(${index})"
->
-
-<img
-src="${place.image}"
-onerror="this.src='images/placeholder.svg'"
-style="
-width:62px;
-height:52px;
-object-fit:cover;
-border-radius:12px;
-"
->
-
-<b>
-${place.name}
-</b>
-
-<span class="pill">
-${place.tag}
-</span>
-
-</div>
-
-`).join("");
+  $("#detail").hidden = true;
 
 }
 
 
-if(name === "rituals"){
+/* =========================================================
+   صفحة عامة
+   ========================================================= */
 
-html = rituals.map((item,index)=>`
+function showPage(name, push = true) {
 
-<div class="list-item">
+  if (push) {
 
-<strong>
-${index+1}
-</strong>
+    window.history.pushState(
+      { type: "page", name: name },
+      "",
+      "#" + name
+    );
 
-<b>
+  }
 
-${item[0]}
+  $("#main").style.display = "none";
 
-<small
-style="
-display:block;
-color:var(--muted);
-font-weight:400;
-line-height:1.8;
-"
->
+  $("#detail").hidden = true;
 
-${item[1]}
+  $("#page").hidden = false;
 
-</small>
 
-</b>
+  const titles = {
 
-</div>
-
-`).join("");
-
-}
-
-
-if(name === "duas"){
-
-html = duas.map(item=>`
-
-<div class="info">
-
-<span class="pill">
-دعاء
-</span>
-
-<h3>
-${item[0]}
-</h3>
-
-<p style="line-height:2">
-${item[1]}
-</p>
-
-</div>
-
-`).join("");
-
-}
-
-
-if(name === "guide"){
-
-html = guides.map(item=>`
-
-<div class="info">
-
-<h3>
-${item[0]}
-</h3>
-
-<p style="line-height:2">
-${item[1]}
-</p>
-
-</div>
-
-`).join("");
-
-}
-
-
-if(name === "favorites"){
-
-if(!favorites.length){
-
-html = `
-<div class="info">
-لا توجد أماكن في المفضلة بعد.
-</div>
-`;
-
-}else{
-
-html = favorites.map(index=>`
-
-<div
-class="list-item"
-onclick="openPlace(${index})"
->
-
-<b>
-${places[index].name}
-</b>
-
-<span>
-♥
-</span>
-
-</div>
-
-`).join("");
-
-}
-
-}
-
-
-if(name === "settings"){
-
-html = `
-
-<div class="list-item">
-
-<b>
-الوضع الداكن
-</b>
-
-<button onclick="toggleTheme()">
-تبديل
-</button>
-
-</div>
-
-
-<div class="list-item">
-
-<b>
-العمل دون إنترنت
-</b>
-
-<span class="pill">
-PWA
-</span>
-
-</div>
-
-
-<div class="info">
-
-<h3>
-عن التطبيق
-</h3>
-
-<p>
-دليل الحاج هو تطبيق إرشادي يجمع أهم المعلومات عن المناسك والمشاعر المقدسة والأدعية والإرشادات في واجهة بسيطة.
-</p>
-
-<p>
-المعلومات التفصيلية في المسائل الشرعية يُستحسن مراجعتها مع عالم أو مرشد حج موثوق.
-</p>
-
-</div>
-
-`;
-
-}
-
-
-$("#pageContent").innerHTML = html;
-
-}
-
-
-function openPlace(index,push=true){
-
-if(push){
-
-window.history.pushState(
-{type:"detail",index:index},
-"",
-"#place-"+index
-);
-
-}
-
-
-$("#main").style.display = "none";
-
-$("#page").hidden = true;
-
-$("#detail").hidden = false;
-
-
-const place = places[index];
-
-
-$("#detailTitle").textContent =
-place.name;
-
-
-$("#favBtn").textContent =
-favorites.includes(index) ? "♥" : "♡";
-
-
-$("#detailContent").innerHTML = `
-
-<img
-class="detail-hero"
-src="${place.image}"
-onerror="this.src='images/placeholder.svg'"
->
-
-
-<div class="info">
-
-<span class="pill">
-${place.tag}
-</span>
-
-<h2>
-${place.name}
-</h2>
-
-<p>
-${place.text}
-</p>
-
-
-<h3>
-معلومات مهمة
-</h3>
-
-
-<ul>
-
-${place.details.map(detail=>`
-
-<li style="
-margin:8px 0;
-line-height:1.8;
-">
-
-${detail}
-
-</li>
-
-`).join("")}
-
-</ul>
-
-
-<button
-class="link"
-onclick="toggleFavorite(${index})"
->
-
-${favorites.includes(index)
-?"♥ إزالة من المفضلة"
-:"♡ إضافة إلى المفضلة"}
-
-</button>
-
-</div>
-
-
-<div class="info">
-
-<h3>
-الصور
-</h3>
-
-<p>
-سيتم إضافة معرض صور حقيقي لكل مكان في المرحلة التالية.
-</p>
-
-</div>
-
-`;
-
-}
-
-
-function toggleFavorite(index){
-
-if(favorites.includes(index)){
-
-favorites =
-favorites.filter(item=>item !== index);
-
-}else{
-
-favorites.push(index);
-
-}
-
-
-localStorage.setItem(
-"hajjFav",
-JSON.stringify(favorites)
-);
-
-
-openPlace(index,false);
-
-}
-
-
-function toggleTheme(){
-
-document.body.classList.toggle("dark");
-
-localStorage.setItem(
-"dark",
-document.body.classList.contains("dark")
-);
-
-}
-
-
-function closeDrawer(){
-
-$("#drawer").classList.remove("open");
-
-$("#shade").classList.remove("show");
-
-}
-
-
-function back(){
-
-window.history.back();
-
-}
-
-
-$("#backBtn").onclick = back;
-
-$("#detailBack").onclick = back;
-
-
-$("#menuBtn").onclick = ()=>{
-
-$("#drawer").classList.add("open");
-
-$("#shade").classList.add("show");
-
-};
-
-
-$("#closeDrawer").onclick =
-closeDrawer;
-
-
-$("#shade").onclick =
-closeDrawer;
-
-
-$("#themeBtn").onclick =
-toggleTheme;
-
-
-$$("[data-page]").forEach(button=>{
-
-button.onclick = ()=>{
-
-closeDrawer();
-
-const page =
-button.dataset.page;
-
-
-if(page === "home"){
-
-window.history.pushState(
-{type:"home"},
-"",
-"#home"
-);
-
-home();
-
-}else{
-
-showPage(page);
-
-}
-
-};
-
-});
-
-
-$("#search").oninput = event=>{
-
-const query =
-event.target.value.trim();
-
-
-if(!query){
-
-cards();
-
-return;
-
-}
-
-
-const results =
-places.filter(place=>
-
-(place.name +
-place.text +
-place.tag)
-.includes(query)
-
-);
-
-
-cards(results);
-
-};
-
-
-window.addEventListener("popstate",()=>{
-
-const hash =
-location.hash;
-
-
-if(hash.startsWith("#place-")){
-
-const index =
-Number(hash.slice(7));
-
-openPlace(index,false);
-
-}
-
-else if(hash && hash !== "#home"){
-
-showPage(
-hash.slice(1),
-false
-);
-
-}
-
-else{
-
-home();
-
-}
-
-});
-
-
-if(
-localStorage.getItem("dark") === "true"
-){
-
-document.body.classList.add("dark");
-
-}
-
-
-cards();
-
-
-if("serviceWorker" in navigator){
-
-navigator.serviceWorker
-.register("sw.js")
-.catch(()=>{});
-
-          }
+    places: "أماكن الحج",
+    rituals: "رح
