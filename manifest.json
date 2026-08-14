@@ -1,12 +1,15 @@
 {
   "name": "دليل الحاج",
   "short_name": "دليل الحاج",
+  "description": "رفيقك في رحلة الحج",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f5f7f5",
   "theme_color": "#075c52",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "images/logo.svg",
