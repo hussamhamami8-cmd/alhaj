@@ -1339,4 +1339,4 @@ if ("serviceWorker" in navigator) {
   );
 
 }
-console.log("HAJJ APP JS LOADED");
+alert("تم تحميل التطبيق");
