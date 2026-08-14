@@ -1,1 +1,9 @@
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#075c52"/><stop offset="1" stop-color="#0b7567"/></linearGradient></defs>
+<rect x="5" y="5" width="150" height="150" rx="38" fill="url(#g)"/>
+<circle cx="80" cy="73" r="43" fill="#f8f2e5"/>
+<rect x="53" y="48" width="54" height="54" rx="4" fill="#171714"/>
+<path d="M53 64h54v10H53z" fill="#c99625"/>
+<path d="M80 28c12 13 20 25 20 40 0 12-8 21-20 21s-20-9-20-21c0-15 8-27 20-40z" fill="none" stroke="#c99625" stroke-width="4"/>
+<text x="80" y="132" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#f8f2e5">دليل الحاج</text>
+</svg>
