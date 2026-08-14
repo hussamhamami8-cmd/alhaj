@@ -1339,3 +1339,4 @@ if ("serviceWorker" in navigator) {
   );
 
 }
+console.log("HAJJ APP JS LOADED");
