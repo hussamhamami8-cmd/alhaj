@@ -1,4 +1,4 @@
-const CACHE_NAME = "hajj-guide-v3";
+const CACHE_NAME = "hajj-guide-v4";
 
 const FILES_TO_CACHE = [
   "./",
@@ -13,10 +13,8 @@ const FILES_TO_CACHE = [
 self.addEventListener("install", event => {
 
   event.waitUntil(
-
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(FILES_TO_CACHE))
-
   );
 
   self.skipWaiting();
@@ -54,27 +52,30 @@ self.addEventListener("fetch", event => {
     caches.match(event.request)
       .then(cached => {
 
-        if(cached){
-
+        if (cached) {
           return cached;
-
         }
 
         return fetch(event.request)
           .then(response => {
 
-            const copy =
-              response.clone();
+            if (!response || !response.ok) {
+              return response;
+            }
+
+            const copy = response.clone();
 
             caches.open(CACHE_NAME)
-              .then(cache =>
-                cache.put(
-                  event.request,
-                  copy
-                )
-              );
+              .then(cache => {
+                cache.put(event.request, copy);
+              });
 
             return response;
+
+          })
+          .catch(() => {
+
+            return caches.match("./index.html");
 
           });
 
