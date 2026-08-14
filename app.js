@@ -1,91 +1,49 @@
 /* =========================================================
-   دليل الحاج
-   app.js - النسخة المستقرة
+   دليل الحاج — app.js v5
+   تطوير شامل مع الحفاظ على البنية والميزات الحالية
    ========================================================= */
-
-
-/* =========================
-   البيانات
-   ========================= */
 
 const places = [
   {
-    name: "المسجد الحرام",
-    tag: "مكة المكرمة",
-    image: "images/haram.jpg",
-    text: "أعظم مساجد المسلمين، وفيه الكعبة المشرفة.",
-    details: [
-      "الطواف حول الكعبة سبعة أشواط.",
-      "اتبع تعليمات إدارة الحشود والجهات المنظمة.",
-      "حافظ على هدوئك ولا تزاحم الآخرين."
-    ]
+    name:"المسجد الحرام", tag:"مكة المكرمة", image:"images/haram.jpg",
+    text:"أعظم مساجد المسلمين، وفيه الكعبة المشرفة.",
+    details:["الطواف حول الكعبة سبعة أشواط.","اتبع تعليمات إدارة الحشود والجهات المنظمة.","حافظ على هدوئك ولا تزاحم الآخرين."]
   },
   {
-    name: "منى",
-    tag: "المشاعر المقدسة",
-    image: "images/mina.jpg",
-    text: "من مشاعر الحج، وفيها المبيت خلال أيام التشريق ورمي الجمرات.",
-    details: [
-      "الالتزام بمواعيد التفويج.",
-      "اتباع مسارات المجموعة.",
-      "الحرص على الراحة وشرب الماء."
-    ]
+    name:"منى", tag:"المشاعر المقدسة", image:"images/mina.jpg",
+    text:"من مشاعر الحج، وفيها المبيت خلال أيام التشريق ورمي الجمرات.",
+    details:["الالتزام بمواعيد التفويج.","اتباع مسارات المجموعة.","الحرص على الراحة وشرب الماء."]
   },
   {
-    name: "عرفات",
-    tag: "المشاعر المقدسة",
-    image: "images/arafat.jpg",
-    text: "المشعر الذي يقف فيه الحجاج يوم عرفة.",
-    details: [
-      "الإكثار من الدعاء والذكر.",
-      "عرفة كلها موقف.",
-      "اتباع برنامج التفويج المعتمد."
-    ]
+    name:"عرفات", tag:"المشاعر المقدسة", image:"images/arafat.jpg",
+    text:"المشعر الذي يقف فيه الحجاج يوم عرفة.",
+    details:["الإكثار من الدعاء والذكر.","عرفة كلها موقف.","اتباع برنامج التفويج المعتمد."]
   },
   {
-    name: "مزدلفة",
-    tag: "المشاعر المقدسة",
-    image: "images/muzdalifah.jpg",
-    text: "تقع بين عرفات ومنى، وينتقل إليها الحجاج بعد الإفاضة من عرفات.",
-    details: [
-      "الالتزام ببرنامج المجموعة.",
-      "المحافظة على المتعلقات الشخصية.",
-      "الاستعداد للانتقال إلى منى."
-    ]
+    name:"مزدلفة", tag:"المشاعر المقدسة", image:"images/muzdalifah.jpg",
+    text:"تقع بين عرفات ومنى، وينتقل إليها الحجاج بعد الإفاضة من عرفات.",
+    details:["الالتزام ببرنامج المجموعة.","المحافظة على المتعلقات الشخصية.","الاستعداد للانتقال إلى منى."]
   },
   {
-    name: "جسر الجمرات",
-    tag: "منى",
-    image: "images/jamarat.jpg",
-    text: "منشأة حديثة لتنظيم رمي الجمرات في منى.",
-    details: [
-      "الرمي في أوقاته الشرعية.",
-      "اتباع مواعيد التفويج.",
-      "تجنب الازدحام والمزاحمة."
-    ]
+    name:"جسر الجمرات", tag:"منى", image:"images/jamarat.jpg",
+    text:"منشأة حديثة لتنظيم رمي الجمرات في منى.",
+    details:["الرمي في أوقاته الشرعية.","اتباع مواعيد التفويج.","تجنب الازدحام والمزاحمة."]
   },
   {
-    name: "الصفا والمروة",
-    tag: "المسجد الحرام",
-    image: "images/safa-marwa.jpg",
-    text: "المسعى الذي يكون فيه السعي بين الصفا والمروة.",
-    details: [
-      "السعي سبعة أشواط.",
-      "يبدأ الشوط من الصفا وينتهي بالمروة.",
-      "احرص على متابعة عدد الأشواط."
-    ]
+    name:"الصفا والمروة", tag:"المسجد الحرام", image:"images/safa-marwa.jpg",
+    text:"المسعى الذي يكون فيه السعي بين الصفا والمروة.",
+    details:["السعي سبعة أشواط.","يبدأ الشوط من الصفا وينتهي بالمروة.","احرص على متابعة عدد الأشواط."]
   }
 ];
 
-
 const journey = [
   {
-    id: "preparation",
-    title: "الاستعداد للحج",
-    location: "قبل الانطلاق",
-    image: "images/haram.jpg",
-    description: "استعد لرحلتك قبل الانطلاق وتأكد من الوثائق والتصاريح وترتيبات السكن والنقل.",
-    steps: [
+    id:"preparation",
+    title:"الاستعداد للحج",
+    location:"قبل الانطلاق",
+    image:"images/haram.jpg",
+    description:"استعد لرحلتك قبل الانطلاق وتأكد من الوثائق والتصاريح وترتيبات السكن والنقل.",
+    steps:[
       "تأكد من الوثائق والتصاريح المطلوبة.",
       "جهز حقيبتك ومستلزماتك الشخصية.",
       "احتفظ بمعلومات المجموعة ونقطة التجمع.",
@@ -93,12 +51,12 @@ const journey = [
     ]
   },
   {
-    id: "ihram",
-    title: "الإحرام",
-    location: "الميقات",
-    image: "images/ihram.jpg",
-    description: "يتهيأ الحاج للإحرام ويدخل في النسك بالنية وفق نوع الحج الذي يؤديه.",
-    steps: [
+    id:"ihram",
+    title:"الإحرام",
+    location:"الميقات",
+    image:"images/ihram.jpg",
+    description:"يتهيأ الحاج للإحرام ويدخل في النسك بالنية وفق نوع الحج الذي يؤديه.",
+    steps:[
       "الاغتسال والتنظف لمن تيسر له ذلك.",
       "لبس ملابس الإحرام للرجل حسب الأحكام المعروفة.",
       "النية والدخول في النسك.",
@@ -106,12 +64,12 @@ const journey = [
     ]
   },
   {
-    id: "mina",
-    title: "يوم التروية",
-    location: "منى",
-    image: "images/mina.jpg",
-    description: "يتوجه الحاج إلى منى وفق النسك والبرنامج التنظيمي المعتمد.",
-    steps: [
+    id:"mina",
+    title:"يوم التروية",
+    location:"منى",
+    image:"images/mina.jpg",
+    description:"يتوجه الحاج إلى منى وفق النسك والبرنامج التنظيمي المعتمد.",
+    steps:[
       "التوجه إلى منى وفق برنامج المجموعة.",
       "الإكثار من التلبية والذكر.",
       "الالتزام بمواعيد التفويج.",
@@ -119,12 +77,12 @@ const journey = [
     ]
   },
   {
-    id: "arafat",
-    title: "يوم عرفة",
-    location: "عرفات",
-    image: "images/arafat.jpg",
-    description: "الوقوف بعرفة هو ركن الحج الأعظم، ويكثر الحاج فيه من الدعاء والذكر.",
-    steps: [
+    id:"arafat",
+    title:"يوم عرفة",
+    location:"عرفات",
+    image:"images/arafat.jpg",
+    description:"الوقوف بعرفة هو ركن الحج الأعظم، ويكثر الحاج فيه من الدعاء والذكر.",
+    steps:[
       "الوصول إلى عرفات وفق برنامج التفويج.",
       "الوقوف بعرفة.",
       "الإكثار من الدعاء والذكر.",
@@ -132,12 +90,12 @@ const journey = [
     ]
   },
   {
-    id: "muzdalifah",
-    title: "مزدلفة",
-    location: "مزدلفة",
-    image: "images/muzdalifah.jpg",
-    description: "بعد الإفاضة من عرفات يتوجه الحجاج إلى مزدلفة وفق التنظيم المعتمد.",
-    steps: [
+    id:"muzdalifah",
+    title:"مزدلفة",
+    location:"مزدلفة",
+    image:"images/muzdalifah.jpg",
+    description:"بعد الإفاضة من عرفات يتوجه الحجاج إلى مزدلفة وفق التنظيم المعتمد.",
+    steps:[
       "الإفاضة من عرفات إلى مزدلفة.",
       "الالتزام بتعليمات المجموعة.",
       "المبيت بحسب الأحكام الشرعية والبرنامج.",
@@ -145,12 +103,12 @@ const journey = [
     ]
   },
   {
-    id: "sacrifice",
-    title: "يوم النحر",
-    location: "منى",
-    image: "images/day-sacrifice.jpg",
-    description: "يوم عظيم من أيام الحج، وله أعمال متعددة تختلف تفاصيل ترتيبها بحسب نوع النسك.",
-    steps: [
+    id:"sacrifice",
+    title:"يوم النحر",
+    location:"منى",
+    image:"images/day-sacrifice.jpg",
+    description:"يوم عظيم من أيام الحج، وله أعمال متعددة تختلف تفاصيل ترتيبها بحسب نوع النسك.",
+    steps:[
       "رمي جمرة العقبة.",
       "الذبح لمن كان عليه هدي.",
       "الحلق أو التقصير.",
@@ -158,12 +116,12 @@ const journey = [
     ]
   },
   {
-    id: "tawaf",
-    title: "طواف الإفاضة",
-    location: "المسجد الحرام",
-    image: "images/haram.jpg",
-    description: "يطوف الحاج بالبيت سبعة أشواط وفق أحكام الطواف.",
-    steps: [
+    id:"tawaf",
+    title:"طواف الإفاضة",
+    location:"المسجد الحرام",
+    image:"images/haram.jpg",
+    description:"يطوف الحاج بالبيت سبعة أشواط وفق أحكام الطواف.",
+    steps:[
       "الاستعداد للطواف.",
       "الطواف سبعة أشواط.",
       "الدعاء والذكر بما تيسر.",
@@ -171,12 +129,12 @@ const journey = [
     ]
   },
   {
-    id: "sai",
-    title: "السعي",
-    location: "الصفا والمروة",
-    image: "images/safa-marwa.jpg",
-    description: "السعي بين الصفا والمروة سبعة أشواط لمن كان السعي مطلوبًا منه.",
-    steps: [
+    id:"sai",
+    title:"السعي",
+    location:"الصفا والمروة",
+    image:"images/safa-marwa.jpg",
+    description:"السعي بين الصفا والمروة سبعة أشواط لمن كان السعي مطلوبًا منه.",
+    steps:[
       "البدء من الصفا.",
       "إكمال سبعة أشواط.",
       "ينتهي الشوط السابع عند المروة.",
@@ -184,12 +142,12 @@ const journey = [
     ]
   },
   {
-    id: "jamarat",
-    title: "أيام التشريق",
-    location: "منى",
-    image: "images/jamarat.jpg",
-    description: "من أعمال أيام التشريق رمي الجمرات وفق الأحكام والمواعيد التنظيمية.",
-    steps: [
+    id:"jamarat",
+    title:"أيام التشريق",
+    location:"منى",
+    image:"images/jamarat.jpg",
+    description:"من أعمال أيام التشريق رمي الجمرات وفق الأحكام والمواعيد التنظيمية.",
+    steps:[
       "الالتزام بمواعيد التفويج.",
       "رمي الجمرات في أوقاتها.",
       "اتباع المسارات المحددة.",
@@ -197,12 +155,12 @@ const journey = [
     ]
   },
   {
-    id: "farewell",
-    title: "طواف الوداع",
-    location: "المسجد الحرام",
-    image: "images/farewell-tawaf.jpg",
-    description: "يكون طواف الوداع عند إرادة مغادرة مكة وفق أحكامه والاستثناءات الشرعية.",
-    steps: [
+    id:"farewell",
+    title:"طواف الوداع",
+    location:"المسجد الحرام",
+    image:"images/farewell-tawaf.jpg",
+    description:"يكون طواف الوداع عند إرادة مغادرة مكة وفق أحكامه والاستثناءات الشرعية.",
+    steps:[
       "التأكد من موعد المغادرة.",
       "أداء طواف الوداع وفق الحكم الشرعي.",
       "الاستعداد للعودة.",
@@ -211,127 +169,111 @@ const journey = [
   }
 ];
 
-
 const duas = [
   {
-    title: "التلبية",
-    text: "لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
+    title:"التلبية",
+    text:"لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
   },
   {
-    title: "دعاء جامع",
-    text: "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
+    title:"دعاء جامع",
+    text:"ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
   },
   {
-    title: "الدعاء والذكر",
-    text: "يكثر الحاج من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
+    title:"الدعاء والذكر",
+    text:"يكثر الحاج من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
   }
 ];
-
 
 const guides = [
-  ["قبل السفر", "راجع الوثائق والتصاريح وتعليمات الجهة المنظمة، وجهز احتياجاتك الشخصية."],
-  ["في المشاعر", "التزم بمواعيد التفويج ولا تنفصل عن مجموعتك دون معرفة نقطة التجمع."],
-  ["الحرارة", "احرص على شرب الماء واستخدام وسائل الوقاية من الشمس وتجنب التعرض الطويل للحرارة."],
-  ["الازدحام", "اتبع المسارات ولا تدفع أو تزاحم الآخرين."],
-  ["الطوارئ", "عند الحاجة اطلب المساعدة من الجهات المختصة أو مقدم الخدمة."]
+  ["قبل السفر","راجع الوثائق والتصاريح وتعليمات الجهة المنظمة، وجهز احتياجاتك الشخصية."],
+  ["في المشاعر","التزم بمواعيد التفويج ولا تنفصل عن مجموعتك دون معرفة نقطة التجمع."],
+  ["الحرارة","احرص على شرب الماء واستخدام وسائل الوقاية من الشمس وتجنب التعرض الطويل للحرارة."],
+  ["الازدحام","اتبع المسارات ولا تدفع أو تزاحم الآخرين."],
+  ["الطوارئ","عند الحاجة اطلب المساعدة من الجهات المختصة أو مقدم الخدمة."]
 ];
 
-
-/* =========================
-   التخزين
-   ========================= */
-
-function readStorage(key, fallback) {
-  try {
-    const value = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(value) ? value : fallback;
-  } catch {
-    return fallback;
-  }
+function readStorage(key,fallback){
+  try{
+    const value=JSON.parse(localStorage.getItem(key));
+    return Array.isArray(value)?value:fallback;
+  }catch{return fallback;}
 }
 
+let favorites=readStorage("hajjFav",[]);
+let completed=readStorage("hajjCompleted",[]);
 
-let favorites = readStorage("hajjFav", []);
-let completed = readStorage("hajjCompleted", []);
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
 
-
-/* =========================
-   أدوات
-   ========================= */
-
-const $ = selector => document.querySelector(selector);
-
-const $$ = selector => document.querySelectorAll(selector);
-
-
-function saveData() {
-  localStorage.setItem("hajjFav", JSON.stringify(favorites));
-  localStorage.setItem("hajjCompleted", JSON.stringify(completed));
+function saveData(){
+  localStorage.setItem("hajjFav",JSON.stringify(favorites));
+  localStorage.setItem("hajjCompleted",JSON.stringify(completed));
 }
 
-
-function setImageFallback(img) {
-  img.onerror = function () {
-    this.onerror = null;
-    this.src = "images/placeholder.svg";
+function progressData(){
+  const done=journey.filter(x=>completed.includes(x.id)).length;
+  return {
+    done,
+    total:journey.length,
+    percent:journey.length?Math.round(done/journey.length*100):0
   };
 }
 
+function home(push=false){
+  if(push) history.pushState({page:"home"},"","#home");
 
-/* =========================
-   الرئيسية
-   ========================= */
+  const main=$("#main"),page=$("#page"),detail=$("#detail");
 
-function home(push = false) {
-
-  if (push) {
-    history.pushState({ page: "home" }, "", "#home");
-  }
-
-  const main = $("#main");
-  const page = $("#page");
-  const detail = $("#detail");
-
-  if (main) main.style.display = "block";
-  if (page) page.hidden = true;
-  if (detail) detail.hidden = true;
+  if(main) main.style.display="block";
+  if(page) page.hidden=true;
+  if(detail) detail.hidden=true;
 
   updateBottomNav("home");
+
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
+function cards(list=places){
+  const element=$("#placeGrid");
 
-/* =========================
-   بطاقات الأماكن
-   ========================= */
+  if(!element)return;
 
-function cards(list = places) {
-
-  const element = $("#placeGrid");
-
-  if (!element) return;
-
-  if (!list.length) {
-    element.innerHTML = `
-      <div class="info">
+  if(!list.length){
+    element.innerHTML=`
+      <div class="info empty-state">
+        <div class="empty-icon">⌕</div>
         <h3>لا توجد نتائج</h3>
-        <p>جرّب البحث بكلمة أخرى.</p>
+        <p>جرّب البحث باسم المكان أو المشعر.</p>
       </div>
     `;
     return;
   }
 
-  element.innerHTML = list.map((place) => {
-
-    const index = places.indexOf(place);
+  element.innerHTML=list.map(place=>{
+    const index=places.indexOf(place);
+    const fav=favorites.includes(index);
 
     return `
       <article class="card" onclick="openPlace(${index})">
 
-        <img
-          src="${place.image}"
-          alt="${place.name}"
-          onerror="this.onerror=null;this.src='images/placeholder.svg'"
-        >
+        <div class="card-image-wrap">
+
+          <img
+            src="${place.image}"
+            alt="${place.name}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='images/placeholder.svg'"
+          >
+
+          <button
+            class="card-fav ${fav?"active":""}"
+            aria-label="المفضلة"
+            onclick="event.stopPropagation();toggleFavorite(${index})"
+          >
+            ${fav?"♥":"♡"}
+          </button>
+
+        </div>
 
         <div class="card-body">
 
@@ -339,413 +281,371 @@ function cards(list = places) {
             ${place.tag}
           </span>
 
-          <h3>
-            ${place.name}
-          </h3>
+          <h3>${place.name}</h3>
 
-          <p>
-            ${place.text}
-          </p>
+          <p>${place.text}</p>
+
+          <span class="card-more">
+            عرض التفاصيل ←
+          </span>
 
         </div>
 
       </article>
     `;
-
   }).join("");
 }
 
+function showPage(name,push=true){
 
-/* =========================
-   التنقل العام
-   ========================= */
+  if(push)
+    history.pushState({type:"page",name},"","#"+name);
 
-function showPage(name, push = true) {
+  const main=$("#main");
+  const page=$("#page");
+  const detail=$("#detail");
 
-  if (push) {
-    history.pushState(
-      { type: "page", name },
-      "",
-      "#" + name
-    );
-  }
+  if(main)main.style.display="none";
+  if(detail)detail.hidden=true;
+  if(page)page.hidden=false;
 
-  const main = $("#main");
-  const page = $("#page");
-  const detail = $("#detail");
-
-  if (main) main.style.display = "none";
-  if (detail) detail.hidden = true;
-  if (page) page.hidden = false;
-
-  const titles = {
-    places: "أماكن الحج",
-    rituals: "رحلة الحج",
-    duas: "الأدعية والأذكار",
-    guide: "إرشادات الحاج",
-    favorites: "المفضلة",
-    settings: "الإعدادات"
+  const titles={
+    places:"أماكن الحج",
+    rituals:"رحلة الحج",
+    duas:"الأدعية والأذكار",
+    guide:"إرشادات الحاج",
+    favorites:"المفضلة",
+    settings:"الإعدادات"
   };
 
-  const title = $("#pageTitle");
+  const title=$("#pageTitle");
 
-  if (title) {
-    title.textContent = titles[name] || "دليل الحاج";
-  }
+  if(title)
+    title.textContent=titles[name]||"دليل الحاج";
 
-  const content = $("#pageContent");
+  const content=$("#pageContent");
 
-  if (!content) return;
+  if(!content)return;
 
-  let html = "";
+  let html="";
 
+  if(name==="places"){
 
-  /* الأماكن */
-
-  if (name === "places") {
-
-    html = places.map((place, index) => `
-      <div class="list-item" onclick="openPlace(${index})">
-
-        <img
-          src="${place.image}"
-          alt="${place.name}"
-          onerror="this.onerror=null;this.src='images/placeholder.svg'"
-          style="
-            width:62px;
-            height:52px;
-            object-fit:cover;
-            border-radius:12px;
-          "
-        >
-
-        <div style="flex:1">
-          <b>${place.name}</b>
-          <small style="display:block;color:var(--muted)">
-            ${place.tag}
-          </small>
-        </div>
-
-        <span>‹</span>
-
-      </div>
-    `).join("");
-
-  }
-
-
-  /* رحلة الحج */
-
-  else if (name === "rituals") {
-
-    const total = journey.length;
-
-    const done = journey.filter(item =>
-      completed.includes(item.id)
-    ).length;
-
-    const percent = total
-      ? Math.round((done / total) * 100)
-      : 0;
-
-    html = `
-
-      <div class="info">
-
-        <span class="pill">
-          رحلة الحج
-        </span>
-
-        <h2>
-          ${percent}% مكتمل
-        </h2>
-
-        <div style="
-          height:10px;
-          background:#e4ebe8;
-          border-radius:20px;
-          overflow:hidden;
-          margin:15px 0;
-        ">
-
-          <div style="
-            width:${percent}%;
-            height:100%;
-            background:#075c52;
-            transition:width .3s;
-          "></div>
-
-        </div>
-
-        <p>
-          أنجزت ${done} من ${total} مراحل.
-        </p>
-
+    html=`
+      <div class="page-intro">
+        <span class="pill">استكشف</span>
+        <h2>أماكن ومشاعر الحج</h2>
+        <p>تعرف على أبرز الأماكن المرتبطة برحلة الحج.</p>
       </div>
 
-      ${journey.map((item, index) => {
+      <div class="list-stack">
 
-        const isDone = completed.includes(item.id);
-
-        return `
+        ${places.map((p,i)=>`
 
           <div
-            class="list-item"
-            onclick="openJourney(${index})"
-            style="cursor:pointer"
+            class="list-item clickable"
+            onclick="openPlace(${i})"
           >
 
             <img
-              src="${item.image}"
-              alt="${item.title}"
+              src="${p.image}"
+              alt="${p.name}"
+              loading="lazy"
               onerror="this.onerror=null;this.src='images/placeholder.svg'"
-              style="
-                width:70px;
-                height:60px;
-                object-fit:cover;
-                border-radius:13px;
-              "
             >
 
-            <div style="flex:1">
-
-              <b>
-                ${index + 1}. ${item.title}
-              </b>
-
-              <small style="
-                display:block;
-                color:var(--muted);
-                margin-top:4px;
-              ">
-                ${item.location}
-              </small>
-
+            <div>
+              <b>${p.name}</b>
+              <small>${p.tag}</small>
             </div>
 
-            <span style="
-              font-size:20px;
-              color:${isDone ? "#075c52" : "inherit"};
-            ">
-              ${isDone ? "✓" : "‹"}
-            </span>
+            <span>‹</span>
 
           </div>
 
-        `;
+        `).join("")}
 
-      }).join("")}
-
+      </div>
     `;
-
   }
 
+  else if(name==="rituals"){
 
-  /* الأدعية */
+    const p=progressData();
 
-  else if (name === "duas") {
+    html=`
+      <div class="progress-hero">
 
-    html = duas.map(item => `
-
-      <div class="info">
-
-        <span class="pill">
-          دعاء
-        </span>
-
-        <h3>
-          ${item.title}
-        </h3>
-
-        <p style="line-height:2.2">
-          ${item.text}
-        </p>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  /* الإرشادات */
-
-  else if (name === "guide") {
-
-    html = guides.map(item => `
-
-      <div class="info">
-
-        <h3>
-          ${item[0]}
-        </h3>
-
-        <p style="line-height:2">
-          ${item[1]}
-        </p>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  /* المفضلة */
-
-  else if (name === "favorites") {
-
-    const validFavorites = favorites.filter(
-      index => places[index]
-    );
-
-    if (!validFavorites.length) {
-
-      html = `
-        <div class="info">
-
-          <h3>
-            المفضلة فارغة
-          </h3>
-
-          <p>
-            يمكنك إضافة أي مكان إلى المفضلة من صفحة المكان.
-          </p>
-
+        <div>
+          <span>رحلة الحج</span>
+          <h2>${p.percent}% مكتمل</h2>
+          <p>أنجزت ${p.done} من ${p.total} مراحل</p>
         </div>
-      `;
-
-    } else {
-
-      html = validFavorites.map(index => `
 
         <div
-          class="list-item"
-          onclick="openPlace(${index})"
+          class="progress-ring"
+          style="--progress:${p.percent}%"
+        >
+          <b>${p.percent}%</b>
+        </div>
+
+      </div>
+
+      <div class="journey-list">
+
+        ${journey.map((item,i)=>{
+
+          const done=completed.includes(item.id);
+
+          return `
+            <div
+              class="journey-row ${done?"done":""}"
+              onclick="openJourney(${i})"
+            >
+
+              <div class="journey-num">
+                ${done?"✓":i+1}
+              </div>
+
+              <img
+                src="${item.image}"
+                alt="${item.title}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='images/placeholder.svg'"
+              >
+
+              <div class="journey-text">
+                <b>${item.title}</b>
+                <small>${item.location}</small>
+              </div>
+
+              <span>›</span>
+
+            </div>
+          `;
+
+        }).join("")}
+
+      </div>
+    `;
+  }
+
+  else if(name==="duas"){
+
+    html=`
+      <div class="page-intro">
+        <span class="pill">ذكر ودعاء</span>
+        <h2>أدعية مختارة</h2>
+        <p>اقرأ وكرر ما تيسر من الذكر والدعاء.</p>
+      </div>
+    `+
+
+    duas.map((item,i)=>`
+
+      <div class="info dua-card">
+
+        <div class="dua-number">
+          ${i+1}
+        </div>
+
+        <div>
+          <span class="pill">دعاء</span>
+          <h3>${item.title}</h3>
+          <p>${item.text}</p>
+        </div>
+
+      </div>
+
+    `).join("");
+  }
+
+  else if(name==="guide"){
+
+    html=`
+      <div class="page-intro">
+        <span class="pill">رفيقك في الرحلة</span>
+        <h2>إرشادات مهمة</h2>
+        <p>نصائح عامة تساعدك على رحلة أكثر تنظيمًا وأمانًا.</p>
+      </div>
+    `+
+
+    guides.map(item=>`
+
+      <div class="info guide-card">
+
+        <div class="guide-icon">
+          ✓
+        </div>
+
+        <div>
+          <h3>${item[0]}</h3>
+          <p>${item[1]}</p>
+        </div>
+
+      </div>
+
+    `).join("");
+  }
+
+  else if(name==="favorites"){
+
+    const valid=favorites.filter(i=>places[i]);
+
+    html=valid.length?
+
+      `
+        <div class="page-intro">
+          <span class="pill">محفوظاتك</span>
+          <h2>الأماكن المفضلة</h2>
+          <p>كل الأماكن التي حفظتها للوصول السريع.</p>
+        </div>
+      `+
+
+      valid.map(i=>`
+
+        <div
+          class="list-item clickable"
+          onclick="openPlace(${i})"
         >
 
           <img
-            src="${places[index].image}"
-            alt="${places[index].name}"
+            src="${places[i].image}"
+            alt="${places[i].name}"
+            loading="lazy"
             onerror="this.onerror=null;this.src='images/placeholder.svg'"
-            style="
-              width:62px;
-              height:52px;
-              object-fit:cover;
-              border-radius:12px;
-            "
           >
 
-          <b style="flex:1">
-            ${places[index].name}
-          </b>
+          <div>
+            <b>${places[i].name}</b>
+            <small>${places[i].tag}</small>
+          </div>
 
-          <span>
+          <button
+            class="mini-remove"
+            onclick="event.stopPropagation();toggleFavorite(${i})"
+          >
             ♥
-          </span>
+          </button>
 
         </div>
 
-      `).join("");
+      `).join("")
 
-    }
+      :
 
+      `
+        <div class="info empty-state">
+
+          <div class="empty-icon">♡</div>
+
+          <h3>المفضلة فارغة</h3>
+
+          <p>
+            افتح أي مكان واضغط على القلب لإضافته هنا.
+          </p>
+
+          <button
+            class="primary-btn"
+            onclick="showPage('places')"
+          >
+            استكشاف الأماكن
+          </button>
+
+        </div>
+      `;
   }
 
+  else if(name==="settings"){
 
-  /* الإعدادات */
+    const dark=document.body.classList.contains("dark");
+    const p=progressData();
 
-  else if (name === "settings") {
+    html=`
 
-    const dark =
-      document.body.classList.contains("dark");
+      <div class="settings-card">
 
-    html = `
-
-      <div class="list-item">
-
-        <div style="flex:1">
-
-          <b>
-            الوضع الداكن
-          </b>
-
-          <small style="
-            display:block;
-            color:var(--muted);
-            margin-top:4px;
-          ">
-            ${dark ? "مفعّل" : "غير مفعّل"}
-          </small>
-
+        <div>
+          <b>الوضع الداكن</b>
+          <small>${dark?"مفعّل":"غير مفعّل"}</small>
         </div>
 
-        <button onclick="toggleTheme()">
-          ${dark ? "☀" : "☾"}
+        <button
+          class="theme-switch ${dark?"on":""}"
+          onclick="toggleTheme()"
+        >
+          <span></span>
         </button>
 
       </div>
 
       <div class="info">
 
-        <h3>
-          حول التطبيق
-        </h3>
+        <h3>تقدم الرحلة</h3>
 
-        <p style="line-height:2">
-          دليل الحاج هو رفيق رقمي يساعد الحاج على الوصول إلى
-          المعلومات الأساسية المتعلقة بالمناسك والأماكن والأدعية
-          والإرشادات.
+        <p>
+          أنجزت ${p.done} من ${p.total} مراحل (${p.percent}%).
         </p>
 
-        <p style="line-height:2">
+        <button
+          class="danger-btn"
+          onclick="resetProgress()"
+        >
+          إعادة ضبط تقدم الرحلة
+        </button>
+
+      </div>
+
+      <div class="info">
+
+        <h3>حول التطبيق</h3>
+
+        <p>
+          دليل الحاج رفيق رقمي للمعلومات الأساسية المتعلقة
+          بالمناسك والأماكن والأدعية والإرشادات.
+        </p>
+
+        <p class="muted-note">
           في المسائل الشرعية التفصيلية يُرجع إلى عالم أو مرشد حج موثوق.
         </p>
 
       </div>
 
     `;
-
   }
 
-
-  content.innerHTML = html;
+  content.innerHTML=html;
 
   updateBottomNav(name);
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
+function openPlace(index,push=true){
 
-/* =========================
-   تفاصيل المكان
-   ========================= */
+  const place=places[index];
 
-function openPlace(index, push = true) {
+  if(!place)return;
 
-  const place = places[index];
-
-  if (!place) return;
-
-  if (push) {
+  if(push)
     history.pushState(
-      { type: "place", index },
+      {type:"place",index},
       "",
-      "#place-" + index
+      "#place-"+index
     );
-  }
 
-  $("#main").style.display = "none";
-  $("#page").hidden = true;
-  $("#detail").hidden = false;
+  $("#main").style.display="none";
+  $("#page").hidden=true;
+  $("#detail").hidden=false;
 
-  $("#detailTitle").textContent = place.name;
+  $("#detailTitle").textContent=place.name;
 
-  const isFavorite =
-    favorites.includes(index);
+  $("#favBtn").textContent=
+    favorites.includes(index)?"♥":"♡";
 
-  $("#favBtn").textContent =
-    isFavorite ? "♥" : "♡";
-
-  $("#detailContent").innerHTML = `
+  $("#detailContent").innerHTML=`
 
     <img
       class="detail-hero"
@@ -754,83 +654,70 @@ function openPlace(index, push = true) {
       onerror="this.onerror=null;this.src='images/placeholder.svg'"
     >
 
-    <div class="info">
+    <div class="info detail-info">
 
       <span class="pill">
         ${place.tag}
       </span>
 
-      <h2>
-        ${place.name}
-      </h2>
+      <h2>${place.name}</h2>
 
-      <p style="line-height:2">
-        ${place.text}
-      </p>
+      <p>${place.text}</p>
 
-      <h3>
-        معلومات مهمة
-      </h3>
+      <h3>معلومات مهمة</h3>
 
       <ul>
-
-        ${place.details.map(detail => `
-          <li style="
-            margin:9px 0;
-            line-height:1.8;
-          ">
-            ${detail}
-          </li>
+        ${place.details.map(x=>`
+          <li>${x}</li>
         `).join("")}
-
       </ul>
 
       <button
-        class="link"
+        class="primary-btn"
         onclick="toggleFavorite(${index})"
       >
-        ${isFavorite
-          ? "♥ إزالة من المفضلة"
-          : "♡ إضافة إلى المفضلة"}
+        ${
+          favorites.includes(index)
+          ?"♥ إزالة من المفضلة"
+          :"♡ إضافة إلى المفضلة"
+        }
       </button>
 
     </div>
+
   `;
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
+function openJourney(index,push=true){
 
-/* =========================
-   تفاصيل مرحلة الحج
-   ========================= */
+  const item=journey[index];
 
-function openJourney(index, push = true) {
+  if(!item)return;
 
-  const item = journey[index];
-
-  if (!item) return;
-
-  if (push) {
+  if(push)
     history.pushState(
-      { type: "journey", index },
+      {type:"journey",index},
       "",
-      "#journey-" + index
+      "#journey-"+index
     );
-  }
 
-  $("#main").style.display = "none";
-  $("#page").hidden = true;
-  $("#detail").hidden = false;
+  $("#main").style.display="none";
+  $("#page").hidden=true;
+  $("#detail").hidden=false;
 
-  $("#detailTitle").textContent =
-    item.title;
+  $("#detailTitle").textContent=item.title;
 
-  const done =
-    completed.includes(item.id);
+  const done=completed.includes(item.id);
 
-  $("#favBtn").textContent =
-    done ? "✓" : "○";
+  $("#favBtn").textContent=
+    done?"✓":"○";
 
-  $("#detailContent").innerHTML = `
+  $("#detailContent").innerHTML=`
 
     <img
       class="detail-hero"
@@ -839,122 +726,86 @@ function openJourney(index, push = true) {
       onerror="this.onerror=null;this.src='images/placeholder.svg'"
     >
 
-    <div class="info">
+    <div class="info detail-info">
 
       <span class="pill">
         ${item.location}
       </span>
 
-      <h2>
-        ${item.title}
-      </h2>
+      <h2>${item.title}</h2>
 
-      <p style="line-height:2">
-        ${item.description}
-      </p>
+      <p>${item.description}</p>
 
     </div>
 
     <div class="info">
 
-      <h3>
-        ماذا تفعل؟
-      </h3>
+      <h3>ماذا تفعل؟</h3>
 
-      <ul>
+      <ol class="steps">
 
-        ${item.steps.map(step => `
-          <li style="
-            margin:10px 0;
-            line-height:1.9;
-          ">
-            ${step}
-          </li>
+        ${item.steps.map(x=>`
+          <li>${x}</li>
         `).join("")}
 
-      </ul>
+      </ol>
 
     </div>
 
     <div class="info">
 
       <button
-        onclick="toggleJourney('${item.id}', ${index})"
-        style="
-          width:100%;
-          border:0;
-          padding:15px;
-          border-radius:16px;
-          background:${done ? "#e8f3ef" : "#075c52"};
-          color:${done ? "#075c52" : "#fff"};
-          font-weight:800;
-          cursor:pointer;
-        "
+        class="complete-btn ${done?"completed":""}"
+        onclick="toggleJourney('${item.id}',${index})"
       >
-
-        ${done
-          ? "✓ تمت هذه المرحلة"
-          : "إتمام هذه المرحلة"}
-
+        ${
+          done
+          ?"✓ تمت هذه المرحلة"
+          :"إتمام هذه المرحلة"
+        }
       </button>
 
     </div>
 
   `;
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
+function toggleJourney(id,index){
 
-/* =========================
-   إتمام مرحلة
-   ========================= */
-
-function toggleJourney(id, index) {
-
-  if (completed.includes(id)) {
-
-    completed =
-      completed.filter(item => item !== id);
-
-  } else {
-
-    completed.push(id);
-
-  }
+  completed=
+    completed.includes(id)
+    ?completed.filter(x=>x!==id)
+    :[...completed,id];
 
   saveData();
 
-  openJourney(index, false);
+  openJourney(index,false);
 }
 
+function toggleFavorite(index){
 
-/* =========================
-   المفضلة
-   ========================= */
-
-function toggleFavorite(index) {
-
-  if (favorites.includes(index)) {
-
-    favorites =
-      favorites.filter(item => item !== index);
-
-  } else {
-
-    favorites.push(index);
-
-  }
+  favorites=
+    favorites.includes(index)
+    ?favorites.filter(x=>x!==index)
+    :[...favorites,index];
 
   saveData();
 
-  openPlace(index, false);
+  if(location.hash.startsWith("#place-"))
+    openPlace(index,false);
+  else
+    cards();
+
+  if(location.hash==="#favorites")
+    showPage("favorites",false);
 }
 
-
-/* =========================
-   الوضع الداكن
-   ========================= */
-
-function toggleTheme() {
+function toggleTheme(){
 
   document.body.classList.toggle("dark");
 
@@ -963,380 +814,228 @@ function toggleTheme() {
     document.body.classList.contains("dark")
   );
 
-  if (
-    !$("#page").hidden &&
-    location.hash === "#settings"
-  ) {
-    showPage("settings", false);
-  }
+  if(location.hash==="#settings")
+    showPage("settings",false);
 }
 
+function resetProgress(){
 
-/* =========================
-   القائمة الجانبية
-   ========================= */
+  if(!confirm("هل تريد إعادة ضبط جميع مراحل رحلة الحج؟"))
+    return;
 
-function openDrawer() {
+  completed=[];
 
-  const drawer = $("#drawer");
-  const shade = $("#shade");
+  saveData();
 
-  if (drawer) drawer.classList.add("open");
-  if (shade) shade.classList.add("show");
+  showPage("rituals",false);
 }
 
+function openDrawer(){
 
-function closeDrawer() {
+  $("#drawer")?.classList.add("open");
+  $("#shade")?.classList.add("show");
 
-  const drawer = $("#drawer");
-  const shade = $("#shade");
-
-  if (drawer) drawer.classList.remove("open");
-  if (shade) shade.classList.remove("show");
 }
 
+function closeDrawer(){
 
-/* =========================
-   زر الرجوع
-   ========================= */
+  $("#drawer")?.classList.remove("open");
+  $("#shade")?.classList.remove("show");
 
-function back() {
+}
 
-  if (
-    location.hash &&
-    history.length > 1
-  ) {
+function back(){
+
+  if(history.length>1)
     history.back();
-  } else {
+  else
     home();
-  }
+
 }
 
+function updateBottomNav(active){
 
-/* =========================
-   شريط التنقل
-   ========================= */
+  $$("[data-page]").forEach(b=>{
 
-function updateBottomNav(active) {
-
-  $$("[data-page]").forEach(button => {
-
-    if (
-      button.closest(".bottom")
-    ) {
-
-      button.classList.toggle(
+    if(b.closest(".bottom"))
+      b.classList.toggle(
         "active",
-        button.dataset.page === active
+        b.dataset.page===active
       );
 
-    }
-
   });
+
 }
 
+function searchPlaces(value){
 
-/* =========================
-   البحث
-   ========================= */
+  const query=value.trim().toLowerCase();
 
-function searchPlaces(value) {
-
-  const query =
-    value.trim().toLowerCase();
-
-  if (!query) {
+  if(!query){
     cards();
     return;
   }
 
-  const results = places.filter(place => {
-
-    const content = [
-      place.name,
-      place.tag,
-      place.text,
-      ...place.details
-    ].join(" ").toLowerCase();
-
-    return content.includes(query);
-
-  });
+  const results=places.filter(p=>
+    [
+      p.name,
+      p.tag,
+      p.text,
+      ...p.details
+    ]
+    .join(" ")
+    .toLowerCase()
+    .includes(query)
+  );
 
   cards(results);
 }
 
+function handleRoute(){
 
-/* =========================
-   الأحداث
-   ========================= */
+  const hash=location.hash;
 
-document.addEventListener("DOMContentLoaded", () => {
-
-  /* الوضع الداكن */
-
-  if (
-    localStorage.getItem("hajjDark") === "true"
-  ) {
-    document.body.classList.add("dark");
-  }
-
-
-  /* بطاقات الصفحة الرئيسية */
-
-  cards();
-
-
-  /* القائمة */
-
-  const menuBtn = $("#menuBtn");
-
-  if (menuBtn) {
-    menuBtn.addEventListener(
-      "click",
-      openDrawer
-    );
-  }
-
-
-  const closeBtn =
-    $("#closeDrawer");
-
-  if (closeBtn) {
-    closeBtn.addEventListener(
-      "click",
-      closeDrawer
-    );
-  }
-
-
-  const shade =
-    $("#shade");
-
-  if (shade) {
-    shade.addEventListener(
-      "click",
-      closeDrawer
-    );
-  }
-
-
-  /* الرجوع */
-
-  const backBtn =
-    $("#backBtn");
-
-  if (backBtn) {
-    backBtn.addEventListener(
-      "click",
-      back
-    );
-  }
-
-
-  const detailBack =
-    $("#detailBack");
-
-  if (detailBack) {
-    detailBack.addEventListener(
-      "click",
-      back
-    );
-  }
-
-
-  /* الوضع الداكن */
-
-  const themeBtn =
-    $("#themeBtn");
-
-  if (themeBtn) {
-    themeBtn.addEventListener(
-      "click",
-      toggleTheme
-    );
-  }
-
-
-  /* التنقل */
-
-  $$("[data-page]").forEach(button => {
-
-    button.addEventListener(
-      "click",
-      event => {
-
-        event.preventDefault();
-
-        closeDrawer();
-
-        const page =
-          button.dataset.page;
-
-        if (page === "home") {
-          home(true);
-        } else {
-          showPage(page, true);
-        }
-
-      }
-    );
-
-  });
-
-
-  /* البحث */
-
-  const search =
-    $("#search");
-
-  if (search) {
-
-    search.addEventListener(
-      "input",
-      event => {
-
-        searchPlaces(
-          event.target.value
-        );
-
-      }
-    );
-
-  }
-
-
-  /* زر المفضلة في رأس التفاصيل */
-
-  const favBtn =
-    $("#favBtn");
-
-  if (favBtn) {
-
-    favBtn.addEventListener(
-      "click",
-      () => {
-
-        const hash =
-          location.hash;
-
-        if (hash.startsWith("#place-")) {
-
-          const index =
-            Number(hash.replace("#place-", ""));
-
-          toggleFavorite(index);
-
-        }
-
-      }
-    );
-
-  }
-
-
-  /* استعادة الصفحة من الرابط */
-
-  handleRoute();
-
-});
-
-
-/* =========================
-   التعامل مع الرابط
-   ========================= */
-
-function handleRoute() {
-
-  const hash =
-    location.hash;
-
-
-  if (!hash || hash === "#home") {
-
+  if(!hash||hash==="#home"){
     home(false);
     return;
-
   }
 
-
-  if (hash.startsWith("#place-")) {
-
-    const index =
-      Number(hash.replace("#place-", ""));
-
-    openPlace(index, false);
+  if(hash.startsWith("#place-")){
+    openPlace(
+      Number(hash.replace("#place-","")),
+      false
+    );
     return;
-
   }
 
-
-  if (hash.startsWith("#journey-")) {
-
-    const index =
-      Number(hash.replace("#journey-", ""));
-
-    openJourney(index, false);
+  if(hash.startsWith("#journey-")){
+    openJourney(
+      Number(hash.replace("#journey-","")),
+      false
+    );
     return;
-
   }
 
+  const page=hash.substring(1);
 
-  const page =
-    hash.substring(1);
-
-  const validPages = [
+  if([
     "places",
     "rituals",
     "duas",
     "guide",
     "favorites",
     "settings"
-  ];
+  ].includes(page)){
 
-  if (validPages.includes(page)) {
+    showPage(page,false);
 
-    showPage(page, false);
-
-  } else {
+  }else{
 
     home(false);
 
   }
+
 }
 
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
 
-/* =========================
-   زر الرجوع في المتصفح والهاتف
-   ========================= */
+    if(
+      localStorage.getItem("hajjDark")==="true"
+    )
+      document.body.classList.add("dark");
+
+    cards();
+
+    $("#menuBtn")?.addEventListener(
+      "click",
+      openDrawer
+    );
+
+    $("#closeDrawer")?.addEventListener(
+      "click",
+      closeDrawer
+    );
+
+    $("#shade")?.addEventListener(
+      "click",
+      closeDrawer
+    );
+
+    $("#backBtn")?.addEventListener(
+      "click",
+      back
+    );
+
+    $("#detailBack")?.addEventListener(
+      "click",
+      back
+    );
+
+    $("#themeBtn")?.addEventListener(
+      "click",
+      toggleTheme
+    );
+
+    $$("[data-page]").forEach(
+      button=>
+        button.addEventListener(
+          "click",
+          e=>{
+            e.preventDefault();
+            closeDrawer();
+
+            const page=button.dataset.page;
+
+            page==="home"
+              ?home(true)
+              :showPage(page,true);
+          }
+        )
+    );
+
+    $("#search")?.addEventListener(
+      "input",
+      e=>searchPlaces(e.target.value)
+    );
+
+    $("#favBtn")?.addEventListener(
+      "click",
+      ()=>{
+        const hash=location.hash;
+
+        if(hash.startsWith("#place-"))
+          toggleFavorite(
+            Number(hash.replace("#place-",""))
+          );
+      }
+    );
+
+    handleRoute();
+
+  }
+);
 
 window.addEventListener(
   "popstate",
   handleRoute
 );
 
-
-/* =========================
-   Service Worker
-   ========================= */
-
-if ("serviceWorker" in navigator) {
+if("serviceWorker" in navigator){
 
   window.addEventListener(
     "load",
-    () => {
-
-      navigator.serviceWorker
-        .register("./sw.js")
-        .catch(error => {
-          console.log(
-            "Service Worker:",
-            error
-          );
-        });
-
-    }
+    ()=>navigator.serviceWorker
+      .register("./sw.js")
+      .catch(e=>
+        console.log(
+          "Service Worker:",
+          e
+        )
+      )
   );
 
 }
-console.log("HAJJ APP JS LOADED");
+
+console.log("HAJJ APP v5 LOADED");
