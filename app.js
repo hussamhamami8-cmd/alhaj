@@ -1,5 +1,5 @@
 /* =========================================================
-   دليل الحاج — app.js v9
+   دليل الحاج — app.js v10
    متوافق مع index.html الحالي
    ---------------------------------------------------------
    - لا يعيد إنشاء نظام تسجيل الدخول الموجود في index.html
@@ -24,12 +24,9 @@
    SUPABASE
 ========================================================= */
 
-const SUPABASE_URL =
-  "https://tmmspfxkmqsivpxchfkk.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
-
+/* Supabase client is created in index.html and exposed as
+   window.hajjSupabaseClient. Do not redeclare SUPABASE_URL here,
+   because index.html already declares it in the same global scope. */
 
 /* =========================================================
    البيانات الأساسية — الأماكن
