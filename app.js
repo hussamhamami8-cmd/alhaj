@@ -807,32 +807,42 @@ function renderPilgrimPage(){
 
   if(!currentPilgrim){
 
-    return `
+  return `
 
-      <div class="info empty-state">
+    <div class="info empty-state visitor-card">
 
-        <div class="empty-icon">
-          👤
-        </div>
-
-        <h3>
-          بطاقة الحاج
-        </h3>
-
-        <p>
-          سجّل دخولك باسم الحاج والشفرة الخاصة للوصول إلى بياناتك.
-        </p>
-
-        <button
-          class="primary-btn"
-          onclick="openPilgrimLogin()"
-        >
-          دخول بطاقة الحاج
-        </button>
-
+      <div class="empty-icon">
+        👤
       </div>
 
-    `;
+      <span class="pill">
+        وضع الزائر
+      </span>
+
+      <h3>
+        أنت تتصفح كزائر
+      </h3>
+
+      <p>
+        يمكنك استخدام جميع ميزات دليل الحاج،
+        واستكشاف الأماكن والمناسك والأدعية والإرشادات.
+      </p>
+
+      <p class="muted-note">
+        سجّل الدخول للوصول إلى بطاقة الحاج
+        وبياناتك وموقعك المرتبط بالحساب.
+      </p>
+
+      <button
+        class="primary-btn"
+        onclick="openPilgrimLogin()"
+      >
+        👤 دخول بطاقة الحاج
+      </button>
+
+    </div>
+
+  `;
 
   }
 
