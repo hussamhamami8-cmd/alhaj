@@ -24,10 +24,10 @@
    SUPABASE
 ========================================================= */
 
-const SUPABASE_URL =
+const APP_SUPABASE_URL =
   "https://tmmspfxkmqsivpxchfkk.supabase.co";
 
-const SUPABASE_KEY =
+const APP_SUPABASE_KEY =
   "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
 
 
@@ -491,14 +491,14 @@ async function supabaseRPC(
 
   const response =
     await fetch(
-      `${SUPABASE_URL}/rest/v1/rpc/${functionName}`,
+      `${APP_SUPABASE_URL}/rest/v1/rpc/${functionName}`,
       {
         method: "POST",
 
         headers: {
-          "apikey": SUPABASE_KEY,
+          "apikey": APP_SUPABASE_KEY,
           "Authorization":
-            `Bearer ${SUPABASE_KEY}`,
+            `Bearer ${APP_SUPABASE_KEY}`,
           "Content-Type":
             "application/json"
         },
@@ -3029,3 +3029,23 @@ setInterval(
 
 
     if (before !== after)
+    {
+      updatePilgrimUI();
+
+      if (currentPilgrim) {
+        loadPilgrimLocation().catch(console.error);
+      }
+    }
+
+  },
+  2000
+);
+
+
+/* =========================================================
+   بدء التطبيق
+========================================================= */
+
+console.log(
+  "HAJJ APP v10 — LOGIN + PILGRIM + LOCATIONS + SUPABASE READY"
+);
