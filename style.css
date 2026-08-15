@@ -8,6 +8,7 @@
 :root{
   --green:#075c52;
   --green2:#0b7567;
+  --green3:#0e8a79;
   --gold:#c99625;
   --cream:#f8f2e5;
   --bg:#f5f7f5;
@@ -15,6 +16,7 @@
   --muted:#71807c;
   --card:#fff;
   --line:#e5e9e6;
+  --danger:#b52339;
   --shadow:0 8px 25px rgba(12,55,48,.08);
 }
 
@@ -936,6 +938,352 @@ section{
   transform:translateX(-50%) translateY(0);
 }
 
+
+/* =========================================================
+   بطاقة الحاج
+   ========================================================= */
+
+.pilgrim-profile{
+  background:
+    linear-gradient(
+      135deg,
+      var(--green),
+      #073e39
+    );
+  color:#fff;
+  border-radius:24px;
+  padding:22px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  box-shadow:0 12px 30px rgba(7,92,82,.18);
+  position:relative;
+  overflow:hidden;
+}
+
+.pilgrim-profile::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:#ffffff0d;
+  left:-65px;
+  bottom:-90px;
+}
+
+.pilgrim-profile-icon{
+  width:68px;
+  height:68px;
+  border-radius:20px;
+  background:#ffffff18;
+  border:1px solid #ffffff30;
+  display:grid;
+  place-items:center;
+  font-size:32px;
+  flex:none;
+  position:relative;
+  z-index:1;
+}
+
+.pilgrim-profile > div:last-child{
+  position:relative;
+  z-index:1;
+}
+
+.pilgrim-profile h2{
+  margin:7px 0 2px;
+  font-size:21px;
+}
+
+.pilgrim-profile p{
+  margin:0;
+  color:#d8e9e5;
+  font-size:12px;
+}
+
+.pilgrim-profile .pill{
+  background:#ffffff18;
+  color:#f3d68e;
+}
+
+.pilgrim-info-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.pilgrim-info-row:last-child{
+  border-bottom:0;
+  padding-bottom:0;
+}
+
+.pilgrim-info-row span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.pilgrim-info-row b{
+  text-align:left;
+  font-size:13px;
+  max-width:60%;
+  overflow-wrap:anywhere;
+}
+
+.small-code{
+  font-family:monospace;
+  direction:ltr;
+}
+
+.pilgrim-location-card{
+  border:1px solid #dceae6;
+  position:relative;
+  overflow:hidden;
+}
+
+.pilgrim-location-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.pilgrim-location-head h3{
+  margin:8px 0 0;
+}
+
+.location-status{
+  background:#e8f6ef;
+  color:#168052;
+  padding:5px 9px;
+  border-radius:99px;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.location-coordinates{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:18px;
+}
+
+.location-coordinates > div{
+  background:#f3f7f5;
+  border-radius:15px;
+  padding:12px;
+  text-align:center;
+}
+
+.location-coordinates small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-bottom:4px;
+}
+
+.location-coordinates b{
+  display:block;
+  color:var(--green);
+  font-size:13px;
+  direction:ltr;
+  overflow-wrap:anywhere;
+}
+
+.pilgrim-location-card .primary-btn{
+  width:100%;
+  margin-top:12px;
+}
+
+.pilgrim-settings-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.pilgrim-settings-card:hover{
+  transform:translateY(-2px);
+}
+
+.pilgrim-settings-icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  background:#e9f4f1;
+  color:var(--green);
+  display:grid;
+  place-items:center;
+  font-size:25px;
+  flex:none;
+}
+
+.pilgrim-settings-card h3{
+  margin:5px 0 0;
+}
+
+.pilgrim-settings-card p{
+  margin:3px 0 0;
+  font-size:11px;
+}
+
+
+/* =========================================================
+   نافذة تسجيل دخول الحاج
+   ========================================================= */
+
+#pilgrimLoginModal{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+}
+
+#pilgrimLoginModal.show{
+  display:block;
+}
+
+.pilgrim-login-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(4,31,27,.68);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  overflow:auto;
+}
+
+.pilgrim-login-box{
+  width:min(430px,100%);
+  background:var(--card);
+  border-radius:28px;
+  padding:25px;
+  box-shadow:0 25px 70px #0005;
+  position:relative;
+  animation:pilgrimModalIn .25s ease;
+}
+
+@keyframes pilgrimModalIn{
+  from{
+    opacity:0;
+    transform:translateY(15px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.pilgrim-close{
+  position:absolute;
+  top:14px;
+  left:14px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:12px;
+  background:#eef4f1;
+  color:var(--green);
+  font-size:25px;
+  line-height:1;
+}
+
+.pilgrim-login-icon{
+  width:65px;
+  height:65px;
+  border-radius:20px;
+  background:#e9f4f1;
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  margin-bottom:14px;
+}
+
+.pilgrim-login-box .pill{
+  margin-bottom:5px;
+}
+
+.pilgrim-login-box h2{
+  margin:5px 0;
+  font-size:23px;
+}
+
+.pilgrim-login-box > p{
+  margin:0 0 20px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.8;
+}
+
+.pilgrim-login-box label{
+  display:block;
+  margin:13px 0 6px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.pilgrim-login-box input{
+  width:100%;
+  height:50px;
+  border:1px solid var(--line);
+  outline:0;
+  background:var(--bg);
+  color:var(--text);
+  border-radius:14px;
+  padding:0 14px;
+  transition:.2s;
+}
+
+.pilgrim-login-box input:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(7,92,82,.1);
+}
+
+.pilgrim-login-box .primary-btn{
+  width:100%;
+  margin-top:18px;
+  height:50px;
+}
+
+.pilgrim-login-message{
+  min-height:24px;
+  margin-top:12px;
+  text-align:center;
+  font-size:11px;
+  font-weight:700;
+}
+
+.pilgrim-login-message.success{
+  color:#168052;
+}
+
+.pilgrim-login-message.error{
+  color:#b52339;
+}
+
+
+/* =========================================================
+   تحسين زر تحديث الموقع
+   ========================================================= */
+
+.pilgrim-location-card .muted-note{
+  border-top:1px solid var(--line);
+  padding-top:10px;
+  margin-top:15px;
+}
+
+
+/* =========================================================
+   الوضع الداكن
+   ========================================================= */
+
 body.dark{
   --bg:#0d201d;
   --text:#edf5f2;
@@ -953,7 +1301,8 @@ body.dark .list-item,
 body.dark .card,
 body.dark .quick button,
 body.dark .drawer,
-body.dark .settings-card{
+body.dark .settings-card,
+body.dark .pilgrim-login-box{
   background:#152a27;
 }
 
@@ -992,6 +1341,40 @@ body.dark .theme-switch{
   background:#34514c;
 }
 
+body.dark .pilgrim-settings-icon,
+body.dark .pilgrim-login-icon,
+body.dark .pilgrim-close{
+  background:#203b36;
+}
+
+body.dark .pilgrim-location-card{
+  border-color:#294944;
+}
+
+body.dark .location-coordinates > div{
+  background:#203b36;
+}
+
+body.dark .location-status{
+  background:#183b30;
+  color:#83d6ad;
+}
+
+body.dark .pilgrim-info-row{
+  border-color:#294944;
+}
+
+body.dark .pilgrim-login-box input{
+  background:#0f2421;
+  border-color:#294944;
+  color:#edf5f2;
+}
+
+
+/* =========================================================
+   تحسينات الهاتف
+   ========================================================= */
+
 @media(max-width:600px){
 
   .quick{
@@ -1027,6 +1410,29 @@ body.dark .theme-switch{
     padding:12px;
   }
 
+  .pilgrim-profile{
+    padding:18px;
+  }
+
+  .pilgrim-profile-icon{
+    width:58px;
+    height:58px;
+    font-size:27px;
+  }
+
+  .pilgrim-profile h2{
+    font-size:19px;
+  }
+
+  .location-coordinates{
+    gap:7px;
+  }
+
+  .pilgrim-login-box{
+    padding:22px;
+    border-radius:24px;
+  }
+
 }
 
 @media(max-width:390px){
@@ -1056,6 +1462,28 @@ body.dark .theme-switch{
     font-size:8px;
   }
 
+  .pilgrim-info-row{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .pilgrim-info-row b{
+    max-width:100%;
+    text-align:right;
+  }
+
+}
+
+
+/* =========================================================
+   إمكانية الوصول والحركة
+   ========================================================= */
+
+button:focus-visible,
+input:focus-visible{
+  outline:3px solid rgba(7,92,82,.25);
+  outline-offset:2px;
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -1065,6 +1493,7 @@ body.dark .theme-switch{
   *::after{
     scroll-behavior:auto !important;
     transition:none !important;
+    animation:none !important;
   }
 
-    }
+  }
