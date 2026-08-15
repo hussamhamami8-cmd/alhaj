@@ -19,36 +19,25 @@
 
 <link rel="manifest" href="manifest.json">
 
-<link
-  rel="icon"
-  href="images/logo.svg"
->
+<link rel="icon" href="images/logo.svg">
 
-<link
-  rel="stylesheet"
-  href="style.css"
->
+<link rel="stylesheet" href="style.css">
 
 <title>دليل الحاج</title>
-
-
-<!-- =====================================================
-     حماية شاشة الدخول والتطبيق
-===================================================== -->
 
 <style>
 
 #application[hidden],
-#loginScreen[hidden] {
-  display: none !important;
+#loginScreen[hidden]{
+  display:none !important;
 }
 
-#application {
-  width: 100%;
+#application{
+  width:100%;
 }
 
-#loginScreen {
-  width: 100%;
+#loginScreen{
+  width:100%;
 }
 
 </style>
@@ -60,7 +49,7 @@
 
 
 <!-- =====================================================
-     شاشة تسجيل الدخول
+     شاشة الدخول الرئيسية
 ===================================================== -->
 
 <div
@@ -71,12 +60,10 @@
   <div class="login-card">
 
     <div class="login-logo">
-
       <img
         src="images/logo.svg"
         alt="دليل الحاج"
       >
-
     </div>
 
 
@@ -86,12 +73,12 @@
 
 
     <h1>
-      دليل الحاج
+      مرحبًا بك في دليل الحاج
     </h1>
 
 
     <p class="login-subtitle">
-      أهلاً بك في رفيقك في رحلة الحج
+      رفيقك في رحلة الحج، بين يديك أينما كنت
     </p>
 
 
@@ -100,7 +87,6 @@
       <label for="loginName">
         اسم الحاج
       </label>
-
 
       <input
         id="loginName"
@@ -113,7 +99,6 @@
       <label for="loginCode">
         الشفرة الخاصة
       </label>
-
 
       <input
         id="loginCode"
@@ -129,8 +114,36 @@
         class="primary-btn login-btn"
         type="button"
       >
-        دخول
+        دخول بطاقة الحاج
       </button>
+
+
+      <div
+        class="login-divider"
+        aria-hidden="true"
+      >
+        <span>أو</span>
+      </div>
+
+
+      <button
+        id="guestBtn"
+        class="guest-login-btn"
+        type="button"
+      >
+        <span class="guest-login-icon">
+          👤
+        </span>
+
+        <span>
+          الدخول كزائر
+        </span>
+      </button>
+
+
+      <p class="guest-note">
+        يمكنك تصفح الدليل والأقسام العامة دون حساب.
+      </p>
 
 
       <div
@@ -153,12 +166,11 @@
 
     <div class="login-note">
 
-      <span>
-        🔐
-      </span>
+      <span>🔐</span>
 
       <p>
-        أدخل اسم الحاج والشفرة الخاصة بك كما تم تزويدك بهما.
+        بطاقة الحاج تتيح الوصول إلى بيانات الحاج
+        وموقعه المرتبط بالبطاقة.
       </p>
 
     </div>
@@ -171,7 +183,6 @@
 
 <!-- =====================================================
      التطبيق
-     مخفي افتراضيًا
 ===================================================== -->
 
 <div
@@ -180,10 +191,6 @@
   style="display:none;"
 >
 
-
-<!-- =====================================================
-     الشريط العلوي
-===================================================== -->
 
 <header class="topbar">
 
@@ -233,7 +240,7 @@
 
 
 <!-- =====================================================
-     معلومات الحاج
+     معلومات المستخدم
 ===================================================== -->
 
 <div
@@ -299,12 +306,9 @@
   </section>
 
 
-
   <div class="search">
 
-    <span>
-      ⌕
-    </span>
+    <span>⌕</span>
 
     <input
       id="search"
@@ -316,70 +320,29 @@
   </div>
 
 
-
   <section class="quick">
 
-    <button
-      type="button"
-      data-page="rituals"
-    >
-
-      <strong>
-        🕋
-      </strong>
-
-      <span>
-        مناسك الحج
-      </span>
-
+    <button type="button" data-page="rituals">
+      <strong>🕋</strong>
+      <span>مناسك الحج</span>
     </button>
 
 
-    <button
-      type="button"
-      data-page="places"
-    >
-
-      <strong>
-        🗺️
-      </strong>
-
-      <span>
-        أماكن الحج
-      </span>
-
+    <button type="button" data-page="places">
+      <strong>🗺️</strong>
+      <span>أماكن الحج</span>
     </button>
 
 
-    <button
-      type="button"
-      data-page="duas"
-    >
-
-      <strong>
-        🤲
-      </strong>
-
-      <span>
-        الأدعية
-      </span>
-
+    <button type="button" data-page="duas">
+      <strong>🤲</strong>
+      <span>الأدعية</span>
     </button>
 
 
-    <button
-      type="button"
-      data-page="guide"
-    >
-
-      <strong>
-        ✦
-      </strong>
-
-      <span>
-        إرشادات الحاج
-      </span>
-
+    <button type="button" data-page="guide">
+      <strong>✦</strong>
+      <span>إرشادات الحاج</span>
     </button>
 
   </section>
@@ -474,15 +437,8 @@
     class="active"
     data-page="home"
   >
-
-    <span class="nav-icon">
-      ⌂
-    </span>
-
-    <span>
-      الرئيسية
-    </span>
-
+    <span class="nav-icon">⌂</span>
+    <span>الرئيسية</span>
   </button>
 
 
@@ -490,15 +446,8 @@
     type="button"
     data-page="places"
   >
-
-    <span class="nav-icon">
-      ⌖
-    </span>
-
-    <span>
-      الأماكن
-    </span>
-
+    <span class="nav-icon">⌖</span>
+    <span>الأماكن</span>
   </button>
 
 
@@ -506,15 +455,8 @@
     type="button"
     data-page="rituals"
   >
-
-    <span class="nav-icon">
-      ☰
-    </span>
-
-    <span>
-      المناسك
-    </span>
-
+    <span class="nav-icon">☰</span>
+    <span>المناسك</span>
   </button>
 
 
@@ -522,15 +464,8 @@
     type="button"
     data-page="favorites"
   >
-
-    <span class="nav-icon">
-      ♡
-    </span>
-
-    <span>
-      المفضلة
-    </span>
-
+    <span class="nav-icon">♡</span>
+    <span>المفضلة</span>
   </button>
 
 
@@ -538,15 +473,8 @@
     type="button"
     data-page="settings"
   >
-
-    <span class="nav-icon">
-      ⚙
-    </span>
-
-    <span>
-      الإعدادات
-    </span>
-
+    <span class="nav-icon">⚙</span>
+    <span>الإعدادات</span>
   </button>
 
 </nav>
@@ -599,11 +527,11 @@
     <div>
 
       <b id="drawerUserName">
-        الحاج
+        زائر
       </b>
 
-      <small>
-        حساب الحاج
+      <small id="drawerUserStatus">
+        وضع الزائر
       </small>
 
     </div>
@@ -614,58 +542,37 @@
 
   <div class="drawer-links">
 
-    <button
-      type="button"
-      data-page="home"
-    >
+    <button type="button" data-page="home">
       ⌂ الرئيسية
     </button>
 
 
-    <button
-      type="button"
-      data-page="rituals"
-    >
+    <button type="button" data-page="rituals">
       🕋 مناسك الحج
     </button>
 
 
-    <button
-      type="button"
-      data-page="places"
-    >
+    <button type="button" data-page="places">
       🗺️ أماكن الحج
     </button>
 
 
-    <button
-      type="button"
-      data-page="duas"
-    >
+    <button type="button" data-page="duas">
       🤲 الأدعية والأذكار
     </button>
 
 
-    <button
-      type="button"
-      data-page="guide"
-    >
+    <button type="button" data-page="guide">
       ✦ إرشادات الحاج
     </button>
 
 
-    <button
-      type="button"
-      data-page="favorites"
-    >
+    <button type="button" data-page="favorites">
       ♡ المفضلة
     </button>
 
 
-    <button
-      type="button"
-      data-page="settings"
-    >
+    <button type="button" data-page="settings">
       ⚙ الإعدادات
     </button>
 
@@ -678,7 +585,7 @@
     class="drawer-logout"
     type="button"
   >
-    🚪 تسجيل الخروج
+    🚪 الخروج
   </button>
 
 </div>
@@ -764,7 +671,6 @@
 
 </div>
 
-
 </div>
 
 
@@ -811,6 +717,9 @@ const loginCode =
 const loginBtn =
   document.getElementById("loginBtn");
 
+const guestBtn =
+  document.getElementById("guestBtn");
+
 const loginError =
   document.getElementById("loginError");
 
@@ -826,62 +735,60 @@ const pilgrimNameElement =
 const drawerUserName =
   document.getElementById("drawerUserName");
 
+const drawerUserStatus =
+  document.getElementById("drawerUserStatus");
+
 
 /* =====================================================
-   إظهار التطبيق بعد نجاح الدخول
+   إظهار التطبيق
 ===================================================== */
 
 function showApplication(pilgrim){
 
-  /*
-   * إخفاء شاشة الدخول بالقوة
-   */
-
   loginScreen.hidden = true;
   loginScreen.style.display = "none";
-
-
-  /*
-   * إظهار التطبيق بالقوة
-   */
 
   application.hidden = false;
   application.style.display = "block";
 
 
-  /*
-   * إظهار معلومات الحاج
-   */
-
-  pilgrimBar.hidden = false;
-  pilgrimBar.style.display = "flex";
-
-
   if(pilgrim){
+
+    pilgrimBar.hidden = false;
+    pilgrimBar.style.display = "flex";
 
     const name =
       pilgrim.name || "الحاج";
 
-
     pilgrimNameElement.textContent =
       name;
-
 
     drawerUserName.textContent =
       name;
 
+    drawerUserStatus.textContent =
+      "بطاقة الحاج";
 
     localStorage.setItem(
       "hajjPilgrim",
       JSON.stringify(pilgrim)
     );
 
+    localStorage.removeItem("hajjGuest");
+
+  }else{
+
+    pilgrimBar.hidden = true;
+    pilgrimBar.style.display = "none";
+
+    drawerUserName.textContent =
+      "زائر";
+
+    drawerUserStatus.textContent =
+      "وضع الزائر";
+
   }
 
-
-  /*
-   * تشغيل المسار بعد تحميل app.js
-   */
 
   if(
     typeof handleRoute === "function"
@@ -889,9 +796,7 @@ function showApplication(pilgrim){
 
     setTimeout(
       function(){
-
         handleRoute();
-
       },
       50
     );
@@ -902,7 +807,33 @@ function showApplication(pilgrim){
 
 
 /* =====================================================
-   إظهار شاشة الدخول
+   دخول كزائر
+===================================================== */
+
+function enterAsGuest(){
+
+  localStorage.removeItem(
+    "hajjPilgrim"
+  );
+
+  localStorage.setItem(
+    "hajjGuest",
+    "true"
+  );
+
+  loginName.value = "";
+  loginCode.value = "";
+
+  loginError.hidden = true;
+  loginLoading.hidden = true;
+
+  showApplication(null);
+
+}
+
+
+/* =====================================================
+   شاشة الدخول
 ===================================================== */
 
 function showLoginScreen(){
@@ -910,10 +841,8 @@ function showLoginScreen(){
   application.hidden = true;
   application.style.display = "none";
 
-
   loginScreen.hidden = false;
   loginScreen.style.display = "flex";
-
 
   pilgrimBar.hidden = true;
   pilgrimBar.style.display = "none";
@@ -922,7 +851,7 @@ function showLoginScreen(){
 
 
 /* =====================================================
-   تسجيل الدخول
+   تسجيل دخول بطاقة الحاج
 ===================================================== */
 
 async function login(){
@@ -974,17 +903,12 @@ async function login(){
 
     const { data, error } =
       await supabaseClient
-
         .from("piligrame")
-
         .select(
           "id,user_id,name,code,created_at"
         )
-
         .eq("name", name)
-
         .eq("code", code)
-
         .maybeSingle();
 
 
@@ -1014,34 +938,25 @@ async function login(){
     }
 
 
-    /*
-     * نجاح الدخول
-     */
-
     showApplication(data);
 
   }
-
 
   catch(error){
 
     console.error(error);
 
-
     loginError.textContent =
       error.message ||
       "حدث خطأ أثناء تسجيل الدخول.";
-
 
     loginError.hidden = false;
 
   }
 
-
   finally{
 
     loginBtn.disabled = false;
-
     loginLoading.hidden = true;
 
   }
@@ -1050,7 +965,7 @@ async function login(){
 
 
 /* =====================================================
-   تسجيل الخروج
+   الخروج
 ===================================================== */
 
 function logout(){
@@ -1059,49 +974,43 @@ function logout(){
     "hajjPilgrim"
   );
 
+  localStorage.removeItem(
+    "hajjGuest"
+  );
 
   showLoginScreen();
-
 
   loginName.value = "";
   loginCode.value = "";
 
-
   loginError.textContent = "";
   loginError.hidden = true;
 
-
   loginLoading.hidden = true;
-
 
   location.hash = "";
 
-
   window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    top:0,
+    behavior:"smooth"
   });
-
-
-  setTimeout(
-    function(){
-
-      loginName.focus();
-
-    },
-    100
-  );
 
 }
 
 
 /* =====================================================
-   أزرار الدخول
+   الأزرار
 ===================================================== */
 
 loginBtn.addEventListener(
   "click",
   login
+);
+
+
+guestBtn.addEventListener(
+  "click",
+  enterAsGuest
 );
 
 
@@ -1112,7 +1021,6 @@ loginName.addEventListener(
     if(event.key === "Enter"){
 
       event.preventDefault();
-
       loginCode.focus();
 
     }
@@ -1128,7 +1036,6 @@ loginCode.addEventListener(
     if(event.key === "Enter"){
 
       event.preventDefault();
-
       login();
 
     }
@@ -1136,10 +1043,6 @@ loginCode.addEventListener(
   }
 );
 
-
-/* =====================================================
-   تسجيل الخروج
-===================================================== */
 
 document
   .getElementById("logoutBtn")
@@ -1157,7 +1060,7 @@ document
 
       if(
         confirm(
-          "هل تريد تسجيل الخروج؟"
+          "هل تريد الخروج من التطبيق؟"
         )
       ){
 
@@ -1170,7 +1073,7 @@ document
 
 
 /* =====================================================
-   التحقق من الجلسة المحفوظة
+   تحديد الحالة المحفوظة
 ===================================================== */
 
 (function(){
@@ -1185,6 +1088,12 @@ document
       );
 
 
+    const guest =
+      localStorage.getItem(
+        "hajjGuest"
+      ) === "true";
+
+
     if(
       saved &&
       saved.id &&
@@ -1192,19 +1101,17 @@ document
       saved.code
     ){
 
-      /*
-       * حاج مسجل سابقًا
-       */
-
       showApplication(saved);
 
     }
 
-    else{
+    else if(guest){
 
-      /*
-       * لا يوجد تسجيل دخول
-       */
+      showApplication(null);
+
+    }
+
+    else{
 
       showLoginScreen();
 
@@ -1215,15 +1122,17 @@ document
   catch(error){
 
     console.error(
-      "Saved pilgrim error:",
+      "Saved session error:",
       error
     );
-
 
     localStorage.removeItem(
       "hajjPilgrim"
     );
 
+    localStorage.removeItem(
+      "hajjGuest"
+    );
 
     showLoginScreen();
 
@@ -1234,14 +1143,8 @@ document
 </script>
 
 
-
-<!-- =====================================================
-     التطبيق الأساسي
-===================================================== -->
-
 <script src="app.js"></script>
 
 
 </body>
-
 </html>
