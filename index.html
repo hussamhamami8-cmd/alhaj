@@ -1,75 +1,110 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
 <meta name="theme-color" content="#075c52">
-<meta name="description" content="دليل الحاج - رفيقك في رحلة الحج">
+
+<meta
+  name="description"
+  content="دليل الحاج - رفيقك في رحلة الحج"
+>
+
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="images/logo.svg">
 <link rel="stylesheet" href="style.css">
+
 <title>دليل الحاج</title>
 
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
+<div id="app">
+
 <!-- =====================================================
-     شاشة دخول الحاج
-     ===================================================== -->
+     شاشة تسجيل الدخول
+===================================================== -->
 
 <div id="loginScreen" class="login-screen">
 
   <div class="login-card">
 
-    <img
-      src="images/logo.svg"
-      alt="دليل الحاج"
-      class="login-logo"
-    >
+    <div class="login-logo">
+      <img src="images/logo.svg" alt="دليل الحاج">
+    </div>
+
+    <span class="login-bismillah">
+      بسم الله الرحمن الرحيم
+    </span>
 
     <h1>دليل الحاج</h1>
 
-    <p>
-      مرحبًا بك في رفيقك الرقمي في رحلة الحج
+    <p class="login-subtitle">
+      أهلاً بك في رفيقك في رحلة الحج
     </p>
 
-    <label for="pilgrimName">
-      اسم الحاج
-    </label>
+    <div class="login-form">
 
-    <input
-      id="pilgrimName"
-      type="text"
-      placeholder="اكتب اسم الحاج"
-      autocomplete="name"
-    >
+      <label for="loginName">
+        اسم الحاج
+      </label>
 
-    <label for="pilgrimCode">
-      الرمز الخاص
-    </label>
+      <input
+        id="loginName"
+        type="text"
+        autocomplete="name"
+        placeholder="أدخل اسم الحاج"
+      >
 
-    <input
-      id="pilgrimCode"
-      type="text"
-      placeholder="أدخل الرمز الخاص"
-      autocomplete="off"
-    >
+      <label for="loginCode">
+        الشفرة الخاصة
+      </label>
 
-    <button
-      id="loginBtn"
-      class="primary-btn"
-      type="button"
-    >
-      دخول
-    </button>
+      <input
+        id="loginCode"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="أدخل الشفرة"
+      >
 
-    <p
-      id="loginMessage"
-      class="login-message"
-    ></p>
+      <button
+        id="loginBtn"
+        class="primary-btn login-btn"
+        type="button"
+      >
+        دخول
+      </button>
+
+      <div
+        id="loginLoading"
+        class="login-loading"
+        hidden
+      >
+        جارٍ التحقق...
+      </div>
+
+      <div
+        id="loginError"
+        class="login-error"
+        hidden
+      ></div>
+
+    </div>
+
+    <div class="login-note">
+      <span>🔐</span>
+      <p>
+        أدخل الاسم والشفرة الخاصة بك كما تم تزويدك بهما.
+      </p>
+    </div>
 
   </div>
 
@@ -78,16 +113,16 @@
 
 <!-- =====================================================
      التطبيق
-     ===================================================== -->
+===================================================== -->
 
-<div id="app">
+<div id="application" hidden>
 
 <header class="topbar">
 
   <button
     class="icon-btn"
     id="menuBtn"
-    type="button"
+    aria-label="القائمة"
   >
     ☰
   </button>
@@ -100,8 +135,13 @@
     >
 
     <div>
+
       <b>دليل الحاج</b>
-      <small>رحلتك إلى البيت العتيق</small>
+
+      <small>
+        رحلتك إلى البيت العتيق
+      </small>
+
     </div>
 
   </div>
@@ -109,12 +149,49 @@
   <button
     class="icon-btn"
     id="themeBtn"
-    type="button"
+    aria-label="الوضع الداكن"
   >
     ☾
   </button>
 
 </header>
+
+
+<!-- =====================================================
+     معلومات الحاج
+===================================================== -->
+
+<div
+  id="pilgrimBar"
+  class="pilgrim-bar"
+  hidden
+>
+
+  <div class="pilgrim-avatar">
+    👤
+  </div>
+
+  <div class="pilgrim-info">
+
+    <small>
+      السلام عليكم
+    </small>
+
+    <b id="pilgrimName">
+      الحاج
+    </b>
+
+  </div>
+
+  <button
+    id="logoutBtn"
+    class="logout-btn"
+    type="button"
+  >
+    خروج
+  </button>
+
+</div>
 
 
 <main id="main">
@@ -154,36 +231,47 @@
 
 <section class="quick">
 
-<button
-  data-page="rituals"
-  type="button"
->
+<button data-page="rituals">
+
 <strong>🕋</strong>
-<span>مناسك الحج</span>
+
+<span>
+مناسك الحج
+</span>
+
 </button>
 
-<button
-  data-page="places"
-  type="button"
->
+
+<button data-page="places">
+
 <strong>🗺️</strong>
-<span>أماكن الحج</span>
+
+<span>
+أماكن الحج
+</span>
+
 </button>
 
-<button
-  data-page="duas"
-  type="button"
->
+
+<button data-page="duas">
+
 <strong>🤲</strong>
-<span>الأدعية</span>
+
+<span>
+الأدعية
+</span>
+
 </button>
 
-<button
-  data-page="guide"
-  type="button"
->
+
+<button data-page="guide">
+
 <strong>✦</strong>
-<span>إرشادات الحاج</span>
+
+<span>
+إرشادات الحاج
+</span>
+
 </button>
 
 </section>
@@ -206,7 +294,7 @@
 </div>
 
 <span class="progress">
-6 مراحل
+10 مراحل
 </span>
 
 </div>
@@ -214,12 +302,29 @@
 
 <div class="timeline">
 
-<i>الإحرام</i>
-<i>مكة</i>
-<i>عرفة</i>
-<i>مزدلفة</i>
-<i>منى</i>
-<i>الوداع</i>
+<i>
+الإحرام
+</i>
+
+<i>
+مكة
+</i>
+
+<i>
+عرفة
+</i>
+
+<i>
+مزدلفة
+</i>
+
+<i>
+منى
+</i>
+
+<i>
+الوداع
+</i>
 
 </div>
 
@@ -242,10 +347,10 @@
 
 </div>
 
+
 <button
   class="link"
   data-page="places"
-  type="button"
 >
 عرض الكل
 </button>
@@ -265,49 +370,65 @@
 
 <!-- =====================================================
      القائمة السفلية
-     ===================================================== -->
+===================================================== -->
 
 <nav class="bottom">
 
 <button
   class="active"
   data-page="home"
-  type="button"
 >
+
 ⌂
-<span>الرئيسية</span>
+
+<span>
+الرئيسية
+</span>
+
 </button>
 
-<button
-  data-page="places"
-  type="button"
->
+
+<button data-page="places">
+
 ⌖
-<span>الأماكن</span>
+
+<span>
+الأماكن
+</span>
+
 </button>
 
-<button
-  data-page="rituals"
-  type="button"
->
+
+<button data-page="rituals">
+
 ☰
-<span>المناسك</span>
+
+<span>
+المناسك
+</span>
+
 </button>
 
-<button
-  data-page="favorites"
-  type="button"
->
+
+<button data-page="favorites">
+
 ♡
-<span>المفضلة</span>
+
+<span>
+المفضلة
+</span>
+
 </button>
 
-<button
-  data-page="settings"
-  type="button"
->
+
+<button data-page="settings">
+
 ⚙
-<span>الإعدادات</span>
+
+<span>
+الإعدادات
+</span>
+
 </button>
 
 </nav>
@@ -315,7 +436,7 @@
 
 <!-- =====================================================
      القائمة الجانبية
-     ===================================================== -->
+===================================================== -->
 
 <div
   id="drawer"
@@ -333,47 +454,78 @@
 دليل الحاج
 </b>
 
-<button
-  id="closeDrawer"
-  type="button"
->
+<button id="closeDrawer">
 ×
 </button>
 
 </div>
 
 
+<!-- معلومات المستخدم داخل القائمة -->
+
+<div
+  class="drawer-user"
+  id="drawerUser"
+>
+
+<div class="drawer-user-icon">
+👤
+</div>
+
+<div>
+
+<b id="drawerUserName">
+الحاج
+</b>
+
+<small>
+حساب الحاج
+</small>
+
+</div>
+
+</div>
+
+
 <div class="drawer-links">
 
-<button data-page="home" type="button">
+<button data-page="home">
 ⌂ الرئيسية
 </button>
 
-<button data-page="rituals" type="button">
+<button data-page="rituals">
 🕋 مناسك الحج
 </button>
 
-<button data-page="places" type="button">
+<button data-page="places">
 🗺️ أماكن الحج
 </button>
 
-<button data-page="duas" type="button">
+<button data-page="duas">
 🤲 الأدعية والأذكار
 </button>
 
-<button data-page="guide" type="button">
+<button data-page="guide">
 ✦ إرشادات الحاج
 </button>
 
-<button data-page="favorites" type="button">
+<button data-page="favorites">
 ♡ المفضلة
 </button>
 
-<button data-page="settings" type="button">
+<button data-page="settings">
 ⚙ الإعدادات
 </button>
 
 </div>
+
+
+<button
+  id="drawerLogout"
+  class="drawer-logout"
+>
+🚪 تسجيل الخروج
+</button>
 
 </div>
 
@@ -382,8 +534,8 @@
 
 
 <!-- =====================================================
-     الصفحات الداخلية
-     ===================================================== -->
+     الصفحات
+===================================================== -->
 
 <div
   id="page"
@@ -393,27 +545,27 @@
 
 <header class="page-head">
 
-<button
-  id="backBtn"
-  type="button"
->
+<button id="backBtn">
 ‹
 </button>
 
-<h2 id="pageTitle"></h2>
+<h2 id="pageTitle">
+</h2>
 
 <span></span>
 
 </header>
 
-<div id="pageContent"></div>
+
+<div id="pageContent">
+</div>
 
 </div>
 
 
 <!-- =====================================================
-     تفاصيل المكان / المنسك
-     ===================================================== -->
+     التفاصيل
+===================================================== -->
 
 <div
   id="detail"
@@ -423,34 +575,333 @@
 
 <header class="page-head">
 
-<button
-  id="detailBack"
-  type="button"
->
+<button id="detailBack">
 ‹
 </button>
 
-<h2 id="detailTitle"></h2>
+<h2 id="detailTitle">
+</h2>
 
-<button
-  id="favBtn"
-  type="button"
->
+<button id="favBtn">
 ♡
 </button>
 
 </header>
 
-<div id="detailContent"></div>
+
+<div id="detailContent">
+</div>
+
+</div>
 
 </div>
 
 </div>
 
 
-<!-- التطبيق -->
+<!-- =====================================================
+     Supabase
+===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://tmmspfxkmqsivpxchfkk.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+/* =====================================================
+   عناصر تسجيل الدخول
+===================================================== */
+
+const loginScreen =
+  document.getElementById("loginScreen");
+
+const application =
+  document.getElementById("application");
+
+const loginName =
+  document.getElementById("loginName");
+
+const loginCode =
+  document.getElementById("loginCode");
+
+const loginBtn =
+  document.getElementById("loginBtn");
+
+const loginError =
+  document.getElementById("loginError");
+
+const loginLoading =
+  document.getElementById("loginLoading");
+
+const pilgrimBar =
+  document.getElementById("pilgrimBar");
+
+const pilgrimName =
+  document.getElementById("pilgrimName");
+
+const drawerUserName =
+  document.getElementById("drawerUserName");
+
+
+/* =====================================================
+   إظهار التطبيق
+===================================================== */
+
+function showApplication(pilgrim){
+
+  loginScreen.hidden = true;
+
+  application.hidden = false;
+
+  pilgrimBar.hidden = false;
+
+  if(pilgrim){
+
+    const name =
+      pilgrim.name || "الحاج";
+
+    pilgrimName.textContent =
+      name;
+
+    drawerUserName.textContent =
+      name;
+
+    localStorage.setItem(
+      "hajjPilgrim",
+      JSON.stringify(pilgrim)
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   تسجيل الدخول
+===================================================== */
+
+async function login(){
+
+  const name =
+    loginName.value.trim();
+
+  const code =
+    loginCode.value.trim();
+
+
+  loginError.hidden = true;
+
+  loginError.textContent = "";
+
+
+  if(!name || !code){
+
+    loginError.textContent =
+      "يرجى إدخال اسم الحاج والشفرة.";
+
+    loginError.hidden = false;
+
+    return;
+
+  }
+
+
+  loginBtn.disabled = true;
+
+  loginLoading.hidden = false;
+
+
+  try{
+
+    const { data, error } =
+      await supabaseClient
+        .from("piligrame")
+        .select("id,user_id,name,code,created_at")
+        .eq("name", name)
+        .eq("code", code)
+        .maybeSingle();
+
+
+    if(error){
+
+      console.error(error);
+
+      throw new Error(
+        "تعذر الاتصال بقاعدة البيانات."
+      );
+
+    }
+
+
+    if(!data){
+
+      loginError.textContent =
+        "اسم الحاج أو الشفرة غير صحيحة.";
+
+      loginError.hidden = false;
+
+      return;
+
+    }
+
+
+    showApplication(data);
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    loginError.textContent =
+      error.message ||
+      "حدث خطأ أثناء تسجيل الدخول.";
+
+    loginError.hidden = false;
+
+  }
+
+  finally{
+
+    loginBtn.disabled = false;
+
+    loginLoading.hidden = true;
+
+  }
+
+}
+
+
+/* =====================================================
+   تسجيل الخروج
+===================================================== */
+
+function logout(){
+
+  localStorage.removeItem(
+    "hajjPilgrim"
+  );
+
+  application.hidden = true;
+
+  loginScreen.hidden = false;
+
+  pilgrimBar.hidden = true;
+
+  loginName.value = "";
+
+  loginCode.value = "";
+
+  loginError.hidden = true;
+
+  location.hash = "#home";
+
+}
+
+
+/* =====================================================
+   أزرار الدخول والخروج
+===================================================== */
+
+loginBtn.addEventListener(
+  "click",
+  login
+);
+
+
+loginCode.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+
+      login();
+
+    }
+
+  }
+);
+
+
+document
+  .getElementById("logoutBtn")
+  ?.addEventListener(
+    "click",
+    logout
+  );
+
+
+document
+  .getElementById("drawerLogout")
+  ?.addEventListener(
+    "click",
+    function(){
+
+      if(confirm("هل تريد تسجيل الخروج؟")){
+
+        logout();
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   التحقق من الحاج المحفوظ
+===================================================== */
+
+(function(){
+
+  try{
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(
+          "hajjPilgrim"
+        )
+      );
+
+
+    if(saved && saved.id){
+
+      showApplication(saved);
+
+    }
+
+  }
+
+  catch(error){
+
+    localStorage.removeItem(
+      "hajjPilgrim"
+    );
+
+  }
+
+})();
+
+</script>
+
+
+<!-- التطبيق الأساسي -->
+
 <script src="app.js"></script>
+
+
 </body>
 </html>
