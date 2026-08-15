@@ -1,8 +1,23 @@
 /* =========================================================
-   دليل الحاج — app.js v8
+   دليل الحاج — app.js v9
    متوافق مع index.html الحالي
-   لا يحتوي على نظام دخول مكرر
-   ========================================================= */
+   ---------------------------------------------------------
+   - لا يعيد إنشاء نظام تسجيل الدخول الموجود في index.html
+   - يعتمد على hajjPilgrim المحفوظ من index.html
+   - جلب موقع الحاج من Supabase RPC
+   - الأماكن
+   - المناسك
+   - الأدعية
+   - الإرشادات
+   - المفضلة
+   - تقدم رحلة الحج
+   - الوضع الداكن
+   - البحث
+   - القائمة الجانبية
+   - الرجوع
+   - الخريطة
+   - Service Worker
+========================================================= */
 
 
 /* =========================================================
@@ -17,16 +32,17 @@ const SUPABASE_KEY =
 
 
 /* =========================================================
-   البيانات الأساسية
+   البيانات الأساسية — الأماكن
 ========================================================= */
 
 const places = [
+
   {
-    name:"المسجد الحرام",
-    tag:"مكة المكرمة",
-    image:"images/haram.jpg",
-    text:"أعظم مساجد المسلمين، وفيه الكعبة المشرفة.",
-    details:[
+    name: "المسجد الحرام",
+    tag: "مكة المكرمة",
+    image: "images/haram.jpg",
+    text: "أعظم مساجد المسلمين، وفيه الكعبة المشرفة.",
+    details: [
       "الطواف حول الكعبة سبعة أشواط.",
       "اتبع تعليمات إدارة الحشود والجهات المنظمة.",
       "حافظ على هدوئك ولا تزاحم الآخرين."
@@ -34,11 +50,11 @@ const places = [
   },
 
   {
-    name:"منى",
-    tag:"المشاعر المقدسة",
-    image:"images/mina.jpg",
-    text:"من مشاعر الحج، وفيها المبيت خلال أيام التشريق ورمي الجمرات.",
-    details:[
+    name: "منى",
+    tag: "المشاعر المقدسة",
+    image: "images/mina.jpg",
+    text: "من مشاعر الحج، وفيها المبيت خلال أيام التشريق ورمي الجمرات.",
+    details: [
       "الالتزام بمواعيد التفويج.",
       "اتباع مسارات المجموعة.",
       "الحرص على الراحة وشرب الماء."
@@ -46,11 +62,11 @@ const places = [
   },
 
   {
-    name:"عرفات",
-    tag:"المشاعر المقدسة",
-    image:"images/arafat.jpg",
-    text:"المشعر الذي يقف فيه الحجاج يوم عرفة.",
-    details:[
+    name: "عرفات",
+    tag: "المشاعر المقدسة",
+    image: "images/arafat.jpg",
+    text: "المشعر الذي يقف فيه الحجاج يوم عرفة.",
+    details: [
       "الإكثار من الدعاء والذكر.",
       "عرفة كلها موقف.",
       "اتباع برنامج التفويج المعتمد."
@@ -58,11 +74,11 @@ const places = [
   },
 
   {
-    name:"مزدلفة",
-    tag:"المشاعر المقدسة",
-    image:"images/muzdalifah.jpg",
-    text:"تقع بين عرفات ومنى، وينتقل إليها الحجاج بعد الإفاضة من عرفات.",
-    details:[
+    name: "مزدلفة",
+    tag: "المشاعر المقدسة",
+    image: "images/muzdalifah.jpg",
+    text: "تقع بين عرفات ومنى، وينتقل إليها الحجاج بعد الإفاضة من عرفات.",
+    details: [
       "الالتزام ببرنامج المجموعة.",
       "المحافظة على المتعلقات الشخصية.",
       "الاستعداد للانتقال إلى منى."
@@ -70,11 +86,11 @@ const places = [
   },
 
   {
-    name:"جسر الجمرات",
-    tag:"منى",
-    image:"images/jamarat.jpg",
-    text:"منشأة حديثة لتنظيم رمي الجمرات في منى.",
-    details:[
+    name: "جسر الجمرات",
+    tag: "منى",
+    image: "images/jamarat.jpg",
+    text: "منشأة حديثة لتنظيم رمي الجمرات في منى.",
+    details: [
       "الرمي في أوقاته الشرعية.",
       "اتباع مواعيد التفويج.",
       "تجنب الازدحام والمزاحمة."
@@ -82,27 +98,34 @@ const places = [
   },
 
   {
-    name:"الصفا والمروة",
-    tag:"المسجد الحرام",
-    image:"images/safa-marwa.jpg",
-    text:"المسعى الذي يكون فيه السعي بين الصفا والمروة.",
-    details:[
+    name: "الصفا والمروة",
+    tag: "المسجد الحرام",
+    image: "images/safa-marwa.jpg",
+    text: "المسعى الذي يكون فيه السعي بين الصفا والمروة.",
+    details: [
       "السعي سبعة أشواط.",
       "يبدأ الشوط من الصفا وينتهي بالمروة.",
       "احرص على متابعة عدد الأشواط."
     ]
   }
+
 ];
 
 
+/* =========================================================
+   مراحل رحلة الحج
+========================================================= */
+
 const journey = [
+
   {
-    id:"preparation",
-    title:"الاستعداد للحج",
-    location:"قبل الانطلاق",
-    image:"images/haram.jpg",
-    description:"استعد لرحلتك قبل الانطلاق وتأكد من الوثائق والتصاريح وترتيبات السكن والنقل.",
-    steps:[
+    id: "preparation",
+    title: "الاستعداد للحج",
+    location: "قبل الانطلاق",
+    image: "images/haram.jpg",
+    description:
+      "استعد لرحلتك قبل الانطلاق وتأكد من الوثائق والتصاريح وترتيبات السكن والنقل.",
+    steps: [
       "تأكد من الوثائق والتصاريح المطلوبة.",
       "جهز حقيبتك ومستلزماتك الشخصية.",
       "احتفظ بمعلومات المجموعة ونقطة التجمع.",
@@ -111,12 +134,13 @@ const journey = [
   },
 
   {
-    id:"ihram",
-    title:"الإحرام",
-    location:"الميقات",
-    image:"images/ihram.jpg",
-    description:"يتهيأ الحاج للإحرام ويدخل في النسك بالنية وفق نوع الحج الذي يؤديه.",
-    steps:[
+    id: "ihram",
+    title: "الإحرام",
+    location: "الميقات",
+    image: "images/ihram.jpg",
+    description:
+      "يتهيأ الحاج للإحرام ويدخل في النسك بالنية وفق نوع الحج الذي يؤديه.",
+    steps: [
       "الاغتسال والتنظف لمن تيسر له ذلك.",
       "لبس ملابس الإحرام للرجل حسب الأحكام المعروفة.",
       "النية والدخول في النسك.",
@@ -125,12 +149,13 @@ const journey = [
   },
 
   {
-    id:"mina",
-    title:"يوم التروية",
-    location:"منى",
-    image:"images/mina.jpg",
-    description:"يتوجه الحاج إلى منى وفق النسك والبرنامج التنظيمي المعتمد.",
-    steps:[
+    id: "mina",
+    title: "يوم التروية",
+    location: "منى",
+    image: "images/mina.jpg",
+    description:
+      "يتوجه الحاج إلى منى وفق النسك والبرنامج التنظيمي المعتمد.",
+    steps: [
       "التوجه إلى منى وفق برنامج المجموعة.",
       "الإكثار من التلبية والذكر.",
       "الالتزام بمواعيد التفويج.",
@@ -139,12 +164,13 @@ const journey = [
   },
 
   {
-    id:"arafat",
-    title:"يوم عرفة",
-    location:"عرفات",
-    image:"images/arafat.jpg",
-    description:"الوقوف بعرفة هو ركن الحج الأعظم، ويكثر الحاج فيه من الدعاء والذكر.",
-    steps:[
+    id: "arafat",
+    title: "يوم عرفة",
+    location: "عرفات",
+    image: "images/arafat.jpg",
+    description:
+      "الوقوف بعرفة هو ركن الحج الأعظم، ويكثر الحاج فيه من الدعاء والذكر.",
+    steps: [
       "الوصول إلى عرفات وفق برنامج التفويج.",
       "الوقوف بعرفة.",
       "الإكثار من الدعاء والذكر.",
@@ -153,12 +179,13 @@ const journey = [
   },
 
   {
-    id:"muzdalifah",
-    title:"مزدلفة",
-    location:"مزدلفة",
-    image:"images/muzdalifah.jpg",
-    description:"بعد الإفاضة من عرفات يتوجه الحجاج إلى مزدلفة وفق التنظيم المعتمد.",
-    steps:[
+    id: "muzdalifah",
+    title: "مزدلفة",
+    location: "مزدلفة",
+    image: "images/muzdalifah.jpg",
+    description:
+      "بعد الإفاضة من عرفات يتوجه الحجاج إلى مزدلفة وفق التنظيم المعتمد.",
+    steps: [
       "الإفاضة من عرفات إلى مزدلفة.",
       "الالتزام بتعليمات المجموعة.",
       "المبيت بحسب الأحكام الشرعية والبرنامج.",
@@ -167,12 +194,13 @@ const journey = [
   },
 
   {
-    id:"sacrifice",
-    title:"يوم النحر",
-    location:"منى",
-    image:"images/day-sacrifice.jpg",
-    description:"يوم عظيم من أيام الحج، وله أعمال متعددة تختلف تفاصيل ترتيبها بحسب نوع النسك.",
-    steps:[
+    id: "sacrifice",
+    title: "يوم النحر",
+    location: "منى",
+    image: "images/day-sacrifice.jpg",
+    description:
+      "يوم عظيم من أيام الحج، وله أعمال متعددة تختلف تفاصيل ترتيبها بحسب نوع النسك.",
+    steps: [
       "رمي جمرة العقبة.",
       "الذبح لمن كان عليه هدي.",
       "الحلق أو التقصير.",
@@ -181,12 +209,13 @@ const journey = [
   },
 
   {
-    id:"tawaf",
-    title:"طواف الإفاضة",
-    location:"المسجد الحرام",
-    image:"images/haram.jpg",
-    description:"يطوف الحاج بالبيت سبعة أشواط وفق أحكام الطواف.",
-    steps:[
+    id: "tawaf",
+    title: "طواف الإفاضة",
+    location: "المسجد الحرام",
+    image: "images/haram.jpg",
+    description:
+      "يطوف الحاج بالبيت سبعة أشواط وفق أحكام الطواف.",
+    steps: [
       "الاستعداد للطواف.",
       "الطواف سبعة أشواط.",
       "الدعاء والذكر بما تيسر.",
@@ -195,12 +224,13 @@ const journey = [
   },
 
   {
-    id:"sai",
-    title:"السعي",
-    location:"الصفا والمروة",
-    image:"images/safa-marwa.jpg",
-    description:"السعي بين الصفا والمروة سبعة أشواط لمن كان السعي مطلوبًا منه.",
-    steps:[
+    id: "sai",
+    title: "السعي",
+    location: "الصفا والمروة",
+    image: "images/safa-marwa.jpg",
+    description:
+      "السعي بين الصفا والمروة سبعة أشواط لمن كان السعي مطلوبًا منه.",
+    steps: [
       "البدء من الصفا.",
       "إكمال سبعة أشواط.",
       "ينتهي الشوط السابع عند المروة.",
@@ -209,12 +239,13 @@ const journey = [
   },
 
   {
-    id:"jamarat",
-    title:"أيام التشريق",
-    location:"منى",
-    image:"images/jamarat.jpg",
-    description:"من أعمال أيام التشريق رمي الجمرات وفق الأحكام والمواعيد التنظيمية.",
-    steps:[
+    id: "jamarat",
+    title: "أيام التشريق",
+    location: "منى",
+    image: "images/jamarat.jpg",
+    description:
+      "من أعمال أيام التشريق رمي الجمرات وفق الأحكام والمواعيد التنظيمية.",
+    steps: [
       "الالتزام بمواعيد التفويج.",
       "رمي الجمرات في أوقاتها.",
       "اتباع المسارات المحددة.",
@@ -223,58 +254,81 @@ const journey = [
   },
 
   {
-    id:"farewell",
-    title:"طواف الوداع",
-    location:"المسجد الحرام",
-    image:"images/farewell-tawaf.jpg",
-    description:"يكون طواف الوداع عند إرادة مغادرة مكة وفق أحكامه والاستثناءات الشرعية.",
-    steps:[
+    id: "farewell",
+    title: "طواف الوداع",
+    location: "المسجد الحرام",
+    image: "images/farewell-tawaf.jpg",
+    description:
+      "يكون طواف الوداع عند إرادة مغادرة مكة وفق أحكامه والاستثناءات الشرعية.",
+    steps: [
       "التأكد من موعد المغادرة.",
       "أداء طواف الوداع وفق الحكم الشرعي.",
       "الاستعداد للعودة.",
       "الالتزام بتعليمات النقل والمغادرة."
     ]
   }
+
 ];
 
+
+/* =========================================================
+   الأدعية
+========================================================= */
 
 const duas = [
+
   {
-    title:"التلبية",
-    text:"لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
+    title: "التلبية",
+    text:
+      "لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
   },
+
   {
-    title:"دعاء جامع",
-    text:"ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
+    title: "دعاء جامع",
+    text:
+      "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
   },
+
   {
-    title:"الدعاء والذكر",
-    text:"يكثر الحاج من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
+    title: "الدعاء والذكر",
+    text:
+      "يكثر الحاج من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
   }
+
 ];
 
 
+/* =========================================================
+   الإرشادات
+========================================================= */
+
 const guides = [
+
   [
     "قبل السفر",
     "راجع الوثائق والتصاريح وتعليمات الجهة المنظمة، وجهز احتياجاتك الشخصية."
   ],
+
   [
     "في المشاعر",
     "التزم بمواعيد التفويج ولا تنفصل عن مجموعتك دون معرفة نقطة التجمع."
   ],
+
   [
     "الحرارة",
     "احرص على شرب الماء واستخدام وسائل الوقاية من الشمس وتجنب التعرض الطويل للحرارة."
   ],
+
   [
     "الازدحام",
     "اتبع المسارات ولا تدفع أو تزاحم الآخرين."
   ],
+
   [
     "الطوارئ",
     "عند الحاجة اطلب المساعدة من الجهات المختصة أو مقدم الخدمة."
   ]
+
 ];
 
 
@@ -282,18 +336,20 @@ const guides = [
    التخزين المحلي
 ========================================================= */
 
-function readStorage(key,fallback){
+function readStorage(key, fallback) {
 
-  try{
+  try {
 
     const value =
-      JSON.parse(localStorage.getItem(key));
+      JSON.parse(
+        localStorage.getItem(key)
+      );
 
     return Array.isArray(value)
       ? value
       : fallback;
 
-  }catch{
+  } catch {
 
     return fallback;
 
@@ -303,52 +359,79 @@ function readStorage(key,fallback){
 
 
 let favorites =
-  readStorage("hajjFav",[]);
+  readStorage("hajjFav", []);
+
 
 let completed =
-  readStorage("hajjCompleted",[]);
+  readStorage("hajjCompleted", []);
 
 
-let currentPilgrim =
-  JSON.parse(
-    localStorage.getItem("hajjPilgrim") || "null"
-  );
+let currentPilgrim = null;
 
 let currentLocation = null;
 
 
 /* =========================================================
-   DOM
+   أدوات DOM
 ========================================================= */
 
-const $ = s =>
-  document.querySelector(s);
+const $ = selector =>
+  document.querySelector(selector);
 
-const $$ = s =>
-  document.querySelectorAll(s);
+
+const $$ = selector =>
+  document.querySelectorAll(selector);
 
 
 /* =========================================================
-   الحماية
+   حماية النصوص
 ========================================================= */
 
-function escapeHTML(value){
+function escapeHTML(value) {
 
   return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
 
 /* =========================================================
-   الحفظ
+   مزامنة بيانات الحاج
+   مصدرها الأساسي index.html
 ========================================================= */
 
-function saveData(){
+function syncPilgrim() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "hajjPilgrim"
+      );
+
+    currentPilgrim =
+      saved
+        ? JSON.parse(saved)
+        : null;
+
+  } catch {
+
+    currentPilgrim = null;
+
+  }
+
+}
+
+
+/* =========================================================
+   حفظ البيانات
+========================================================= */
+
+function saveData() {
 
   localStorage.setItem(
     "hajjFav",
@@ -367,22 +450,31 @@ function saveData(){
    تقدم الرحلة
 ========================================================= */
 
-function progressData(){
+function progressData() {
 
   const done =
     journey.filter(
-      x => completed.includes(x.id)
+      item =>
+        completed.includes(item.id)
     ).length;
+
+
+  const total =
+    journey.length;
+
+
+  const percent =
+    total
+      ? Math.round(
+          done / total * 100
+        )
+      : 0;
+
 
   return {
     done,
-    total:journey.length,
-    percent:
-      journey.length
-      ? Math.round(
-          done / journey.length * 100
-        )
-      : 0
+    total,
+    percent
   };
 
 }
@@ -392,31 +484,47 @@ function progressData(){
    Supabase REST
 ========================================================= */
 
-async function supabaseRPC(functionName,body){
+async function supabaseRPC(
+  functionName,
+  body = {}
+) {
 
   const response =
     await fetch(
       `${SUPABASE_URL}/rest/v1/rpc/${functionName}`,
       {
-        method:"POST",
-        headers:{
-          "apikey":SUPABASE_KEY,
-          "Authorization":`Bearer ${SUPABASE_KEY}`,
-          "Content-Type":"application/json"
+        method: "POST",
+
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization":
+            `Bearer ${SUPABASE_KEY}`,
+          "Content-Type":
+            "application/json"
         },
-        body:JSON.stringify(body)
+
+        body:
+          JSON.stringify(body)
       }
     );
 
+
   let data = null;
 
-  try{
-    data = await response.json();
-  }catch{
+
+  try {
+
+    data =
+      await response.json();
+
+  } catch {
+
     data = null;
+
   }
 
-  if(!response.ok){
+
+  if (!response.ok) {
 
     console.error(
       "Supabase RPC Error:",
@@ -427,10 +535,11 @@ async function supabaseRPC(functionName,body){
     throw new Error(
       data?.message ||
       data?.error_description ||
-      "تعذر الاتصال بقاعدة البيانات"
+      "تعذر الاتصال بقاعدة البيانات."
     );
 
   }
+
 
   return data;
 
@@ -438,51 +547,62 @@ async function supabaseRPC(functionName,body){
 
 
 /* =========================================================
-   موقع الحاج
+   تحميل موقع الحاج
 ========================================================= */
 
-async function loadPilgrimLocation(){
+async function loadPilgrimLocation() {
 
-  if(
+  syncPilgrim();
+
+
+  if (
     !currentPilgrim?.name ||
     !currentPilgrim?.code
-  ){
+  ) {
 
     currentLocation = null;
+
     return null;
 
   }
 
-  try{
+
+  try {
 
     const result =
       await supabaseRPC(
         "get_pilgrim_locations",
         {
-          p_name:currentPilgrim.name,
-          p_code:currentPilgrim.code
+          p_name:
+            currentPilgrim.name,
+
+          p_code:
+            currentPilgrim.code
         }
       );
 
-    if(
+
+    if (
       Array.isArray(result) &&
-      result.length
-    ){
+      result.length > 0
+    ) {
 
-      currentLocation = result[0];
+      currentLocation =
+        result[0];
 
-    }else{
+    } else {
 
       currentLocation = null;
 
     }
 
+
     return currentLocation;
 
-  }catch(error){
+  } catch (error) {
 
     console.error(
-      "Location error:",
+      "Pilgrim location error:",
       error
     );
 
@@ -496,24 +616,94 @@ async function loadPilgrimLocation(){
 
 
 /* =========================================================
-   فتح الموقع
+   تحديث واجهة الحاج
 ========================================================= */
 
-function openPilgrimMap(){
+function updatePilgrimUI() {
 
-  if(!currentLocation)
+  syncPilgrim();
+
+
+  const name =
+    currentPilgrim?.name ||
+    "الحاج";
+
+
+  const barName =
+    $("#pilgrimName");
+
+
+  if (barName) {
+
+    barName.textContent =
+      name;
+
+  }
+
+
+  const drawerName =
+    $("#drawerUserName");
+
+
+  if (drawerName) {
+
+    drawerName.textContent =
+      currentPilgrim
+        ? currentPilgrim.name
+        : "زائر";
+
+  }
+
+
+  const drawerStatus =
+    $("#drawerUserStatus");
+
+
+  if (drawerStatus) {
+
+    drawerStatus.textContent =
+      currentPilgrim
+        ? "بطاقة الحاج"
+        : "وضع الزائر";
+
+  }
+
+}
+
+
+/* =========================================================
+   فتح الموقع على الخريطة
+========================================================= */
+
+function openPilgrimMap() {
+
+  if (!currentLocation) {
+
+    alert(
+      "لا يوجد موقع متاح حاليًا."
+    );
+
     return;
 
+  }
+
+
   const lat =
-    Number(currentLocation.latitude);
+    Number(
+      currentLocation.latitude
+    );
+
 
   const lng =
-    Number(currentLocation.longitude);
+    Number(
+      currentLocation.longitude
+    );
 
-  if(
+
+  if (
     !Number.isFinite(lat) ||
     !Number.isFinite(lng)
-  ){
+  ) {
 
     alert(
       "إحداثيات الموقع غير متوفرة حاليًا."
@@ -523,8 +713,10 @@ function openPilgrimMap(){
 
   }
 
+
   const url =
     `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+
 
   window.open(
     url,
@@ -539,22 +731,26 @@ function openPilgrimMap(){
    التاريخ
 ========================================================= */
 
-function formatDate(value){
+function formatDate(value) {
 
-  try{
+  if (!value)
+    return "غير معروف";
+
+
+  try {
 
     return new Date(value)
       .toLocaleString(
         "ar-SA",
         {
-          dateStyle:"medium",
-          timeStyle:"short"
+          dateStyle: "medium",
+          timeStyle: "short"
         }
       );
 
-  }catch{
+  } catch {
 
-    return value;
+    return String(value);
 
   }
 
@@ -562,86 +758,109 @@ function formatDate(value){
 
 
 /* =========================================================
-   الرئيسية
+   الصفحة الرئيسية
 ========================================================= */
 
-function home(push=false){
+function home(push = false) {
 
-  if(push){
+  if (push) {
 
     history.pushState(
-      {page:"home"},
+      {
+        page: "home"
+      },
       "",
       "#home"
     );
 
   }
 
+
   const main =
     $("#main");
+
 
   const page =
     $("#page");
 
+
   const detail =
     $("#detail");
 
-  if(main){
+
+  if (main) {
 
     main.style.display =
       "block";
 
   }
 
-  if(page){
 
-    page.hidden =
-      true;
+  if (page) {
+
+    page.hidden = true;
+
+  }
+
+
+  if (detail) {
+
+    detail.hidden = true;
 
   }
 
-  if(detail){
-
-    detail.hidden =
-      true;
-
-  }
 
   updateBottomNav("home");
 
+
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top: 0,
+    behavior: "smooth"
   });
 
 }
 
 
 /* =========================================================
-   البطاقات الرئيسية
+   بطاقات الأماكن في الرئيسية
 ========================================================= */
 
-function cards(list=places){
+function cards(list = places) {
 
   const element =
     $("#placeGrid");
 
-  if(!element)
+
+  if (!element)
     return;
 
-  if(!list.length){
+
+  if (!list.length) {
 
     element.innerHTML = `
+
       <div class="info empty-state">
-        <div class="empty-icon">⌕</div>
-        <h3>لا توجد نتائج</h3>
-        <p>جرّب البحث باسم المكان أو المشعر.</p>
+
+        <div class="empty-icon">
+          ⌕
+        </div>
+
+        <h3>
+          لا توجد نتائج
+        </h3>
+
+        <p>
+          جرّب البحث باسم المكان أو المشعر.
+        </p>
+
       </div>
+
     `;
 
     return;
 
   }
+
 
   element.innerHTML =
     list.map(place => {
@@ -649,10 +868,13 @@ function cards(list=places){
       const index =
         places.indexOf(place);
 
+
       const fav =
         favorites.includes(index);
 
+
       return `
+
         <article
           class="card"
           onclick="openPlace(${index})"
@@ -661,21 +883,24 @@ function cards(list=places){
           <div class="card-image-wrap">
 
             <img
-              src="${place.image}"
+              src="${escapeHTML(place.image)}"
               alt="${escapeHTML(place.name)}"
               loading="lazy"
               onerror="this.onerror=null;this.src='images/placeholder.svg'"
             >
 
+
             <button
               class="card-fav ${fav ? "active" : ""}"
               aria-label="المفضلة"
+              type="button"
               onclick="event.stopPropagation();toggleFavorite(${index})"
             >
               ${fav ? "♥" : "♡"}
             </button>
 
           </div>
+
 
           <div class="card-body">
 
@@ -698,6 +923,7 @@ function cards(list=places){
           </div>
 
         </article>
+
       `;
 
     }).join("");
@@ -706,66 +932,89 @@ function cards(list=places){
 
 
 /* =========================================================
-   الصفحات الداخلية
+   عرض صفحة داخلية
 ========================================================= */
 
-function showPage(name,push=true){
+function showPage(
+  name,
+  push = true
+) {
 
-  if(push){
+  if (push) {
 
     history.pushState(
       {
-        type:"page",
-        name:name
+        type: "page",
+        name
       },
       "",
-      "#"+name
+      "#" + name
     );
 
   }
 
+
   const main =
     $("#main");
+
 
   const page =
     $("#page");
 
+
   const detail =
     $("#detail");
 
-  if(main)
+
+  if (main)
     main.style.display = "none";
 
-  if(detail)
+
+  if (detail)
     detail.hidden = true;
 
-  if(page)
+
+  if (page)
     page.hidden = false;
 
 
   const titles = {
-    places:"أماكن الحج",
-    rituals:"رحلة الحج",
-    duas:"الأدعية والأذكار",
-    guide:"إرشادات الحاج",
-    favorites:"المفضلة",
-    settings:"الإعدادات",
-    pilgrim:"بطاقة الحاج"
+
+    places: "أماكن الحج",
+
+    rituals: "رحلة الحج",
+
+    duas: "الأدعية والأذكار",
+
+    guide: "إرشادات الحاج",
+
+    favorites: "المفضلة",
+
+    settings: "الإعدادات",
+
+    pilgrim: "بطاقة الحاج"
+
   };
 
 
   const title =
     $("#pageTitle");
 
-  if(title)
+
+  if (title) {
+
     title.textContent =
-      titles[name] || "دليل الحاج";
+      titles[name] ||
+      "دليل الحاج";
+
+  }
 
 
   const content =
     $("#pageContent");
 
-  if(!content)
+
+  if (!content)
     return;
 
 
@@ -776,7 +1025,7 @@ function showPage(name,push=true){
      الأماكن
   ===================================================== */
 
-  if(name === "places"){
+  if (name === "places") {
 
     html = `
 
@@ -796,33 +1045,36 @@ function showPage(name,push=true){
 
       </div>
 
+
       <div class="list-stack">
 
-        ${places.map((p,i) => `
+        ${places.map((place, index) => `
 
           <div
             class="list-item clickable"
-            onclick="openPlace(${i})"
+            onclick="openPlace(${index})"
           >
 
             <img
-              src="${p.image}"
-              alt="${escapeHTML(p.name)}"
+              src="${escapeHTML(place.image)}"
+              alt="${escapeHTML(place.name)}"
               loading="lazy"
               onerror="this.onerror=null;this.src='images/placeholder.svg'"
             >
 
+
             <div>
 
               <b>
-                ${escapeHTML(p.name)}
+                ${escapeHTML(place.name)}
               </b>
 
               <small>
-                ${escapeHTML(p.tag)}
+                ${escapeHTML(place.tag)}
               </small>
 
             </div>
+
 
             <span>
               ‹
@@ -843,10 +1095,11 @@ function showPage(name,push=true){
      المناسك
   ===================================================== */
 
-  else if(name === "rituals"){
+  else if (name === "rituals") {
 
     const p =
       progressData();
+
 
     html = `
 
@@ -868,6 +1121,7 @@ function showPage(name,push=true){
 
         </div>
 
+
         <div
           class="progress-ring"
           style="--progress:${p.percent}%"
@@ -881,30 +1135,36 @@ function showPage(name,push=true){
 
       </div>
 
+
       <div class="journey-list">
 
-        ${journey.map((item,i) => {
+        ${journey.map((item, index) => {
 
           const done =
-            completed.includes(item.id);
+            completed.includes(
+              item.id
+            );
+
 
           return `
 
             <div
               class="journey-row ${done ? "done" : ""}"
-              onclick="openJourney(${i})"
+              onclick="openJourney(${index})"
             >
 
               <div class="journey-num">
-                ${done ? "✓" : i+1}
+                ${done ? "✓" : index + 1}
               </div>
 
+
               <img
-                src="${item.image}"
+                src="${escapeHTML(item.image)}"
                 alt="${escapeHTML(item.title)}"
                 loading="lazy"
                 onerror="this.onerror=null;this.src='images/placeholder.svg'"
               >
+
 
               <div class="journey-text">
 
@@ -917,6 +1177,7 @@ function showPage(name,push=true){
                 </small>
 
               </div>
+
 
               <span>
                 ›
@@ -939,7 +1200,7 @@ function showPage(name,push=true){
      الأدعية
   ===================================================== */
 
-  else if(name === "duas"){
+  else if (name === "duas") {
 
     html = `
 
@@ -959,35 +1220,37 @@ function showPage(name,push=true){
 
       </div>
 
-    ` +
+    `;
 
-    duas.map((item,i) => `
 
-      <div class="info dua-card">
+    html +=
+      duas.map((item, index) => `
 
-        <div class="dua-number">
-          ${i+1}
+        <div class="info dua-card">
+
+          <div class="dua-number">
+            ${index + 1}
+          </div>
+
+          <div>
+
+            <span class="pill">
+              دعاء
+            </span>
+
+            <h3>
+              ${escapeHTML(item.title)}
+            </h3>
+
+            <p>
+              ${escapeHTML(item.text)}
+            </p>
+
+          </div>
+
         </div>
 
-        <div>
-
-          <span class="pill">
-            دعاء
-          </span>
-
-          <h3>
-            ${escapeHTML(item.title)}
-          </h3>
-
-          <p>
-            ${escapeHTML(item.text)}
-          </p>
-
-        </div>
-
-      </div>
-
-    `).join("");
+      `).join("");
 
   }
 
@@ -996,7 +1259,7 @@ function showPage(name,push=true){
      الإرشادات
   ===================================================== */
 
-  else if(name === "guide"){
+  else if (name === "guide") {
 
     html = `
 
@@ -1016,31 +1279,33 @@ function showPage(name,push=true){
 
       </div>
 
-    ` +
+    `;
 
-    guides.map(item => `
 
-      <div class="info guide-card">
+    html +=
+      guides.map(item => `
 
-        <div class="guide-icon">
-          ✓
+        <div class="info guide-card">
+
+          <div class="guide-icon">
+            ✓
+          </div>
+
+          <div>
+
+            <h3>
+              ${escapeHTML(item[0])}
+            </h3>
+
+            <p>
+              ${escapeHTML(item[1])}
+            </p>
+
+          </div>
+
         </div>
 
-        <div>
-
-          <h3>
-            ${escapeHTML(item[0])}
-          </h3>
-
-          <p>
-            ${escapeHTML(item[1])}
-          </p>
-
-        </div>
-
-      </div>
-
-    `).join("");
+      `).join("");
 
   }
 
@@ -1049,15 +1314,16 @@ function showPage(name,push=true){
      المفضلة
   ===================================================== */
 
-  else if(name === "favorites"){
+  else if (name === "favorites") {
 
     const valid =
       favorites.filter(
-        i => places[i]
+        index =>
+          places[index]
       );
 
 
-    if(valid.length){
+    if (valid.length) {
 
       html = `
 
@@ -1077,46 +1343,51 @@ function showPage(name,push=true){
 
         </div>
 
-      ` +
+      `;
 
-      valid.map(i => `
 
-        <div
-          class="list-item clickable"
-          onclick="openPlace(${i})"
-        >
+      html +=
+        valid.map(index => `
 
-          <img
-            src="${places[i].image}"
-            alt="${escapeHTML(places[i].name)}"
-            loading="lazy"
-            onerror="this.onerror=null;this.src='images/placeholder.svg'"
+          <div
+            class="list-item clickable"
+            onclick="openPlace(${index})"
           >
 
-          <div>
+            <img
+              src="${escapeHTML(places[index].image)}"
+              alt="${escapeHTML(places[index].name)}"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='images/placeholder.svg'"
+            >
 
-            <b>
-              ${escapeHTML(places[i].name)}
-            </b>
 
-            <small>
-              ${escapeHTML(places[i].tag)}
-            </small>
+            <div>
+
+              <b>
+                ${escapeHTML(places[index].name)}
+              </b>
+
+              <small>
+                ${escapeHTML(places[index].tag)}
+              </small>
+
+            </div>
+
+
+            <button
+              class="mini-remove"
+              type="button"
+              onclick="event.stopPropagation();toggleFavorite(${index})"
+            >
+              ♥
+            </button>
 
           </div>
 
-          <button
-            class="mini-remove"
-            onclick="event.stopPropagation();toggleFavorite(${i})"
-          >
-            ♥
-          </button>
+        `).join("");
 
-        </div>
-
-      `).join("");
-
-    }else{
+    } else {
 
       html = `
 
@@ -1136,6 +1407,7 @@ function showPage(name,push=true){
 
           <button
             class="primary-btn"
+            type="button"
             onclick="showPage('places')"
           >
             استكشاف الأماكن
@@ -1154,7 +1426,7 @@ function showPage(name,push=true){
      بطاقة الحاج
   ===================================================== */
 
-  else if(name === "pilgrim"){
+  else if (name === "pilgrim") {
 
     html =
       renderPilgrimPage();
@@ -1166,10 +1438,13 @@ function showPage(name,push=true){
      الإعدادات
   ===================================================== */
 
-  else if(name === "settings"){
+  else if (name === "settings") {
 
     const dark =
-      document.body.classList.contains("dark");
+      document.body.classList.contains(
+        "dark"
+      );
+
 
     const p =
       progressData();
@@ -1186,26 +1461,35 @@ function showPage(name,push=true){
           👤
         </div>
 
+
         <div>
 
           <span class="pill">
             بطاقة الحاج
           </span>
 
+
           <h3 class="pilgrim-name">
+
             ${
               currentPilgrim
-              ? escapeHTML(currentPilgrim.name)
-              : "تسجيل دخول الحاج"
+                ? escapeHTML(
+                    currentPilgrim.name
+                  )
+                : "تسجيل دخول الحاج"
             }
+
           </h3>
 
+
           <p>
+
             ${
               currentPilgrim
-              ? "عرض بيانات الحاج والموقع"
-              : "افتح بطاقة الحاج من شاشة الدخول"
+                ? "عرض بيانات الحاج والموقع"
+                : "افتح بطاقة الحاج من شاشة الدخول"
             }
+
           </p>
 
         </div>
@@ -1227,8 +1511,10 @@ function showPage(name,push=true){
 
         </div>
 
+
         <button
           class="theme-switch ${dark ? "on" : ""}"
+          type="button"
           onclick="toggleTheme()"
         >
 
@@ -1250,8 +1536,10 @@ function showPage(name,push=true){
           مراحل (${p.percent}%).
         </p>
 
+
         <button
           class="danger-btn"
+          type="button"
           onclick="resetProgress()"
         >
           إعادة ضبط تقدم الرحلة
@@ -1285,11 +1573,13 @@ function showPage(name,push=true){
   content.innerHTML =
     html;
 
+
   updateBottomNav(name);
 
+
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top: 0,
+    behavior: "smooth"
   });
 
 }
@@ -1299,9 +1589,12 @@ function showPage(name,push=true){
    بطاقة الحاج
 ========================================================= */
 
-function renderPilgrimPage(){
+function renderPilgrimPage() {
 
-  if(!currentPilgrim){
+  syncPilgrim();
+
+
+  if (!currentPilgrim) {
 
     return `
 
@@ -1320,7 +1613,7 @@ function renderPilgrimPage(){
         </h3>
 
         <p>
-          يمكنك استخدام جميع ميزات دليل الحاج،
+          يمكنك استخدام ميزات دليل الحاج
           واستكشاف الأماكن والمناسك والأدعية والإرشادات.
         </p>
 
@@ -1339,20 +1632,26 @@ function renderPilgrimPage(){
   let locationHTML = "";
 
 
-  if(currentLocation){
+  if (currentLocation) {
 
     const updated =
       currentLocation.updated_at
-      ? formatDate(currentLocation.updated_at)
-      : "غير معروف";
+        ? formatDate(
+            currentLocation.updated_at
+          )
+        : "غير معروف";
 
 
     const hasCoordinates =
       Number.isFinite(
-        Number(currentLocation.latitude)
+        Number(
+          currentLocation.latitude
+        )
       ) &&
       Number.isFinite(
-        Number(currentLocation.longitude)
+        Number(
+          currentLocation.longitude
+        )
       );
 
 
@@ -1377,6 +1676,7 @@ function renderPilgrimPage(){
 
           </div>
 
+
           <span class="location-status">
             ● متاح
           </span>
@@ -1393,7 +1693,10 @@ function renderPilgrimPage(){
             </small>
 
             <b>
-              ${currentLocation.latitude ?? "—"}
+              ${escapeHTML(
+                currentLocation.latitude ??
+                "—"
+              )}
             </b>
 
           </div>
@@ -1406,7 +1709,10 @@ function renderPilgrimPage(){
             </small>
 
             <b>
-              ${currentLocation.longitude ?? "—"}
+              ${escapeHTML(
+                currentLocation.longitude ??
+                "—"
+              )}
             </b>
 
           </div>
@@ -1415,31 +1721,28 @@ function renderPilgrimPage(){
 
 
         <p class="muted-note">
-          آخر تحديث: ${updated}
+          آخر تحديث: ${escapeHTML(updated)}
         </p>
 
 
         ${
           hasCoordinates
-          ?
-
-          `
-            <button
-              class="primary-btn"
-              onclick="openPilgrimMap()"
-            >
-              🗺️ فتح الموقع على الخريطة
-            </button>
-          `
-
-          :
-
-          ""
+            ? `
+              <button
+                class="primary-btn"
+                type="button"
+                onclick="openPilgrimMap()"
+              >
+                🗺️ فتح الموقع على الخريطة
+              </button>
+            `
+            : ""
         }
 
 
         <button
           class="primary-btn"
+          type="button"
           onclick="refreshPilgrimLocation()"
         >
           🔄 تحديث الموقع
@@ -1449,7 +1752,7 @@ function renderPilgrimPage(){
 
     `;
 
-  }else{
+  } else {
 
     locationHTML = `
 
@@ -1467,8 +1770,10 @@ function renderPilgrimPage(){
           لم يتم العثور على موقع مشارك لهذا الحاج حتى الآن.
         </p>
 
+
         <button
           class="primary-btn"
+          type="button"
           onclick="refreshPilgrimLocation()"
         >
           🔄 تحديث البيانات
@@ -1489,15 +1794,20 @@ function renderPilgrimPage(){
         👤
       </div>
 
+
       <div>
 
         <span class="pill">
           بطاقة الحاج
         </span>
 
+
         <h2>
-          ${escapeHTML(currentPilgrim.name)}
+          ${escapeHTML(
+            currentPilgrim.name
+          )}
         </h2>
+
 
         <p>
           تم التحقق من بيانات الحاج.
@@ -1522,7 +1832,9 @@ function renderPilgrimPage(){
         </span>
 
         <b>
-          ${escapeHTML(currentPilgrim.name)}
+          ${escapeHTML(
+            currentPilgrim.name
+          )}
         </b>
 
       </div>
@@ -1535,7 +1847,10 @@ function renderPilgrimPage(){
         </span>
 
         <b class="small-code">
-          ${escapeHTML(currentPilgrim.user_id)}
+          ${escapeHTML(
+            currentPilgrim.user_id ||
+            "—"
+          )}
         </b>
 
       </div>
@@ -1568,9 +1883,12 @@ function renderPilgrimPage(){
    تحديث موقع الحاج
 ========================================================= */
 
-async function refreshPilgrimLocation(){
+async function refreshPilgrimLocation() {
 
-  if(!currentPilgrim){
+  syncPilgrim();
+
+
+  if (!currentPilgrim) {
 
     alert(
       "يجب تسجيل الدخول أولًا."
@@ -1580,7 +1898,9 @@ async function refreshPilgrimLocation(){
 
   }
 
+
   await loadPilgrimLocation();
+
 
   showPage(
     "pilgrim",
@@ -1594,24 +1914,28 @@ async function refreshPilgrimLocation(){
    فتح المكان
 ========================================================= */
 
-function openPlace(index,push=true){
+function openPlace(
+  index,
+  push = true
+) {
 
   const place =
     places[index];
 
-  if(!place)
+
+  if (!place)
     return;
 
 
-  if(push){
+  if (push) {
 
     history.pushState(
       {
-        type:"place",
-        index:index
+        type: "place",
+        index
       },
       "",
-      "#place-"+index
+      "#place-" + index
     );
 
   }
@@ -1620,40 +1944,49 @@ function openPlace(index,push=true){
   const main =
     $("#main");
 
+
   const page =
     $("#page");
+
 
   const detail =
     $("#detail");
 
 
-  if(main)
+  if (main)
     main.style.display = "none";
 
-  if(page)
+
+  if (page)
     page.hidden = true;
 
-  if(detail)
+
+  if (detail)
     detail.hidden = false;
 
 
   const title =
     $("#detailTitle");
 
-  if(title)
+
+  if (title) {
+
     title.textContent =
       place.name;
+
+  }
 
 
   const favBtn =
     $("#favBtn");
 
-  if(favBtn){
+
+  if (favBtn) {
 
     favBtn.textContent =
       favorites.includes(index)
-      ? "♥"
-      : "♡";
+        ? "♥"
+        : "♡";
 
   }
 
@@ -1661,7 +1994,8 @@ function openPlace(index,push=true){
   const content =
     $("#detailContent");
 
-  if(!content)
+
+  if (!content)
     return;
 
 
@@ -1669,7 +2003,7 @@ function openPlace(index,push=true){
 
     <img
       class="detail-hero"
-      src="${place.image}"
+      src="${escapeHTML(place.image)}"
       alt="${escapeHTML(place.name)}"
       onerror="this.onerror=null;this.src='images/placeholder.svg'"
     >
@@ -1681,23 +2015,27 @@ function openPlace(index,push=true){
         ${escapeHTML(place.tag)}
       </span>
 
+
       <h2>
         ${escapeHTML(place.name)}
       </h2>
+
 
       <p>
         ${escapeHTML(place.text)}
       </p>
 
+
       <h3>
         معلومات مهمة
       </h3>
 
+
       <ul>
 
-        ${place.details.map(x => `
+        ${place.details.map(detail => `
           <li>
-            ${escapeHTML(x)}
+            ${escapeHTML(detail)}
           </li>
         `).join("")}
 
@@ -1706,13 +2044,14 @@ function openPlace(index,push=true){
 
       <button
         class="primary-btn"
+        type="button"
         onclick="toggleFavorite(${index})"
       >
 
         ${
           favorites.includes(index)
-          ? "♥ إزالة من المفضلة"
-          : "♡ إضافة إلى المفضلة"
+            ? "♥ إزالة من المفضلة"
+            : "♡ إضافة إلى المفضلة"
         }
 
       </button>
@@ -1723,8 +2062,8 @@ function openPlace(index,push=true){
 
 
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top: 0,
+    behavior: "smooth"
   });
 
 }
@@ -1734,24 +2073,28 @@ function openPlace(index,push=true){
    فتح مرحلة
 ========================================================= */
 
-function openJourney(index,push=true){
+function openJourney(
+  index,
+  push = true
+) {
 
   const item =
     journey[index];
 
-  if(!item)
+
+  if (!item)
     return;
 
 
-  if(push){
+  if (push) {
 
     history.pushState(
       {
-        type:"journey",
-        index:index
+        type: "journey",
+        index
       },
       "",
-      "#journey-"+index
+      "#journey-" + index
     );
 
   }
@@ -1760,39 +2103,50 @@ function openJourney(index,push=true){
   const main =
     $("#main");
 
+
   const page =
     $("#page");
+
 
   const detail =
     $("#detail");
 
 
-  if(main)
+  if (main)
     main.style.display = "none";
 
-  if(page)
+
+  if (page)
     page.hidden = true;
 
-  if(detail)
+
+  if (detail)
     detail.hidden = false;
 
 
   const title =
     $("#detailTitle");
 
-  if(title)
+
+  if (title) {
+
     title.textContent =
       item.title;
 
+  }
+
 
   const done =
-    completed.includes(item.id);
+    completed.includes(
+      item.id
+    );
 
 
   const favBtn =
     $("#favBtn");
 
-  if(favBtn){
+
+  if (favBtn) {
 
     favBtn.textContent =
       done ? "✓" : "○";
@@ -1803,7 +2157,8 @@ function openJourney(index,push=true){
   const content =
     $("#detailContent");
 
-  if(!content)
+
+  if (!content)
     return;
 
 
@@ -1811,7 +2166,7 @@ function openJourney(index,push=true){
 
     <img
       class="detail-hero"
-      src="${item.image}"
+      src="${escapeHTML(item.image)}"
       alt="${escapeHTML(item.title)}"
       onerror="this.onerror=null;this.src='images/placeholder.svg'"
     >
@@ -1823,9 +2178,11 @@ function openJourney(index,push=true){
         ${escapeHTML(item.location)}
       </span>
 
+
       <h2>
         ${escapeHTML(item.title)}
       </h2>
+
 
       <p>
         ${escapeHTML(item.description)}
@@ -1840,11 +2197,12 @@ function openJourney(index,push=true){
         ماذا تفعل؟
       </h3>
 
+
       <ol class="steps">
 
-        ${item.steps.map(x => `
+        ${item.steps.map(step => `
           <li>
-            ${escapeHTML(x)}
+            ${escapeHTML(step)}
           </li>
         `).join("")}
 
@@ -1857,13 +2215,14 @@ function openJourney(index,push=true){
 
       <button
         class="complete-btn ${done ? "completed" : ""}"
-        onclick="toggleJourney('${item.id}',${index})"
+        type="button"
+        onclick="toggleJourney('${escapeHTML(item.id)}',${index})"
       >
 
         ${
           done
-          ? "✓ تمت هذه المرحلة"
-          : "إتمام هذه المرحلة"
+            ? "✓ تمت هذه المرحلة"
+            : "إتمام هذه المرحلة"
         }
 
       </button>
@@ -1874,8 +2233,8 @@ function openJourney(index,push=true){
 
 
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top: 0,
+    behavior: "smooth"
   });
 
 }
@@ -1885,23 +2244,33 @@ function openJourney(index,push=true){
    إتمام مرحلة
 ========================================================= */
 
-function toggleJourney(id,index){
+function toggleJourney(
+  id,
+  index
+) {
 
-  completed =
+  if (
     completed.includes(id)
+  ) {
 
-    ?
+    completed =
+      completed.filter(
+        item =>
+          item !== id
+      );
 
-    completed.filter(
-      x => x !== id
-    )
+  } else {
 
-    :
+    completed = [
+      ...completed,
+      id
+    ];
 
-    [...completed,id];
+  }
 
 
   saveData();
+
 
   openJourney(
     index,
@@ -1915,54 +2284,63 @@ function toggleJourney(id,index){
    المفضلة
 ========================================================= */
 
-function toggleFavorite(index){
+function toggleFavorite(index) {
 
-  favorites =
+  if (
     favorites.includes(index)
+  ) {
 
-    ?
+    favorites =
+      favorites.filter(
+        item =>
+          item !== index
+      );
 
-    favorites.filter(
-      x => x !== index
-    )
+  } else {
 
-    :
+    favorites = [
+      ...favorites,
+      index
+    ];
 
-    [...favorites,index];
+  }
 
 
   saveData();
 
 
-  if(
-    location.hash.startsWith("#place-")
-  ){
+  if (
+    location.hash.startsWith(
+      "#place-"
+    )
+  ) {
 
     openPlace(
       index,
       false
     );
 
+    return;
+
   }
 
 
-  else if(
-    location.hash === "#favorites"
-  ){
+  if (
+    location.hash ===
+    "#favorites"
+  ) {
 
     showPage(
       "favorites",
       false
     );
 
-  }
-
-
-  else{
-
-    cards();
+    return;
 
   }
+
+
+  cards();
 
 }
 
@@ -1971,7 +2349,7 @@ function toggleFavorite(index){
    الوضع الداكن
 ========================================================= */
 
-function toggleTheme(){
+function toggleTheme() {
 
   document.body.classList.toggle(
     "dark"
@@ -1980,13 +2358,34 @@ function toggleTheme(){
 
   localStorage.setItem(
     "hajjDark",
-    document.body.classList.contains("dark")
+    document.body.classList.contains(
+      "dark"
+    )
+      ? "true"
+      : "false"
   );
 
 
-  if(
-    location.hash === "#settings"
-  ){
+  const themeBtn =
+    $("#themeBtn");
+
+
+  if (themeBtn) {
+
+    themeBtn.textContent =
+      document.body.classList.contains(
+        "dark"
+      )
+        ? "☀"
+        : "☾";
+
+  }
+
+
+  if (
+    location.hash ===
+    "#settings"
+  ) {
 
     showPage(
       "settings",
@@ -2002,17 +2401,21 @@ function toggleTheme(){
    إعادة ضبط التقدم
 ========================================================= */
 
-function resetProgress(){
+function resetProgress() {
 
-  if(
+  if (
     !confirm(
       "هل تريد إعادة ضبط جميع مراحل رحلة الحج؟"
     )
-  )
+  ) {
+
     return;
+
+  }
 
 
   completed = [];
+
 
   saveData();
 
@@ -2029,10 +2432,11 @@ function resetProgress(){
    القائمة الجانبية
 ========================================================= */
 
-function openDrawer(){
+function openDrawer() {
 
   $("#drawer")
     ?.classList.add("open");
+
 
   $("#shade")
     ?.classList.add("show");
@@ -2040,10 +2444,11 @@ function openDrawer(){
 }
 
 
-function closeDrawer(){
+function closeDrawer() {
 
   $("#drawer")
     ?.classList.remove("open");
+
 
   $("#shade")
     ?.classList.remove("show");
@@ -2055,15 +2460,16 @@ function closeDrawer(){
    الرجوع
 ========================================================= */
 
-function back(){
+function back() {
 
-  if(
-    history.length > 1
-  ){
+  if (
+    location.hash &&
+    location.hash !== "#home"
+  ) {
 
     history.back();
 
-  }else{
+  } else {
 
     home();
 
@@ -2076,14 +2482,16 @@ function back(){
    القائمة السفلية
 ========================================================= */
 
-function updateBottomNav(active){
+function updateBottomNav(
+  active
+) {
 
-  $$("[data-page]").forEach(
-    button => {
+  $$("[data-page]")
+    .forEach(button => {
 
-      if(
+      if (
         button.closest(".bottom")
-      ){
+      ) {
 
         button.classList.toggle(
           "active",
@@ -2092,8 +2500,7 @@ function updateBottomNav(active){
 
       }
 
-    }
-  );
+    });
 
 }
 
@@ -2102,7 +2509,7 @@ function updateBottomNav(active){
    البحث
 ========================================================= */
 
-function searchPlaces(value){
+function searchPlaces(value) {
 
   const query =
     String(value || "")
@@ -2110,7 +2517,7 @@ function searchPlaces(value){
       .toLowerCase();
 
 
-  if(!query){
+  if (!query) {
 
     cards();
 
@@ -2120,18 +2527,28 @@ function searchPlaces(value){
 
 
   const results =
-    places.filter(
-      p =>
-        [
-          p.name,
-          p.tag,
-          p.text,
-          ...p.details
-        ]
+    places.filter(place => {
+
+      const content = [
+
+        place.name,
+
+        place.tag,
+
+        place.text,
+
+        ...place.details
+
+      ]
         .join(" ")
-        .toLowerCase()
-        .includes(query)
-    );
+        .toLowerCase();
+
+
+      return content.includes(
+        query
+      );
+
+    });
 
 
   cards(results);
@@ -2143,26 +2560,29 @@ function searchPlaces(value){
    المسار
 ========================================================= */
 
-function handleRoute(){
+function handleRoute() {
 
   const hash =
     location.hash;
 
 
-  if(
+  if (
     !hash ||
     hash === "#home"
-  ){
+  ) {
 
     home(false);
+
     return;
 
   }
 
 
-  if(
-    hash.startsWith("#place-")
-  ){
+  if (
+    hash.startsWith(
+      "#place-"
+    )
+  ) {
 
     const index =
       Number(
@@ -2171,6 +2591,7 @@ function handleRoute(){
           ""
         )
       );
+
 
     openPlace(
       index,
@@ -2182,9 +2603,11 @@ function handleRoute(){
   }
 
 
-  if(
-    hash.startsWith("#journey-")
-  ){
+  if (
+    hash.startsWith(
+      "#journey-"
+    )
+  ) {
 
     const index =
       Number(
@@ -2193,6 +2616,7 @@ function handleRoute(){
           ""
         )
       );
+
 
     openJourney(
       index,
@@ -2221,16 +2645,16 @@ function handleRoute(){
   ];
 
 
-  if(
+  if (
     validPages.includes(page)
-  ){
+  ) {
 
     showPage(
       page,
       false
     );
 
-  }else{
+  } else {
 
     home(false);
 
@@ -2240,26 +2664,25 @@ function handleRoute(){
 
 
 /* =========================================================
-   مزامنة الحاج من index.html
+   تحديث الصفحة بعد تغير بيانات الدخول
 ========================================================= */
 
-function syncPilgrim(){
+function refreshApplicationState() {
 
-  try{
+  syncPilgrim();
 
-    const saved =
-      localStorage.getItem(
-        "hajjPilgrim"
-      );
+  updatePilgrimUI();
 
-    currentPilgrim =
-      saved
-      ? JSON.parse(saved)
-      : null;
 
-  }catch{
+  if (
+    location.hash ===
+    "#pilgrim"
+  ) {
 
-    currentPilgrim = null;
+    showPage(
+      "pilgrim",
+      false
+    );
 
   }
 
@@ -2267,55 +2690,25 @@ function syncPilgrim(){
 
 
 /* =========================================================
-   تحديث واجهة الحاج
+   مراقبة localStorage
+   مهم جدًا مع index.html
 ========================================================= */
 
-function updatePilgrimUI(){
+window.addEventListener(
+  "storage",
+  event => {
 
-  syncPilgrim();
+    if (
+      event.key ===
+      "hajjPilgrim"
+    ) {
 
-  const name =
-    currentPilgrim?.name ||
-    "الحاج";
+      refreshApplicationState();
 
-
-  const barName =
-    $("#pilgrimName");
-
-  if(barName){
-
-    barName.textContent =
-      name;
+    }
 
   }
-
-
-  const drawerName =
-    $("#drawerUserName");
-
-  if(drawerName){
-
-    drawerName.textContent =
-      currentPilgrim
-      ? currentPilgrim.name
-      : "زائر";
-
-  }
-
-
-  const drawerStatus =
-    $("#drawerUserStatus");
-
-  if(drawerStatus){
-
-    drawerStatus.textContent =
-      currentPilgrim
-      ? "بطاقة الحاج"
-      : "وضع الزائر";
-
-  }
-
-}
+);
 
 
 /* =========================================================
@@ -2324,15 +2717,17 @@ function updatePilgrimUI(){
 
 document.addEventListener(
   "DOMContentLoaded",
-  () => {
+  async () => {
 
-    /* الوضع الداكن */
+    /* -----------------------------------------------
+       الوضع الداكن
+    ------------------------------------------------ */
 
-    if(
+    if (
       localStorage.getItem(
         "hajjDark"
       ) === "true"
-    ){
+    ) {
 
       document.body.classList.add(
         "dark"
@@ -2341,16 +2736,36 @@ document.addEventListener(
     }
 
 
-    /* البيانات */
+    const themeBtn =
+      $("#themeBtn");
 
-    cards();
+
+    if (themeBtn) {
+
+      themeBtn.textContent =
+        document.body.classList.contains(
+          "dark"
+        )
+          ? "☀"
+          : "☾";
+
+    }
+
+
+    /* -----------------------------------------------
+       تحميل البيانات
+    ------------------------------------------------ */
 
     syncPilgrim();
 
     updatePilgrimUI();
 
+    cards();
 
-    /* القائمة */
+
+    /* -----------------------------------------------
+       القائمة الجانبية
+    ------------------------------------------------ */
 
     $("#menuBtn")
       ?.addEventListener(
@@ -2373,7 +2788,9 @@ document.addEventListener(
       );
 
 
-    /* الرجوع */
+    /* -----------------------------------------------
+       أزرار الرجوع
+    ------------------------------------------------ */
 
     $("#backBtn")
       ?.addEventListener(
@@ -2389,7 +2806,9 @@ document.addEventListener(
       );
 
 
-    /* الوضع الداكن */
+    /* -----------------------------------------------
+       الوضع الداكن
+    ------------------------------------------------ */
 
     $("#themeBtn")
       ?.addEventListener(
@@ -2398,49 +2817,55 @@ document.addEventListener(
       );
 
 
-    /* جميع روابط الأقسام */
+    /* -----------------------------------------------
+       روابط الصفحات
+    ------------------------------------------------ */
 
     $$("[data-page]")
-      .forEach(
-        button => {
+      .forEach(button => {
 
-          button.addEventListener(
-            "click",
-            event => {
+        button.addEventListener(
+          "click",
+          event => {
 
-              event.preventDefault();
+            event.preventDefault();
 
-              closeDrawer();
-
-              const page =
-                button.dataset.page;
+            closeDrawer();
 
 
-              if(!page)
-                return;
+            const page =
+              button.dataset.page;
 
 
-              if(page === "home"){
+            if (!page)
+              return;
 
-                home(true);
 
-              }else{
+            if (
+              page ===
+              "home"
+            ) {
 
-                showPage(
-                  page,
-                  true
-                );
+              home(true);
 
-              }
+            } else {
+
+              showPage(
+                page,
+                true
+              );
 
             }
-          );
 
-        }
-      );
+          }
+        );
+
+      });
 
 
-    /* البحث */
+    /* -----------------------------------------------
+       البحث
+    ------------------------------------------------ */
 
     $("#search")
       ?.addEventListener(
@@ -2455,7 +2880,9 @@ document.addEventListener(
       );
 
 
-    /* زر المفضلة في التفاصيل */
+    /* -----------------------------------------------
+       زر المفضلة في التفاصيل
+    ------------------------------------------------ */
 
     $("#favBtn")
       ?.addEventListener(
@@ -2466,9 +2893,11 @@ document.addEventListener(
             location.hash;
 
 
-          if(
-            hash.startsWith("#place-")
-          ){
+          if (
+            hash.startsWith(
+              "#place-"
+            )
+          ) {
 
             toggleFavorite(
               Number(
@@ -2485,35 +2914,20 @@ document.addEventListener(
       );
 
 
-    /* الموقع */
+    /* -----------------------------------------------
+       تحميل موقع الحاج
+    ------------------------------------------------ */
 
-    if(currentPilgrim){
+    if (currentPilgrim) {
 
-      loadPilgrimLocation()
-        .then(
-          () => {
-
-            if(
-              location.hash === "#pilgrim"
-            ){
-
-              showPage(
-                "pilgrim",
-                false
-              );
-
-            }
-
-          }
-        )
-        .catch(
-          console.error
-        );
+      await loadPilgrimLocation();
 
     }
 
 
-    /* المسار الحالي */
+    /* -----------------------------------------------
+       فتح المسار الحالي
+    ------------------------------------------------ */
 
     handleRoute();
 
@@ -2522,7 +2936,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   تحديث عند تغيير الحالة
+   زر الرجوع في المتصفح / الهاتف
 ========================================================= */
 
 window.addEventListener(
@@ -2530,7 +2944,9 @@ window.addEventListener(
   () => {
 
     syncPilgrim();
+
     updatePilgrimUI();
+
     handleRoute();
 
   }
@@ -2538,21 +2954,18 @@ window.addEventListener(
 
 
 /* =========================================================
-   تحديث عند العودة للتطبيق
+   دعم hashchange
 ========================================================= */
 
 window.addEventListener(
-  "storage",
-  event => {
+  "hashchange",
+  () => {
 
-    if(
-      event.key === "hajjPilgrim"
-    ){
+    syncPilgrim();
 
-      syncPilgrim();
-      updatePilgrimUI();
+    updatePilgrimUI();
 
-    }
+    handleRoute();
 
   }
 );
@@ -2562,9 +2975,9 @@ window.addEventListener(
    Service Worker
 ========================================================= */
 
-if(
+if (
   "serviceWorker" in navigator
-){
+) {
 
   window.addEventListener(
     "load",
@@ -2572,16 +2985,21 @@ if(
 
       navigator.serviceWorker
         .register("./sw.js")
-        .catch(
-          error => {
+        .then(() => {
 
-            console.log(
-              "Service Worker:",
-              error
-            );
+          console.log(
+            "Service Worker registered."
+          );
 
-          }
-        );
+        })
+        .catch(error => {
+
+          console.log(
+            "Service Worker:",
+            error
+          );
+
+        });
 
     }
   );
@@ -2590,9 +3008,24 @@ if(
 
 
 /* =========================================================
-   بدء
+   مراقبة تغير بطاقة الحاج داخل نفس الصفحة
+   لأن index.html يغيّر localStorage مباشرة
 ========================================================= */
 
-console.log(
-  "HAJJ APP v8 — SECTIONS + NAVIGATION + SUPABASE READY"
-);
+setInterval(
+  () => {
+
+    const before =
+      currentPilgrim?.id ||
+      null;
+
+
+    syncPilgrim();
+
+
+    const after =
+      currentPilgrim?.id ||
+      null;
+
+
+    if (before !== after)
