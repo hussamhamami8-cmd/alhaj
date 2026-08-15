@@ -24,10 +24,10 @@
    SUPABASE
 ========================================================= */
 
-const APP_SUPABASE_URL =
+const SUPABASE_URL =
   "https://tmmspfxkmqsivpxchfkk.supabase.co";
 
-const APP_SUPABASE_KEY =
+const SUPABASE_KEY =
   "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
 
 
@@ -489,60 +489,25 @@ async function supabaseRPC(
   body = {}
 ) {
 
-  const response =
-    await fetch(
-      `${APP_SUPABASE_URL}/rest/v1/rpc/${functionName}`,
-      {
-        method: "POST",
-
-        headers: {
-          "apikey": APP_SUPABASE_KEY,
-          "Authorization":
-            `Bearer ${APP_SUPABASE_KEY}`,
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify(body)
-      }
-    );
-
-
-  let data = null;
-
-
-  try {
-
-    data =
-      await response.json();
-
-  } catch {
-
-    data = null;
-
+  if (!window.hajjSupabaseClient) {
+    throw new Error("لم يتم تحميل اتصال Supabase.");
   }
 
-
-  if (!response.ok) {
-
-    console.error(
-      "Supabase RPC Error:",
-      response.status,
-      data
+  const { data, error } =
+    await window.hajjSupabaseClient.rpc(
+      functionName,
+      body
     );
 
+  if (error) {
+    console.error("Supabase RPC Error:", error);
     throw new Error(
-      data?.message ||
-      data?.error_description ||
+      error.message ||
       "تعذر الاتصال بقاعدة البيانات."
     );
-
   }
 
-
   return data;
-
 }
 
 
@@ -554,18 +519,13 @@ async function loadPilgrimLocation() {
 
   syncPilgrim();
 
-
   if (
     !currentPilgrim?.name ||
     !currentPilgrim?.code
   ) {
-
     currentLocation = null;
-
     return null;
-
   }
-
 
   try {
 
@@ -573,29 +533,19 @@ async function loadPilgrimLocation() {
       await supabaseRPC(
         "get_pilgrim_locations",
         {
-          p_name:
-            currentPilgrim.name,
-
-          p_code:
-            currentPilgrim.code
+          p_name: currentPilgrim.name,
+          p_code: currentPilgrim.code
         }
       );
-
 
     if (
       Array.isArray(result) &&
       result.length > 0
     ) {
-
-      currentLocation =
-        result[0];
-
+      currentLocation = result[0];
     } else {
-
       currentLocation = null;
-
     }
-
 
     return currentLocation;
 
@@ -607,11 +557,9 @@ async function loadPilgrimLocation() {
     );
 
     currentLocation = null;
-
     return null;
 
   }
-
 }
 
 
@@ -3029,23 +2977,24 @@ setInterval(
 
 
     if (before !== after)
-    {
+ {
+
       updatePilgrimUI();
 
-      if (currentPilgrim) {
-        loadPilgrimLocation().catch(console.error);
+      if (
+        location.hash === "#pilgrim" &&
+        currentPilgrim
+      ) {
+        loadPilgrimLocation();
       }
+
     }
 
   },
-  2000
+  1000
 );
 
 
-/* =========================================================
-   بدء التطبيق
-========================================================= */
-
 console.log(
-  "HAJJ APP v10 — LOGIN + PILGRIM + LOCATIONS + SUPABASE READY"
+  "HAJJ APP v10 — FIXED SUPABASE + PILGRIM LOCATION"
 );

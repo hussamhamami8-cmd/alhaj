@@ -691,7 +691,7 @@ const SUPABASE_ANON_KEY =
   "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
 
 
-const supabaseClient =
+window.hajjSupabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
@@ -902,7 +902,7 @@ async function login(){
   try{
 
     const { data, error } =
-      await supabaseClient
+      await window.hajjSupabaseClient
         .from("pilgrims")
         .select(
           "id,user_id,name,code,created_at"
