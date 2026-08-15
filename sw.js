@@ -1,4 +1,4 @@
-const CACHE_NAME = "hajj-guide-v5";
+const CACHE_NAME = "hajj-guide-v6";
 
 const FILES_TO_CACHE = [
   "./",
@@ -23,40 +23,30 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener("install", event => {
-
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(FILES_TO_CACHE))
-      .catch(() => {})
+      .catch(error => {
+        console.log("Cache install:", error);
+      })
   );
 
   self.skipWaiting();
-
 });
 
-
 self.addEventListener("activate", event => {
-
   event.waitUntil(
-
     caches.keys().then(keys =>
-
       Promise.all(
-
         keys
           .filter(key => key !== CACHE_NAME)
           .map(key => caches.delete(key))
-
       )
-
     )
-
   );
 
   self.clients.claim();
-
 });
-
 
 self.addEventListener("fetch", event => {
 
@@ -65,7 +55,6 @@ self.addEventListener("fetch", event => {
   }
 
   event.respondWith(
-
     caches.match(event.request)
       .then(cached => {
 
@@ -84,8 +73,7 @@ self.addEventListener("fetch", event => {
 
             caches.open(CACHE_NAME)
               .then(cache => {
-                cache.put(event.request, copy)
-                  .catch(() => {});
+                cache.put(event.request, copy).catch(() => {});
               });
 
             return response;
@@ -93,12 +81,18 @@ self.addEventListener("fetch", event => {
           })
           .catch(() => {
 
-            return caches.match("./index.html");
+            if (event.request.mode === "navigate") {
+              return caches.match("./index.html");
+            }
+
+            return new Response("", {
+              status: 503,
+              statusText: "Offline"
+            });
 
           });
 
       })
-
   );
 
 });
