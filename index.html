@@ -31,10 +31,33 @@
 
 <title>دليل الحاج</title>
 
+
+<!-- =====================================================
+     حماية شاشة الدخول والتطبيق
+===================================================== -->
+
+<style>
+
+#application[hidden],
+#loginScreen[hidden] {
+  display: none !important;
+}
+
+#application {
+  width: 100%;
+}
+
+#loginScreen {
+  width: 100%;
+}
+
+</style>
+
 </head>
 
 
 <body>
+
 
 <!-- =====================================================
      شاشة تسجيل الدخول
@@ -148,12 +171,15 @@
 
 <!-- =====================================================
      التطبيق
+     مخفي افتراضيًا
 ===================================================== -->
 
 <div
   id="application"
   hidden
+  style="display:none;"
 >
+
 
 <!-- =====================================================
      الشريط العلوي
@@ -274,8 +300,6 @@
 
 
 
-  <!-- البحث -->
-
   <div class="search">
 
     <span>
@@ -292,8 +316,6 @@
   </div>
 
 
-
-  <!-- الوصول السريع -->
 
   <section class="quick">
 
@@ -364,8 +386,6 @@
 
 
 
-  <!-- مراحل الرحلة -->
-
   <section class="journey-card">
 
     <div class="section-head">
@@ -391,37 +411,18 @@
 
     <div class="timeline">
 
-      <i>
-        الإحرام
-      </i>
-
-      <i>
-        مكة
-      </i>
-
-      <i>
-        عرفة
-      </i>
-
-      <i>
-        مزدلفة
-      </i>
-
-      <i>
-        منى
-      </i>
-
-      <i>
-        الوداع
-      </i>
+      <i>الإحرام</i>
+      <i>مكة</i>
+      <i>عرفة</i>
+      <i>مزدلفة</i>
+      <i>منى</i>
+      <i>الوداع</i>
 
     </div>
 
   </section>
 
 
-
-  <!-- أهم الأماكن -->
 
   <section>
 
@@ -466,9 +467,7 @@
      القائمة السفلية
 ===================================================== -->
 
-<nav
-  class="bottom"
->
+<nav class="bottom">
 
   <button
     type="button"
@@ -587,8 +586,6 @@
 
 
 
-  <!-- المستخدم -->
-
   <div
     class="drawer-user"
     id="drawerUser"
@@ -614,8 +611,6 @@
   </div>
 
 
-
-  <!-- روابط القائمة -->
 
   <div class="drawer-links">
 
@@ -688,9 +683,6 @@
 
 </div>
 
-
-
-<!-- خلفية القائمة -->
 
 <div id="shade"></div>
 
@@ -781,16 +773,10 @@
      Supabase
 ===================================================== -->
 
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
-
-/* =========================================================
-   إعداد Supabase
-========================================================= */
 
 const SUPABASE_URL =
   "https://tmmspfxkmqsivpxchfkk.supabase.co";
@@ -806,74 +792,69 @@ const supabaseClient =
   );
 
 
-
-/* =========================================================
-   عناصر تسجيل الدخول
-========================================================= */
+/* =====================================================
+   عناصر الدخول
+===================================================== */
 
 const loginScreen =
-  document.getElementById(
-    "loginScreen"
-  );
+  document.getElementById("loginScreen");
 
 const application =
-  document.getElementById(
-    "application"
-  );
+  document.getElementById("application");
 
 const loginName =
-  document.getElementById(
-    "loginName"
-  );
+  document.getElementById("loginName");
 
 const loginCode =
-  document.getElementById(
-    "loginCode"
-  );
+  document.getElementById("loginCode");
 
 const loginBtn =
-  document.getElementById(
-    "loginBtn"
-  );
+  document.getElementById("loginBtn");
 
 const loginError =
-  document.getElementById(
-    "loginError"
-  );
+  document.getElementById("loginError");
 
 const loginLoading =
-  document.getElementById(
-    "loginLoading"
-  );
+  document.getElementById("loginLoading");
 
 const pilgrimBar =
-  document.getElementById(
-    "pilgrimBar"
-  );
+  document.getElementById("pilgrimBar");
 
 const pilgrimNameElement =
-  document.getElementById(
-    "pilgrimName"
-  );
+  document.getElementById("pilgrimName");
 
 const drawerUserName =
-  document.getElementById(
-    "drawerUserName"
-  );
+  document.getElementById("drawerUserName");
 
 
-
-/* =========================================================
-   عرض التطبيق
-========================================================= */
+/* =====================================================
+   إظهار التطبيق بعد نجاح الدخول
+===================================================== */
 
 function showApplication(pilgrim){
 
+  /*
+   * إخفاء شاشة الدخول بالقوة
+   */
+
   loginScreen.hidden = true;
+  loginScreen.style.display = "none";
+
+
+  /*
+   * إظهار التطبيق بالقوة
+   */
 
   application.hidden = false;
+  application.style.display = "block";
+
+
+  /*
+   * إظهار معلومات الحاج
+   */
 
   pilgrimBar.hidden = false;
+  pilgrimBar.style.display = "flex";
 
 
   if(pilgrim){
@@ -899,8 +880,7 @@ function showApplication(pilgrim){
 
 
   /*
-   * إعطاء التطبيق فرصة للتهيئة
-   * بعد إظهار الواجهة
+   * تشغيل المسار بعد تحميل app.js
    */
 
   if(
@@ -908,10 +888,12 @@ function showApplication(pilgrim){
   ){
 
     setTimeout(
-      ()=>{
+      function(){
+
         handleRoute();
+
       },
-      0
+      50
     );
 
   }
@@ -919,10 +901,29 @@ function showApplication(pilgrim){
 }
 
 
+/* =====================================================
+   إظهار شاشة الدخول
+===================================================== */
 
-/* =========================================================
+function showLoginScreen(){
+
+  application.hidden = true;
+  application.style.display = "none";
+
+
+  loginScreen.hidden = false;
+  loginScreen.style.display = "flex";
+
+
+  pilgrimBar.hidden = true;
+  pilgrimBar.style.display = "none";
+
+}
+
+
+/* =====================================================
    تسجيل الدخول
-========================================================= */
+===================================================== */
 
 async function login(){
 
@@ -934,7 +935,6 @@ async function login(){
 
 
   loginError.hidden = true;
-
   loginError.textContent = "";
 
 
@@ -967,16 +967,10 @@ async function login(){
 
 
   loginBtn.disabled = true;
-
   loginLoading.hidden = false;
 
 
   try{
-
-    /*
-     * الجدول الصحيح:
-     * piligrame
-     */
 
     const { data, error } =
       await supabaseClient
@@ -997,7 +991,7 @@ async function login(){
     if(error){
 
       console.error(
-        "Supabase:",
+        "Supabase Error:",
         error
       );
 
@@ -1021,17 +1015,7 @@ async function login(){
 
 
     /*
-     * حفظ بيانات الحاج
-     */
-
-    localStorage.setItem(
-      "hajjPilgrim",
-      JSON.stringify(data)
-    );
-
-
-    /*
-     * إظهار التطبيق
+     * نجاح الدخول
      */
 
     showApplication(data);
@@ -1065,10 +1049,9 @@ async function login(){
 }
 
 
-
-/* =========================================================
+/* =====================================================
    تسجيل الخروج
-========================================================= */
+===================================================== */
 
 function logout(){
 
@@ -1077,44 +1060,44 @@ function logout(){
   );
 
 
-  application.hidden = true;
-
-  loginScreen.hidden = false;
-
-  pilgrimBar.hidden = true;
+  showLoginScreen();
 
 
   loginName.value = "";
-
   loginCode.value = "";
 
 
   loginError.textContent = "";
-
   loginError.hidden = true;
 
 
   loginLoading.hidden = true;
 
 
-  location.hash = "#home";
+  location.hash = "";
 
 
   window.scrollTo({
-    top:0,
-    behavior:"smooth"
+    top: 0,
+    behavior: "smooth"
   });
 
 
-  loginName.focus();
+  setTimeout(
+    function(){
+
+      loginName.focus();
+
+    },
+    100
+  );
 
 }
 
 
-
-/* =========================================================
-   أزرار تسجيل الدخول والخروج
-========================================================= */
+/* =====================================================
+   أزرار الدخول
+===================================================== */
 
 loginBtn.addEventListener(
   "click",
@@ -1122,31 +1105,11 @@ loginBtn.addEventListener(
 );
 
 
-loginCode.addEventListener(
-  "keydown",
-  function(event){
-
-    if(
-      event.key === "Enter"
-    ){
-
-      event.preventDefault();
-
-      login();
-
-    }
-
-  }
-);
-
-
 loginName.addEventListener(
   "keydown",
   function(event){
 
-    if(
-      event.key === "Enter"
-    ){
+    if(event.key === "Enter"){
 
       event.preventDefault();
 
@@ -1158,10 +1121,28 @@ loginName.addEventListener(
 );
 
 
+loginCode.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+
+      event.preventDefault();
+
+      login();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   تسجيل الخروج
+===================================================== */
+
 document
-  .getElementById(
-    "logoutBtn"
-  )
+  .getElementById("logoutBtn")
   ?.addEventListener(
     "click",
     logout
@@ -1169,9 +1150,7 @@ document
 
 
 document
-  .getElementById(
-    "drawerLogout"
-  )
+  .getElementById("drawerLogout")
   ?.addEventListener(
     "click",
     function(){
@@ -1190,10 +1169,9 @@ document
   );
 
 
-
-/* =========================================================
-   التحقق من وجود حاج محفوظ
-========================================================= */
+/* =====================================================
+   التحقق من الجلسة المحفوظة
+===================================================== */
 
 (function(){
 
@@ -1214,26 +1192,32 @@ document
       saved.code
     ){
 
-      showApplication(
-        saved
-      );
+      /*
+       * حاج مسجل سابقًا
+       */
 
-    }else{
+      showApplication(saved);
 
-      loginScreen.hidden = false;
+    }
 
-      application.hidden = true;
+    else{
 
-      pilgrimBar.hidden = true;
+      /*
+       * لا يوجد تسجيل دخول
+       */
+
+      showLoginScreen();
 
     }
 
   }
 
-
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Saved pilgrim error:",
+      error
+    );
 
 
     localStorage.removeItem(
@@ -1241,11 +1225,7 @@ document
     );
 
 
-    loginScreen.hidden = false;
-
-    application.hidden = true;
-
-    pilgrimBar.hidden = true;
+    showLoginScreen();
 
   }
 
