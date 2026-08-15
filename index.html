@@ -903,7 +903,7 @@ async function login(){
 
     const { data, error } =
       await supabaseClient
-        .from("piligrame")
+        .from("pilgrims")
         .select(
           "id,user_id,name,code,created_at"
         )
