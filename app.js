@@ -1,7 +1,6 @@
 /* =========================================================
-   دليل الحاج — app.js v7
-   نظام الحاج + Supabase
-   الحفاظ على جميع الميزات السابقة
+   دليل الحاج — app.js v7 FINAL
+   متوافق مع index.html الحالي
    ========================================================= */
 
 
@@ -32,7 +31,6 @@ const places = [
       "حافظ على هدوئك ولا تزاحم الآخرين."
     ]
   },
-
   {
     name:"منى",
     tag:"المشاعر المقدسة",
@@ -44,7 +42,6 @@ const places = [
       "الحرص على الراحة وشرب الماء."
     ]
   },
-
   {
     name:"عرفات",
     tag:"المشاعر المقدسة",
@@ -56,7 +53,6 @@ const places = [
       "اتباع برنامج التفويج المعتمد."
     ]
   },
-
   {
     name:"مزدلفة",
     tag:"المشاعر المقدسة",
@@ -68,7 +64,6 @@ const places = [
       "الاستعداد للانتقال إلى منى."
     ]
   },
-
   {
     name:"جسر الجمرات",
     tag:"منى",
@@ -80,7 +75,6 @@ const places = [
       "تجنب الازدحام والمزاحمة."
     ]
   },
-
   {
     name:"الصفا والمروة",
     tag:"المسجد الحرام",
@@ -109,7 +103,6 @@ const journey = [
       "راجع التعليمات الرسمية الخاصة بموسم الحج."
     ]
   },
-
   {
     id:"ihram",
     title:"الإحرام",
@@ -123,7 +116,6 @@ const journey = [
       "الإكثار من التلبية."
     ]
   },
-
   {
     id:"mina",
     title:"يوم التروية",
@@ -137,7 +129,6 @@ const journey = [
       "الراحة والاستعداد ليوم عرفة."
     ]
   },
-
   {
     id:"arafat",
     title:"يوم عرفة",
@@ -151,7 +142,6 @@ const journey = [
       "الاستعداد للإفاضة إلى مزدلفة."
     ]
   },
-
   {
     id:"muzdalifah",
     title:"مزدلفة",
@@ -165,7 +155,6 @@ const journey = [
       "الاستعداد للانتقال إلى منى."
     ]
   },
-
   {
     id:"sacrifice",
     title:"يوم النحر",
@@ -179,7 +168,6 @@ const journey = [
       "طواف الإفاضة والسعي بحسب النسك."
     ]
   },
-
   {
     id:"tawaf",
     title:"طواف الإفاضة",
@@ -193,7 +181,6 @@ const journey = [
       "الانتقال إلى السعي إذا كان مطلوبًا."
     ]
   },
-
   {
     id:"sai",
     title:"السعي",
@@ -207,7 +194,6 @@ const journey = [
       "المحافظة على الهدوء وعدم إيذاء الآخرين."
     ]
   },
-
   {
     id:"jamarat",
     title:"أيام التشريق",
@@ -221,7 +207,6 @@ const journey = [
       "العودة إلى السكن أو المخيم وفق البرنامج."
     ]
   },
-
   {
     id:"farewell",
     title:"طواف الوداع",
@@ -243,12 +228,10 @@ const duas = [
     title:"التلبية",
     text:"لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك."
   },
-
   {
     title:"دعاء جامع",
     text:"ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار."
   },
-
   {
     title:"الدعاء والذكر",
     text:"يكثر الحاج من ذكر الله والدعاء بما تيسر من الأدعية المشروعة."
@@ -261,22 +244,18 @@ const guides = [
     "قبل السفر",
     "راجع الوثائق والتصاريح وتعليمات الجهة المنظمة، وجهز احتياجاتك الشخصية."
   ],
-
   [
     "في المشاعر",
     "التزم بمواعيد التفويج ولا تنفصل عن مجموعتك دون معرفة نقطة التجمع."
   ],
-
   [
     "الحرارة",
     "احرص على شرب الماء واستخدام وسائل الوقاية من الشمس وتجنب التعرض الطويل للحرارة."
   ],
-
   [
     "الازدحام",
     "اتبع المسارات ولا تدفع أو تزاحم الآخرين."
   ],
-
   [
     "الطوارئ",
     "عند الحاجة اطلب المساعدة من الجهات المختصة أو مقدم الخدمة."
@@ -315,28 +294,28 @@ let completed =
   readStorage("hajjCompleted",[]);
 
 
-/* =========================================================
-   بيانات الحاج الحالي
-   ========================================================= */
-
 let currentPilgrim =
   JSON.parse(
     localStorage.getItem("hajjPilgrim") || "null"
   );
 
+
 let currentLocation = null;
 
 
 /* =========================================================
-   اختصارات DOM
+   DOM
    ========================================================= */
 
-const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
+const $ = selector =>
+  document.querySelector(selector);
+
+const $$ = selector =>
+  document.querySelectorAll(selector);
 
 
 /* =========================================================
-   حفظ البيانات
+   الحفظ
    ========================================================= */
 
 function saveData(){
@@ -355,34 +334,48 @@ function saveData(){
 
 
 /* =========================================================
-   تقدم الرحلة
+   حماية النص
+   ========================================================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   التقدم
    ========================================================= */
 
 function progressData(){
 
   const done =
     journey.filter(
-      x => completed.includes(x.id)
+      item => completed.includes(item.id)
     ).length;
 
   return {
-
     done,
-
-    total: journey.length,
-
+    total:journey.length,
     percent:
       journey.length
-      ? Math.round(done / journey.length * 100)
+      ? Math.round(
+          done / journey.length * 100
+        )
       : 0
-
   };
 
 }
 
 
 /* =========================================================
-   Supabase REST
+   Supabase RPC
    ========================================================= */
 
 async function supabaseRPC(functionName,body){
@@ -392,24 +385,28 @@ async function supabaseRPC(functionName,body){
       `${SUPABASE_URL}/rest/v1/rpc/${functionName}`,
       {
         method:"POST",
-
         headers:{
           "apikey":SUPABASE_KEY,
           "Authorization":`Bearer ${SUPABASE_KEY}`,
           "Content-Type":"application/json"
         },
-
         body:JSON.stringify(body)
       }
     );
 
+
   let data = null;
 
   try{
+
     data = await response.json();
+
   }catch{
+
     data = null;
+
   }
+
 
   if(!response.ok){
 
@@ -427,123 +424,28 @@ async function supabaseRPC(functionName,body){
 
   }
 
+
   return data;
 
 }
 
 
 /* =========================================================
-   تسجيل الحاج
-   ========================================================= */
-
-async function loginPilgrim(name,code){
-
-  name = (name || "").trim();
-  code = (code || "").trim();
-
-  if(!name){
-
-    showLoginMessage(
-      "اكتب اسم الحاج أولًا.",
-      true
-    );
-
-    return;
-
-  }
-
-  if(!code){
-
-    showLoginMessage(
-      "اكتب الشفرة الخاصة بالحاج.",
-      true
-    );
-
-    return;
-
-  }
-
-  showLoginMessage(
-    "جارٍ التحقق من بيانات الحاج...",
-    false
-  );
-
-  try{
-
-    const result =
-      await supabaseRPC(
-        "check_pilgrim",
-        {
-          p_name:name,
-          p_code:code
-        }
-      );
-
-    if(!Array.isArray(result) || !result.length){
-
-      showLoginMessage(
-        "اسم الحاج أو الشفرة غير صحيحة.",
-        true
-      );
-
-      return;
-
-    }
-
-    const pilgrim = result[0];
-
-    currentPilgrim = {
-      id:pilgrim.id,
-      user_id:pilgrim.user_id,
-      name:pilgrim.name,
-      code:pilgrim.code
-    };
-
-    localStorage.setItem(
-      "hajjPilgrim",
-      JSON.stringify(currentPilgrim)
-    );
-
-    showLoginMessage(
-      "تم تسجيل الدخول بنجاح.",
-      false
-    );
-
-    closePilgrimLogin();
-
-    await loadPilgrimLocation();
-
-    updatePilgrimUI();
-
-    showPilgrimCard();
-
-  }catch(error){
-
-    console.error(error);
-
-    showLoginMessage(
-      "حدث خطأ أثناء الاتصال. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.",
-      true
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   جلب موقع الحاج
+   موقع الحاج
    ========================================================= */
 
 async function loadPilgrimLocation(){
 
-  if(!currentPilgrim?.name || !currentPilgrim?.code){
+  if(
+    !currentPilgrim?.name ||
+    !currentPilgrim?.code
+  ){
 
     currentLocation = null;
-
     return null;
 
   }
+
 
   try{
 
@@ -556,18 +458,12 @@ async function loadPilgrimLocation(){
         }
       );
 
-    if(
-      Array.isArray(result) &&
-      result.length
-    ){
 
-      currentLocation = result[0];
+    currentLocation =
+      Array.isArray(result) && result.length
+      ? result[0]
+      : null;
 
-    }else{
-
-      currentLocation = null;
-
-    }
 
     return currentLocation;
 
@@ -588,7 +484,7 @@ async function loadPilgrimLocation(){
 
 
 /* =========================================================
-   فتح موقع الحاج على الخريطة
+   خريطة الحاج
    ========================================================= */
 
 function openPilgrimMap(){
@@ -596,19 +492,31 @@ function openPilgrimMap(){
   if(!currentLocation)
     return;
 
-  const lat = Number(currentLocation.latitude);
-  const lng = Number(currentLocation.longitude);
 
-  if(!Number.isFinite(lat) || !Number.isFinite(lng)){
+  const lat =
+    Number(currentLocation.latitude);
 
-    alert("إحداثيات الموقع غير متوفرة حاليًا.");
+  const lng =
+    Number(currentLocation.longitude);
+
+
+  if(
+    !Number.isFinite(lat) ||
+    !Number.isFinite(lng)
+  ){
+
+    alert(
+      "إحداثيات الموقع غير متوفرة حاليًا."
+    );
 
     return;
 
   }
 
+
   const url =
     `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+
 
   window.open(
     url,
@@ -620,221 +528,51 @@ function openPilgrimMap(){
 
 
 /* =========================================================
-   تسجيل الخروج
+   تحديث واجهة الحاج
    ========================================================= */
 
-function logoutPilgrim(){
-
-  if(
-    !confirm(
-      "هل تريد تسجيل الخروج من بطاقة الحاج؟"
-    )
-  )
-    return;
-
-  currentPilgrim = null;
-  currentLocation = null;
-
-  localStorage.removeItem(
-    "hajjPilgrim"
-  );
-
-  showPage(
-    "settings",
-    false
-  );
-
-  updatePilgrimUI();
-
-}
-
-
-/* =========================================================
-   واجهة تسجيل الدخول
-   ========================================================= */
-
-function createLoginModal(){
-
-  if($("#pilgrimLoginModal"))
-    return;
-
-  const modal = document.createElement("div");
-
-  modal.id = "pilgrimLoginModal";
-
-  modal.innerHTML = `
-
-    <div class="pilgrim-login-overlay">
-
-      <div class="pilgrim-login-box">
-
-        <button
-          class="pilgrim-close"
-          onclick="closePilgrimLogin()"
-          aria-label="إغلاق"
-        >
-          ×
-        </button>
-
-        <div class="pilgrim-login-icon">
-          👤
-        </div>
-
-        <span class="pill">
-          بطاقة الحاج
-        </span>
-
-        <h2>
-          تسجيل دخول الحاج
-        </h2>
-
-        <p>
-          أدخل اسم الحاج والشفرة الخاصة بك.
-        </p>
-
-        <label>
-          اسم الحاج
-        </label>
-
-        <input
-          id="pilgrimName"
-          type="text"
-          autocomplete="name"
-          placeholder="مثال: اسم الحاج"
-        >
-
-        <label>
-          الشفرة الخاصة
-        </label>
-
-        <input
-          id="pilgrimCode"
-          type="password"
-          inputmode="text"
-          autocomplete="off"
-          placeholder="أدخل الشفرة"
-        >
-
-        <button
-          class="primary-btn"
-          id="pilgrimLoginBtn"
-          onclick="submitPilgrimLogin()"
-        >
-          دخول بطاقة الحاج
-        </button>
-
-        <div
-          id="pilgrimLoginMessage"
-          class="pilgrim-login-message"
-        ></div>
-
-      </div>
-
-    </div>
-
-  `;
-
-  document.body.appendChild(modal);
-
-}
-
-
-function openPilgrimLogin(){
-
-  createLoginModal();
-
-  $("#pilgrimLoginModal")
-    ?.classList.add("show");
-
-  const nameInput = $("#pilgrimName");
-
-  if(nameInput)
-    nameInput.focus();
-
-}
-
-
-function closePilgrimLogin(){
-
-  $("#pilgrimLoginModal")
-    ?.classList.remove("show");
-
-}
-
-
-function showLoginMessage(message,error){
-
-  const element =
-    $("#pilgrimLoginMessage");
-
-  if(!element)
-    return;
-
-  element.textContent = message;
-
-  element.className =
-    "pilgrim-login-message " +
-    (error ? "error" : "success");
-
-}
-
-
-function submitPilgrimLogin(){
+function updatePilgrimUI(){
 
   const name =
-    $("#pilgrimName")?.value || "";
+    currentPilgrim?.name || "زائر";
 
-  const code =
-    $("#pilgrimCode")?.value || "";
 
-  loginPilgrim(name,code);
+  $$(".pilgrim-name").forEach(
+    element => {
+      element.textContent = name;
+    }
+  );
+
+
+  const mainName =
+    $("#pilgrimName");
+
+  if(mainName)
+    mainName.textContent =
+      currentPilgrim?.name || "الحاج";
+
+
+  const drawerName =
+    $("#drawerUserName");
+
+  if(drawerName)
+    drawerName.textContent = name;
+
+
+  const drawerStatus =
+    $("#drawerUserStatus");
+
+  if(drawerStatus)
+    drawerStatus.textContent =
+      currentPilgrim
+      ? "بطاقة الحاج"
+      : "وضع الزائر";
 
 }
 
 
 /* =========================================================
    بطاقة الحاج
-   ========================================================= */
-
-function showPilgrimCard(){
-
-  if(!currentPilgrim){
-
-    openPilgrimLogin();
-
-    return;
-
-  }
-
-  showPage(
-    "pilgrim",
-    true
-  );
-
-}
-
-
-function updatePilgrimUI(){
-
-  const elements =
-    $$(".pilgrim-name");
-
-  elements.forEach(
-    element => {
-
-      element.textContent =
-        currentPilgrim
-        ? currentPilgrim.name
-        : "زائر";
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   صفحة بطاقة الحاج
    ========================================================= */
 
 function renderPilgrimPage(){
@@ -845,9 +583,7 @@ function renderPilgrimPage(){
 
       <div class="info empty-state visitor-card">
 
-        <div class="empty-icon">
-          👤
-        </div>
+        <div class="empty-icon">👤</div>
 
         <span class="pill">
           وضع الزائر
@@ -858,13 +594,8 @@ function renderPilgrimPage(){
         </h3>
 
         <p>
-          يمكنك استخدام جميع ميزات دليل الحاج،
+          يمكنك استخدام جميع ميزات دليل الحاج
           واستكشاف الأماكن والمناسك والأدعية والإرشادات.
-        </p>
-
-        <p class="muted-note">
-          سجّل الدخول للوصول إلى بطاقة الحاج
-          وبياناتك وموقعك المرتبط بالحساب.
         </p>
 
         <button
@@ -880,20 +611,23 @@ function renderPilgrimPage(){
 
   }
 
-  const location = currentLocation;
 
   let locationHTML = "";
 
-  if(location){
 
-    const updated =
-      location.updated_at
-      ? formatDate(location.updated_at)
-      : "غير معروف";
+  if(currentLocation){
 
-    const hasCoordinates =
-      Number.isFinite(Number(location.latitude)) &&
-      Number.isFinite(Number(location.longitude));
+    const lat =
+      currentLocation.latitude;
+
+    const lng =
+      currentLocation.longitude;
+
+
+    const validCoordinates =
+      Number.isFinite(Number(lat)) &&
+      Number.isFinite(Number(lng));
+
 
     locationHTML = `
 
@@ -908,7 +642,10 @@ function renderPilgrimPage(){
             </span>
 
             <h3>
-              ${escapeHTML(location.name || "الموقع الحالي")}
+              ${escapeHTML(
+                currentLocation.name ||
+                "الموقع الحالي"
+              )}
             </h3>
 
           </div>
@@ -919,28 +656,35 @@ function renderPilgrimPage(){
 
         </div>
 
+
         <div class="location-coordinates">
 
           <div>
             <small>خط العرض</small>
-            <b>${location.latitude ?? "—"}</b>
+            <b>${lat ?? "—"}</b>
           </div>
 
           <div>
             <small>خط الطول</small>
-            <b>${location.longitude ?? "—"}</b>
+            <b>${lng ?? "—"}</b>
           </div>
 
         </div>
 
+
         <p class="muted-note">
-          آخر تحديث: ${updated}
+          آخر تحديث:
+          ${
+            currentLocation.updated_at
+            ? formatDate(currentLocation.updated_at)
+            : "غير معروف"
+          }
         </p>
 
-        ${
-          hasCoordinates
-          ?
 
+        ${
+          validCoordinates
+          ?
           `
             <button
               class="primary-btn"
@@ -949,11 +693,10 @@ function renderPilgrimPage(){
               🗺️ فتح الموقع على الخريطة
             </button>
           `
-
           :
-
           ""
         }
+
 
         <button
           class="primary-btn"
@@ -997,6 +740,7 @@ function renderPilgrimPage(){
 
   }
 
+
   return `
 
     <div class="pilgrim-profile">
@@ -1023,6 +767,7 @@ function renderPilgrimPage(){
 
     </div>
 
+
     <div class="info">
 
       <h3>
@@ -1041,6 +786,7 @@ function renderPilgrimPage(){
 
       </div>
 
+
       <div class="pilgrim-info-row">
 
         <span>
@@ -1055,7 +801,9 @@ function renderPilgrimPage(){
 
     </div>
 
+
     ${locationHTML}
+
 
     <div class="info">
 
@@ -1065,10 +813,10 @@ function renderPilgrimPage(){
 
       <p>
         يعرض التطبيق الموقع المرتبط ببطاقة هذا الحاج فقط.
-        لا يتيح للحاج اختيار معرف مستخدم آخر.
       </p>
 
     </div>
+
 
     <div class="info">
 
@@ -1086,61 +834,286 @@ function renderPilgrimPage(){
 }
 
 
-async function refreshPilgrimLocation(){
+/* =========================================================
+   نافذة الدخول الداخلية
+   ========================================================= */
 
-  if(!currentPilgrim){
+function createLoginModal(){
 
-    openPilgrimLogin();
-
+  if($("#pilgrimLoginModal"))
     return;
 
-  }
 
-  const content = $("#pageContent");
+  const modal =
+    document.createElement("div");
 
-  if(content){
 
-    content.insertAdjacentHTML(
-      "afterbegin",
-      `
-        <div class="info">
-          جاري تحديث بيانات الموقع...
+  modal.id =
+    "pilgrimLoginModal";
+
+
+  modal.innerHTML = `
+
+    <div class="pilgrim-login-overlay">
+
+      <div class="pilgrim-login-box">
+
+        <button
+          class="pilgrim-close"
+          onclick="closePilgrimLogin()"
+        >
+          ×
+        </button>
+
+
+        <div class="pilgrim-login-icon">
+          👤
         </div>
-      `
-    );
 
-  }
 
-  await loadPilgrimLocation();
+        <span class="pill">
+          بطاقة الحاج
+        </span>
 
-  showPage(
-    "pilgrim",
-    false
+
+        <h2>
+          تسجيل دخول الحاج
+        </h2>
+
+
+        <p>
+          أدخل اسم الحاج والشفرة الخاصة بك.
+        </p>
+
+
+        <label>
+          اسم الحاج
+        </label>
+
+
+        <input
+          id="pilgrimName"
+          type="text"
+          autocomplete="name"
+          placeholder="مثال: اسم الحاج"
+        >
+
+
+        <label>
+          الشفرة الخاصة
+        </label>
+
+
+        <input
+          id="pilgrimCode"
+          type="password"
+          autocomplete="off"
+          placeholder="أدخل الشفرة"
+        >
+
+
+        <button
+          class="primary-btn"
+          onclick="submitPilgrimLogin()"
+        >
+          دخول بطاقة الحاج
+        </button>
+
+
+        <div
+          id="pilgrimLoginMessage"
+          class="pilgrim-login-message"
+        ></div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(modal);
+
+}
+
+
+function openPilgrimLogin(){
+
+  createLoginModal();
+
+
+  $("#pilgrimLoginModal")
+    ?.classList.add("show");
+
+
+  $("#pilgrimName")?.focus();
+
+}
+
+
+function closePilgrimLogin(){
+
+  $("#pilgrimLoginModal")
+    ?.classList.remove("show");
+
+}
+
+
+function showLoginMessage(message,error){
+
+  const element =
+    $("#pilgrimLoginMessage");
+
+  if(!element)
+    return;
+
+
+  element.textContent =
+    message;
+
+
+  element.className =
+    "pilgrim-login-message " +
+    (error ? "error" : "success");
+
+}
+
+
+async function submitPilgrimLogin(){
+
+  const name =
+    $("#pilgrimName")?.value || "";
+
+
+  const code =
+    $("#pilgrimCode")?.value || "";
+
+
+  await loginPilgrim(
+    name,
+    code
   );
 
 }
 
 
 /* =========================================================
-   التاريخ
+   تسجيل الدخول من داخل التطبيق
    ========================================================= */
 
-function formatDate(value){
+async function loginPilgrim(name,code){
+
+  name =
+    String(name || "").trim();
+
+  code =
+    String(code || "").trim();
+
+
+  if(!name){
+
+    showLoginMessage(
+      "اكتب اسم الحاج أولًا.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if(!code){
+
+    showLoginMessage(
+      "اكتب الشفرة الخاصة.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  showLoginMessage(
+    "جارٍ التحقق من بيانات الحاج...",
+    false
+  );
+
 
   try{
 
-    return new Date(value)
-      .toLocaleString(
-        "ar-SA",
+    const result =
+      await supabaseRPC(
+        "check_pilgrim",
         {
-          dateStyle:"medium",
-          timeStyle:"short"
+          p_name:name,
+          p_code:code
         }
       );
 
-  }catch{
 
-    return value;
+    if(
+      !Array.isArray(result) ||
+      !result.length
+    ){
+
+      showLoginMessage(
+        "اسم الحاج أو الشفرة غير صحيحة.",
+        true
+      );
+
+      return;
+
+    }
+
+
+    const pilgrim =
+      result[0];
+
+
+    currentPilgrim = {
+      id:pilgrim.id,
+      user_id:pilgrim.user_id,
+      name:pilgrim.name,
+      code:pilgrim.code
+    };
+
+
+    localStorage.setItem(
+      "hajjPilgrim",
+      JSON.stringify(currentPilgrim)
+    );
+
+
+    localStorage.removeItem(
+      "hajjGuest"
+    );
+
+
+    closePilgrimLogin();
+
+
+    await loadPilgrimLocation();
+
+
+    updatePilgrimUI();
+
+
+    showPage(
+      "pilgrim",
+      true
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    showLoginMessage(
+      "حدث خطأ أثناء الاتصال. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.",
+      true
+    );
 
   }
 
@@ -1148,17 +1121,35 @@ function formatDate(value){
 
 
 /* =========================================================
-   حماية النصوص
+   تسجيل الخروج
    ========================================================= */
 
-function escapeHTML(value){
+function logoutPilgrim(){
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  if(
+    !confirm(
+      "هل تريد تسجيل الخروج من بطاقة الحاج؟"
+    )
+  )
+    return;
+
+
+  currentPilgrim = null;
+  currentLocation = null;
+
+
+  localStorage.removeItem(
+    "hajjPilgrim"
+  );
+
+
+  showPage(
+    "settings",
+    true
+  );
+
+
+  updatePilgrimUI();
 
 }
 
@@ -1169,27 +1160,45 @@ function escapeHTML(value){
 
 function home(push=false){
 
-  if(push)
+  if(push){
+
     history.pushState(
       {page:"home"},
       "",
       "#home"
     );
 
-  const main = $("#main");
-  const page = $("#page");
-  const detail = $("#detail");
+  }
 
-  if(main)
-    main.style.display = "block";
+
+  const main =
+    $("#main");
+
+  const page =
+    $("#page");
+
+  const detail =
+    $("#detail");
+
+
+  if(main){
+
+    main.style.display =
+      "block";
+
+  }
+
 
   if(page)
     page.hidden = true;
 
+
   if(detail)
     detail.hidden = true;
 
+
   updateBottomNav("home");
+
 
   window.scrollTo({
     top:0,
@@ -1205,10 +1214,13 @@ function home(push=false){
 
 function cards(list=places){
 
-  const element = $("#placeGrid");
+  const element =
+    $("#placeGrid");
+
 
   if(!element)
     return;
+
 
   if(!list.length){
 
@@ -1236,14 +1248,17 @@ function cards(list=places){
 
   }
 
+
   element.innerHTML =
     list.map(place => {
 
       const index =
         places.indexOf(place);
 
+
       const fav =
         favorites.includes(index);
+
 
       return `
 
@@ -1256,34 +1271,42 @@ function cards(list=places){
 
             <img
               src="${place.image}"
-              alt="${place.name}"
+              alt="${escapeHTML(place.name)}"
               loading="lazy"
               onerror="this.onerror=null;this.src='images/placeholder.svg'"
             >
 
+
             <button
               class="card-fav ${fav ? "active" : ""}"
               aria-label="المفضلة"
-              onclick="event.stopPropagation();toggleFavorite(${index})"
+              onclick="
+                event.stopPropagation();
+                toggleFavorite(${index})
+              "
             >
               ${fav ? "♥" : "♡"}
             </button>
 
           </div>
 
+
           <div class="card-body">
 
             <span class="pill">
-              ${place.tag}
+              ${escapeHTML(place.tag)}
             </span>
 
+
             <h3>
-              ${place.name}
+              ${escapeHTML(place.name)}
             </h3>
 
+
             <p>
-              ${place.text}
+              ${escapeHTML(place.text)}
             </p>
+
 
             <span class="card-more">
               عرض التفاصيل ←
@@ -1309,22 +1332,31 @@ function showPage(name,push=true){
   if(push){
 
     history.pushState(
-      {type:"page",name},
+      {type:"page",name:name},
       "",
       "#"+name
     );
 
   }
 
-  const main = $("#main");
-  const page = $("#page");
-  const detail = $("#detail");
+
+  const main =
+    $("#main");
+
+  const page =
+    $("#page");
+
+  const detail =
+    $("#detail");
+
 
   if(main)
     main.style.display = "none";
 
+
   if(detail)
     detail.hidden = true;
+
 
   if(page)
     page.hidden = false;
@@ -1343,14 +1375,21 @@ function showPage(name,push=true){
   };
 
 
-  const title = $("#pageTitle");
+  const title =
+    $("#pageTitle");
 
-  if(title)
+
+  if(title){
+
     title.textContent =
       titles[name] || "دليل الحاج";
 
+  }
 
-  const content = $("#pageContent");
+
+  const content =
+    $("#pageContent");
+
 
   if(!content)
     return;
@@ -1358,6 +1397,10 @@ function showPage(name,push=true){
 
   let html = "";
 
+
+  /* =====================================================
+     الأماكن
+     ===================================================== */
 
   if(name === "places"){
 
@@ -1379,6 +1422,7 @@ function showPage(name,push=true){
 
       </div>
 
+
       <div class="list-stack">
 
         ${places.map((p,i) => `
@@ -1390,22 +1434,24 @@ function showPage(name,push=true){
 
             <img
               src="${p.image}"
-              alt="${p.name}"
+              alt="${escapeHTML(p.name)}"
               loading="lazy"
               onerror="this.onerror=null;this.src='images/placeholder.svg'"
             >
 
+
             <div>
 
               <b>
-                ${p.name}
+                ${escapeHTML(p.name)}
               </b>
 
               <small>
-                ${p.tag}
+                ${escapeHTML(p.tag)}
               </small>
 
             </div>
+
 
             <span>
               ‹
@@ -1422,9 +1468,15 @@ function showPage(name,push=true){
   }
 
 
+  /* =====================================================
+     المناسك
+     ===================================================== */
+
   else if(name === "rituals"){
 
-    const p = progressData();
+    const p =
+      progressData();
+
 
     html = `
 
@@ -1446,6 +1498,7 @@ function showPage(name,push=true){
 
         </div>
 
+
         <div
           class="progress-ring"
           style="--progress:${p.percent}%"
@@ -1459,12 +1512,14 @@ function showPage(name,push=true){
 
       </div>
 
+
       <div class="journey-list">
 
         ${journey.map((item,i) => {
 
           const done =
             completed.includes(item.id);
+
 
           return `
 
@@ -1477,24 +1532,27 @@ function showPage(name,push=true){
                 ${done ? "✓" : i+1}
               </div>
 
+
               <img
                 src="${item.image}"
-                alt="${item.title}"
+                alt="${escapeHTML(item.title)}"
                 loading="lazy"
                 onerror="this.onerror=null;this.src='images/placeholder.svg'"
               >
 
+
               <div class="journey-text">
 
                 <b>
-                  ${item.title}
+                  ${escapeHTML(item.title)}
                 </b>
 
                 <small>
-                  ${item.location}
+                  ${escapeHTML(item.location)}
                 </small>
 
               </div>
+
 
               <span>
                 ›
@@ -1512,6 +1570,10 @@ function showPage(name,push=true){
 
   }
 
+
+  /* =====================================================
+     الأدعية
+     ===================================================== */
 
   else if(name === "duas"){
 
@@ -1533,38 +1595,42 @@ function showPage(name,push=true){
 
       </div>
 
-    ` +
+      ${duas.map((item,i) => `
 
-    duas.map((item,i) => `
+        <div class="info dua-card">
 
-      <div class="info dua-card">
+          <div class="dua-number">
+            ${i+1}
+          </div>
 
-        <div class="dua-number">
-          ${i+1}
+          <div>
+
+            <span class="pill">
+              دعاء
+            </span>
+
+            <h3>
+              ${escapeHTML(item.title)}
+            </h3>
+
+            <p>
+              ${escapeHTML(item.text)}
+            </p>
+
+          </div>
+
         </div>
 
-        <div>
+      `).join("")}
 
-          <span class="pill">
-            دعاء
-          </span>
-
-          <h3>
-            ${item.title}
-          </h3>
-
-          <p>
-            ${item.text}
-          </p>
-
-        </div>
-
-      </div>
-
-    `).join("");
+    `;
 
   }
 
+
+  /* =====================================================
+     الإرشادات
+     ===================================================== */
 
   else if(name === "guide"){
 
@@ -1586,49 +1652,50 @@ function showPage(name,push=true){
 
       </div>
 
-    ` +
+      ${guides.map(item => `
 
-    guides.map(item => `
+        <div class="info guide-card">
 
-      <div class="info guide-card">
+          <div class="guide-icon">
+            ✓
+          </div>
 
-        <div class="guide-icon">
-          ✓
+          <div>
+
+            <h3>
+              ${escapeHTML(item[0])}
+            </h3>
+
+            <p>
+              ${escapeHTML(item[1])}
+            </p>
+
+          </div>
+
         </div>
 
-        <div>
+      `).join("")}
 
-          <h3>
-            ${item[0]}
-          </h3>
-
-          <p>
-            ${item[1]}
-          </p>
-
-        </div>
-
-      </div>
-
-    `).join("");
+    `;
 
   }
 
+
+  /* =====================================================
+     المفضلة
+     ===================================================== */
 
   else if(name === "favorites"){
 
     const valid =
       favorites.filter(
-        i => places[i]
+        index => places[index]
       );
 
 
-    html =
-      valid.length
+    if(valid.length){
 
-      ?
-
-      `
+      html = `
 
         <div class="page-intro">
 
@@ -1646,48 +1713,54 @@ function showPage(name,push=true){
 
         </div>
 
-      ` +
 
-      valid.map(i => `
+        ${valid.map(index => `
 
-        <div
-          class="list-item clickable"
-          onclick="openPlace(${i})"
-        >
-
-          <img
-            src="${places[i].image}"
-            alt="${places[i].name}"
-            loading="lazy"
-            onerror="this.onerror=null;this.src='images/placeholder.svg'"
+          <div
+            class="list-item clickable"
+            onclick="openPlace(${index})"
           >
 
-          <div>
+            <img
+              src="${places[index].image}"
+              alt="${escapeHTML(places[index].name)}"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='images/placeholder.svg'"
+            >
 
-            <b>
-              ${places[i].name}
-            </b>
 
-            <small>
-              ${places[i].tag}
-            </small>
+            <div>
+
+              <b>
+                ${escapeHTML(places[index].name)}
+              </b>
+
+              <small>
+                ${escapeHTML(places[index].tag)}
+              </small>
+
+            </div>
+
+
+            <button
+              class="mini-remove"
+              onclick="
+                event.stopPropagation();
+                toggleFavorite(${index})
+              "
+            >
+              ♥
+            </button>
 
           </div>
 
-          <button
-            class="mini-remove"
-            onclick="event.stopPropagation();toggleFavorite(${i})"
-          >
-            ♥
-          </button>
+        `).join("")}
 
-        </div>
+      `;
 
-      `).join("")
+    }else{
 
-      :
-
-      `
+      html = `
 
         <div class="info empty-state">
 
@@ -1714,20 +1787,32 @@ function showPage(name,push=true){
 
       `;
 
+    }
+
   }
 
+
+  /* =====================================================
+     بطاقة الحاج
+     ===================================================== */
 
   else if(name === "pilgrim"){
 
-    html = renderPilgrimPage();
+    html =
+      renderPilgrimPage();
 
   }
 
+
+  /* =====================================================
+     الإعدادات
+     ===================================================== */
 
   else if(name === "settings"){
 
     const dark =
       document.body.classList.contains("dark");
+
 
     const p =
       progressData();
@@ -1735,75 +1820,44 @@ function showPage(name,push=true){
 
     html = `
 
-      ${
-        currentPilgrim
+      <div
+        class="info pilgrim-settings-card"
+        onclick="${
+          currentPilgrim
+          ? "showPage('pilgrim')"
+          : "openPilgrimLogin()"
+        }"
+      >
 
-        ?
+        <div class="pilgrim-settings-icon">
+          👤
+        </div>
 
-        `
+        <div>
 
-          <div
-            class="info pilgrim-settings-card"
-            onclick="showPage('pilgrim')"
-          >
+          <span class="pill">
+            بطاقة الحاج
+          </span>
 
-            <div class="pilgrim-settings-icon">
-              👤
-            </div>
+          <h3 class="pilgrim-name">
+            ${
+              currentPilgrim
+              ? escapeHTML(currentPilgrim.name)
+              : "تسجيل دخول الحاج"
+            }
+          </h3>
 
-            <div>
+          <p>
+            ${
+              currentPilgrim
+              ? "عرض بيانات الحاج والموقع"
+              : "أدخل اسم الحاج والشفرة الخاصة"
+            }
+          </p>
 
-              <span class="pill">
-                بطاقة الحاج
-              </span>
+        </div>
 
-              <h3 class="pilgrim-name">
-                ${escapeHTML(currentPilgrim.name)}
-              </h3>
-
-              <p>
-                عرض بيانات الحاج والموقع
-              </p>
-
-            </div>
-
-          </div>
-
-        `
-
-        :
-
-        `
-
-          <div
-            class="info pilgrim-settings-card"
-            onclick="openPilgrimLogin()"
-          >
-
-            <div class="pilgrim-settings-icon">
-              👤
-            </div>
-
-            <div>
-
-              <span class="pill">
-                بطاقة الحاج
-              </span>
-
-              <h3>
-                تسجيل دخول الحاج
-              </h3>
-
-              <p>
-                أدخل اسم الحاج والشفرة الخاصة
-              </p>
-
-            </div>
-
-          </div>
-
-        `
-      }
+      </div>
 
 
       <div class="settings-card">
@@ -1819,6 +1873,7 @@ function showPage(name,push=true){
           </small>
 
         </div>
+
 
         <button
           class="theme-switch ${dark ? "on" : ""}"
@@ -1860,12 +1915,13 @@ function showPage(name,push=true){
         </h3>
 
         <p>
-          دليل الحاج رفيق رقمي للمعلومات الأساسية المتعلقة
-          بالمناسك والأماكن والأدعية والإرشادات.
+          دليل الحاج رفيق رقمي للمعلومات الأساسية
+          المتعلقة بالمناسك والأماكن والأدعية والإرشادات.
         </p>
 
         <p class="muted-note">
-          في المسائل الشرعية التفصيلية يُرجع إلى عالم أو مرشد حج موثوق.
+          في المسائل الشرعية التفصيلية يُرجع إلى عالم
+          أو مرشد حج موثوق.
         </p>
 
       </div>
@@ -1875,9 +1931,12 @@ function showPage(name,push=true){
   }
 
 
-  content.innerHTML = html;
+  content.innerHTML =
+    html;
+
 
   updateBottomNav(name);
+
 
   window.scrollTo({
     top:0,
@@ -1888,12 +1947,14 @@ function showPage(name,push=true){
 
 
 /* =========================================================
-   فتح المكان
+   فتح مكان
    ========================================================= */
 
 function openPlace(index,push=true){
 
-  const place = places[index];
+  const place =
+    places[index];
+
 
   if(!place)
     return;
@@ -1902,7 +1963,7 @@ function openPlace(index,push=true){
   if(push){
 
     history.pushState(
-      {type:"place",index},
+      {type:"place",index:index},
       "",
       "#place-"+index
     );
@@ -1910,11 +1971,26 @@ function openPlace(index,push=true){
   }
 
 
-  $("#main").style.display = "none";
+  const main =
+    $("#main");
 
-  $("#page").hidden = true;
+  const page =
+    $("#page");
 
-  $("#detail").hidden = false;
+  const detail =
+    $("#detail");
+
+
+  if(main)
+    main.style.display = "none";
+
+
+  if(page)
+    page.hidden = true;
+
+
+  if(detail)
+    detail.hidden = false;
 
 
   $("#detailTitle").textContent =
@@ -1932,49 +2008,53 @@ function openPlace(index,push=true){
     <img
       class="detail-hero"
       src="${place.image}"
-      alt="${place.name}"
+      alt="${escapeHTML(place.name)}"
       onerror="this.onerror=null;this.src='images/placeholder.svg'"
     >
+
 
     <div class="info detail-info">
 
       <span class="pill">
-        ${place.tag}
+        ${escapeHTML(place.tag)}
       </span>
 
+
       <h2>
-        ${place.name}
+        ${escapeHTML(place.name)}
       </h2>
 
+
       <p>
-        ${place.text}
+        ${escapeHTML(place.text)}
       </p>
+
 
       <h3>
         معلومات مهمة
       </h3>
 
+
       <ul>
 
-        ${place.details.map(x => `
+        ${place.details.map(item => `
           <li>
-            ${x}
+            ${escapeHTML(item)}
           </li>
         `).join("")}
 
       </ul>
 
+
       <button
         class="primary-btn"
         onclick="toggleFavorite(${index})"
       >
-
         ${
           favorites.includes(index)
           ? "♥ إزالة من المفضلة"
           : "♡ إضافة إلى المفضلة"
         }
-
       </button>
 
     </div>
@@ -1996,7 +2076,9 @@ function openPlace(index,push=true){
 
 function openJourney(index,push=true){
 
-  const item = journey[index];
+  const item =
+    journey[index];
+
 
   if(!item)
     return;
@@ -2005,7 +2087,7 @@ function openJourney(index,push=true){
   if(push){
 
     history.pushState(
-      {type:"journey",index},
+      {type:"journey",index:index},
       "",
       "#journey-"+index
     );
@@ -2013,11 +2095,26 @@ function openJourney(index,push=true){
   }
 
 
-  $("#main").style.display = "none";
+  const main =
+    $("#main");
 
-  $("#page").hidden = true;
+  const page =
+    $("#page");
 
-  $("#detail").hidden = false;
+  const detail =
+    $("#detail");
+
+
+  if(main)
+    main.style.display = "none";
+
+
+  if(page)
+    page.hidden = true;
+
+
+  if(detail)
+    detail.hidden = false;
 
 
   $("#detailTitle").textContent =
@@ -2037,22 +2134,25 @@ function openJourney(index,push=true){
     <img
       class="detail-hero"
       src="${item.image}"
-      alt="${item.title}"
+      alt="${escapeHTML(item.title)}"
       onerror="this.onerror=null;this.src='images/placeholder.svg'"
     >
+
 
     <div class="info detail-info">
 
       <span class="pill">
-        ${item.location}
+        ${escapeHTML(item.location)}
       </span>
 
+
       <h2>
-        ${item.title}
+        ${escapeHTML(item.title)}
       </h2>
 
+
       <p>
-        ${item.description}
+        ${escapeHTML(item.description)}
       </p>
 
     </div>
@@ -2064,11 +2164,12 @@ function openJourney(index,push=true){
         ماذا تفعل؟
       </h3>
 
+
       <ol class="steps">
 
-        ${item.steps.map(x => `
+        ${item.steps.map(step => `
           <li>
-            ${x}
+            ${escapeHTML(step)}
           </li>
         `).join("")}
 
@@ -2083,13 +2184,11 @@ function openJourney(index,push=true){
         class="complete-btn ${done ? "completed" : ""}"
         onclick="toggleJourney('${item.id}',${index})"
       >
-
         ${
           done
           ? "✓ تمت هذه المرحلة"
           : "إتمام هذه المرحلة"
         }
-
       </button>
 
     </div>
@@ -2111,21 +2210,23 @@ function openJourney(index,push=true){
 
 function toggleJourney(id,index){
 
-  completed =
-    completed.includes(id)
+  if(completed.includes(id)){
 
-    ?
+    completed =
+      completed.filter(
+        item => item !== id
+      );
 
-    completed.filter(
-      x => x !== id
-    )
+  }else{
 
-    :
+    completed =
+      [...completed,id];
 
-    [...completed,id];
+  }
 
 
   saveData();
+
 
   openJourney(
     index,
@@ -2141,44 +2242,55 @@ function toggleJourney(id,index){
 
 function toggleFavorite(index){
 
-  favorites =
+  if(!places[index])
+    return;
 
-    favorites.includes(index)
 
-    ?
+  if(favorites.includes(index)){
 
-    favorites.filter(
-      x => x !== index
-    )
+    favorites =
+      favorites.filter(
+        item => item !== index
+      );
 
-    :
+  }else{
 
-    [...favorites,index];
+    favorites =
+      [...favorites,index];
+
+  }
 
 
   saveData();
 
 
-  if(location.hash.startsWith("#place-")){
+  const hash =
+    location.hash || "";
+
+
+  if(hash.startsWith("#place-")){
 
     openPlace(
       index,
       false
     );
 
-  }else{
-
-    cards();
-
   }
 
 
-  if(location.hash === "#favorites"){
+  else if(hash === "#favorites"){
 
     showPage(
       "favorites",
       false
     );
+
+  }
+
+
+  else{
+
+    cards();
 
   }
 
@@ -2215,7 +2327,7 @@ function toggleTheme(){
 
 
 /* =========================================================
-   إعادة ضبط التقدم
+   إعادة التقدم
    ========================================================= */
 
 function resetProgress(){
@@ -2229,6 +2341,7 @@ function resetProgress(){
 
 
   completed = [];
+
 
   saveData();
 
@@ -2251,6 +2364,7 @@ function openDrawer(){
     "open"
   );
 
+
   $("#shade")?.classList.add(
     "show"
   );
@@ -2264,6 +2378,7 @@ function closeDrawer(){
     "open"
   );
 
+
   $("#shade")?.classList.remove(
     "show"
   );
@@ -2272,15 +2387,22 @@ function closeDrawer(){
 
 
 /* =========================================================
-   رجوع
+   الرجوع
    ========================================================= */
 
 function back(){
 
-  if(history.length > 1)
+  if(
+    history.length > 1
+  ){
+
     history.back();
-  else
-    home();
+
+  }else{
+
+    home(false);
+
+  }
 
 }
 
@@ -2294,7 +2416,9 @@ function updateBottomNav(active){
   $$("[data-page]").forEach(
     button => {
 
-      if(button.closest(".bottom")){
+      if(
+        button.closest(".bottom")
+      ){
 
         button.classList.toggle(
           "active",
@@ -2316,7 +2440,7 @@ function updateBottomNav(active){
 function searchPlaces(value){
 
   const query =
-    value
+    String(value || "")
       .trim()
       .toLowerCase();
 
@@ -2331,22 +2455,21 @@ function searchPlaces(value){
 
 
   const results =
-    places.filter(p =>
+    places.filter(place => {
 
-      [
-        p.name,
-        p.tag,
-        p.text,
-        ...p.details
+      return [
+
+        place.name,
+        place.tag,
+        place.text,
+        ...place.details
+
       ]
-
       .join(" ")
-
       .toLowerCase()
+      .includes(query);
 
-      .includes(query)
-
-    );
+    });
 
 
   cards(results);
@@ -2355,18 +2478,72 @@ function searchPlaces(value){
 
 
 /* =========================================================
-   الروابط
+   التاريخ
+   ========================================================= */
+
+function formatDate(value){
+
+  try{
+
+    return new Date(value)
+      .toLocaleString(
+        "ar-SA",
+        {
+          dateStyle:"medium",
+          timeStyle:"short"
+        }
+      );
+
+  }catch{
+
+    return String(value);
+
+  }
+
+}
+
+
+/* =========================================================
+   تحديث موقع الحاج
+   ========================================================= */
+
+async function refreshPilgrimLocation(){
+
+  if(!currentPilgrim){
+
+    openPilgrimLogin();
+
+    return;
+
+  }
+
+
+  await loadPilgrimLocation();
+
+
+  showPage(
+    "pilgrim",
+    false
+  );
+
+}
+
+
+/* =========================================================
+   مسارات التطبيق
    ========================================================= */
 
 function handleRoute(){
 
   const hash =
-    location.hash;
+    location.hash || "#home";
 
+
+  /* الرئيسية */
 
   if(
-    !hash ||
-    hash === "#home"
+    hash === "#home" ||
+    hash === "#"
   ){
 
     home(false);
@@ -2376,49 +2553,85 @@ function handleRoute(){
   }
 
 
+  /* مكان */
+
   if(
     hash.startsWith("#place-")
   ){
 
-    openPlace(
+    const index =
       Number(
         hash.replace(
           "#place-",
           ""
         )
-      ),
-      false
-    );
+      );
+
+
+    if(
+      Number.isInteger(index) &&
+      places[index]
+    ){
+
+      openPlace(
+        index,
+        false
+      );
+
+    }else{
+
+      home(false);
+
+    }
 
     return;
 
   }
 
+
+  /* مرحلة */
 
   if(
     hash.startsWith("#journey-")
   ){
 
-    openJourney(
+    const index =
       Number(
         hash.replace(
           "#journey-",
           ""
         )
-      ),
-      false
-    );
+      );
+
+
+    if(
+      Number.isInteger(index) &&
+      journey[index]
+    ){
+
+      openJourney(
+        index,
+        false
+      );
+
+    }else{
+
+      home(false);
+
+    }
 
     return;
 
   }
 
 
+  /* الصفحات */
+
   const page =
     hash.substring(1);
 
 
-  if([
+  const validPages = [
 
     "places",
     "rituals",
@@ -2428,7 +2641,12 @@ function handleRoute(){
     "settings",
     "pilgrim"
 
-  ].includes(page)){
+  ];
+
+
+  if(
+    validPages.includes(page)
+  ){
 
     showPage(
       page,
@@ -2452,6 +2670,8 @@ document.addEventListener(
   "DOMContentLoaded",
   () => {
 
+    /* الوضع الداكن */
+
     if(
       localStorage.getItem(
         "hajjDark"
@@ -2465,11 +2685,17 @@ document.addEventListener(
     }
 
 
+    /* البطاقات */
+
     cards();
 
 
+    /* نافذة الدخول الداخلية */
+
     createLoginModal();
 
+
+    /* القائمة */
 
     $("#menuBtn")?.addEventListener(
       "click",
@@ -2489,6 +2715,8 @@ document.addEventListener(
     );
 
 
+    /* الرجوع */
+
     $("#backBtn")?.addEventListener(
       "click",
       back
@@ -2501,25 +2729,38 @@ document.addEventListener(
     );
 
 
+    /* الوضع الداكن */
+
     $("#themeBtn")?.addEventListener(
       "click",
       toggleTheme
     );
 
 
+    /* =====================================================
+       جميع أزرار الأقسام
+       ===================================================== */
+
     $$("[data-page]").forEach(
       button => {
 
         button.addEventListener(
           "click",
-          e => {
+          event => {
 
-            e.preventDefault();
+            event.preventDefault();
+            event.stopPropagation();
 
-            closeDrawer();
 
             const page =
               button.dataset.page;
+
+
+            if(!page)
+              return;
+
+
+            closeDrawer();
 
 
             if(page === "home"){
@@ -2542,35 +2783,44 @@ document.addEventListener(
     );
 
 
+    /* البحث */
+
     $("#search")?.addEventListener(
       "input",
-      e =>
+      event => {
+
         searchPlaces(
-          e.target.value
-        )
+          event.target.value
+        );
+
+      }
     );
 
+
+    /* زر المفضلة */
 
     $("#favBtn")?.addEventListener(
       "click",
       () => {
 
         const hash =
-          location.hash;
+          location.hash || "";
 
 
         if(
           hash.startsWith("#place-")
         ){
 
-          toggleFavorite(
+          const index =
             Number(
               hash.replace(
                 "#place-",
                 ""
               )
-            )
-          );
+            );
+
+
+          toggleFavorite(index);
 
         }
 
@@ -2578,13 +2828,17 @@ document.addEventListener(
     );
 
 
+    /* Enter */
+
     document.addEventListener(
       "keydown",
       event => {
 
         if(
           event.key === "Enter" &&
-          $("#pilgrimLoginModal")?.classList.contains("show")
+          $("#pilgrimLoginModal")
+            ?.classList
+            .contains("show")
         ){
 
           submitPilgrimLogin();
@@ -2594,6 +2848,8 @@ document.addEventListener(
       }
     );
 
+
+    /* موقع الحاج المحفوظ */
 
     if(currentPilgrim){
 
@@ -2608,6 +2864,8 @@ document.addEventListener(
     }
 
 
+    /* فتح المسار الحالي */
+
     handleRoute();
 
   }
@@ -2615,11 +2873,17 @@ document.addEventListener(
 
 
 /* =========================================================
-   التنقل بالمتصفح
+   التنقل بالمتصفح والهاتف
    ========================================================= */
 
 window.addEventListener(
   "popstate",
+  handleRoute
+);
+
+
+window.addEventListener(
+  "hashchange",
   handleRoute
 );
 
@@ -2639,11 +2903,14 @@ if(
       navigator.serviceWorker
         .register("./sw.js")
         .catch(
-          e =>
+          error => {
+
             console.log(
               "Service Worker:",
-              e
-            )
+              error
+            );
+
+          }
         );
 
     }
@@ -2653,9 +2920,9 @@ if(
 
 
 /* =========================================================
-   بدء التطبيق
+   جاهز
    ========================================================= */
 
 console.log(
-  "HAJJ APP v7 — PILGRIM + SUPABASE + MAP LOADED"
+  "HAJJ APP v7 FINAL — READY"
 );
