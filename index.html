@@ -9,166 +9,396 @@
 <link rel="icon" href="images/logo.svg">
 <link rel="stylesheet" href="style.css">
 <title>دليل الحاج</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
+<!-- =====================================================
+     شاشة دخول الحاج
+     ===================================================== -->
+
+<div id="loginScreen" class="login-screen">
+
+  <div class="login-card">
+
+    <img
+      src="images/logo.svg"
+      alt="دليل الحاج"
+      class="login-logo"
+    >
+
+    <h1>دليل الحاج</h1>
+
+    <p>
+      مرحبًا بك في رفيقك الرقمي في رحلة الحج
+    </p>
+
+    <label for="pilgrimName">
+      اسم الحاج
+    </label>
+
+    <input
+      id="pilgrimName"
+      type="text"
+      placeholder="اكتب اسم الحاج"
+      autocomplete="name"
+    >
+
+    <label for="pilgrimCode">
+      الرمز الخاص
+    </label>
+
+    <input
+      id="pilgrimCode"
+      type="text"
+      placeholder="أدخل الرمز الخاص"
+      autocomplete="off"
+    >
+
+    <button
+      id="loginBtn"
+      class="primary-btn"
+      type="button"
+    >
+      دخول
+    </button>
+
+    <p
+      id="loginMessage"
+      class="login-message"
+    ></p>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     التطبيق
+     ===================================================== -->
+
 <div id="app">
 
 <header class="topbar">
-  <button class="icon-btn" id="menuBtn">☰</button>
+
+  <button
+    class="icon-btn"
+    id="menuBtn"
+    type="button"
+  >
+    ☰
+  </button>
 
   <div class="brand">
-    <img src="images/logo.svg">
+
+    <img
+      src="images/logo.svg"
+      alt="دليل الحاج"
+    >
+
     <div>
       <b>دليل الحاج</b>
       <small>رحلتك إلى البيت العتيق</small>
     </div>
+
   </div>
 
-  <button class="icon-btn" id="themeBtn">☾</button>
+  <button
+    class="icon-btn"
+    id="themeBtn"
+    type="button"
+  >
+    ☾
+  </button>
+
 </header>
+
 
 <main id="main">
 
 <section class="welcome">
+
   <div>
-    <span>بسم الله الرحمن الرحيم</span>
-    <h1>رفيقك في رحلة الحج</h1>
-    <p>مناسك وأماكن وأدعية وإرشادات في مكان واحد.</p>
+
+    <span>
+      بسم الله الرحمن الرحيم
+    </span>
+
+    <h1>
+      رفيقك في رحلة الحج
+    </h1>
+
+    <p>
+      مناسك وأماكن وأدعية وإرشادات في مكان واحد.
+    </p>
+
   </div>
+
 </section>
 
+
 <div class="search">
+
   <span>⌕</span>
-  <input id="search" placeholder="ابحث عن منسك أو مكان أو دعاء...">
+
+  <input
+    id="search"
+    placeholder="ابحث عن منسك أو مكان أو دعاء..."
+  >
+
 </div>
+
 
 <section class="quick">
 
-<button data-page="rituals">
+<button
+  data-page="rituals"
+  type="button"
+>
 <strong>🕋</strong>
 <span>مناسك الحج</span>
 </button>
 
-<button data-page="places">
+<button
+  data-page="places"
+  type="button"
+>
 <strong>🗺️</strong>
 <span>أماكن الحج</span>
 </button>
 
-<button data-page="duas">
+<button
+  data-page="duas"
+  type="button"
+>
 <strong>🤲</strong>
 <span>الأدعية</span>
 </button>
 
-<button data-page="guide">
+<button
+  data-page="guide"
+  type="button"
+>
 <strong>✦</strong>
 <span>إرشادات الحاج</span>
 </button>
 
 </section>
 
+
 <section class="journey-card">
 
 <div class="section-head">
+
 <div>
-<small>رحلة الحج</small>
-<h2>مراحل رحلة الحج</h2>
+
+<small>
+رحلة الحج
+</small>
+
+<h2>
+مراحل رحلة الحج
+</h2>
+
 </div>
 
-<span class="progress">6 مراحل</span>
+<span class="progress">
+6 مراحل
+</span>
+
 </div>
+
 
 <div class="timeline">
+
 <i>الإحرام</i>
 <i>مكة</i>
 <i>عرفة</i>
 <i>مزدلفة</i>
 <i>منى</i>
 <i>الوداع</i>
+
 </div>
 
 </section>
 
+
 <section>
 
 <div class="section-head">
+
 <div>
-<small>اكتشف</small>
-<h2>أهم الأماكن</h2>
+
+<small>
+اكتشف
+</small>
+
+<h2>
+أهم الأماكن
+</h2>
+
 </div>
 
-<button class="link" data-page="places">عرض الكل</button>
+<button
+  class="link"
+  data-page="places"
+  type="button"
+>
+عرض الكل
+</button>
+
 </div>
 
-<div id="placeGrid" class="cards"></div>
+
+<div
+  id="placeGrid"
+  class="cards"
+></div>
 
 </section>
 
 </main>
 
+
+<!-- =====================================================
+     القائمة السفلية
+     ===================================================== -->
+
 <nav class="bottom">
 
-<button class="active" data-page="home">
+<button
+  class="active"
+  data-page="home"
+  type="button"
+>
 ⌂
 <span>الرئيسية</span>
 </button>
 
-<button data-page="places">
+<button
+  data-page="places"
+  type="button"
+>
 ⌖
 <span>الأماكن</span>
 </button>
 
-<button data-page="rituals">
+<button
+  data-page="rituals"
+  type="button"
+>
 ☰
 <span>المناسك</span>
 </button>
 
-<button data-page="favorites">
+<button
+  data-page="favorites"
+  type="button"
+>
 ♡
 <span>المفضلة</span>
 </button>
 
-<button data-page="settings">
+<button
+  data-page="settings"
+  type="button"
+>
 ⚙
 <span>الإعدادات</span>
 </button>
 
 </nav>
 
-<div id="drawer" class="drawer">
+
+<!-- =====================================================
+     القائمة الجانبية
+     ===================================================== -->
+
+<div
+  id="drawer"
+  class="drawer"
+>
 
 <div class="drawer-head">
 
-<img src="images/logo.svg">
+<img
+  src="images/logo.svg"
+  alt="دليل الحاج"
+>
 
-<b>دليل الحاج</b>
+<b>
+دليل الحاج
+</b>
 
-<button id="closeDrawer">×</button>
+<button
+  id="closeDrawer"
+  type="button"
+>
+×
+</button>
 
 </div>
+
 
 <div class="drawer-links">
 
-<button data-page="home">⌂ الرئيسية</button>
-<button data-page="rituals">🕋 مناسك الحج</button>
-<button data-page="places">🗺️ أماكن الحج</button>
-<button data-page="duas">🤲 الأدعية والأذكار</button>
-<button data-page="guide">✦ إرشادات الحاج</button>
-<button data-page="favorites">♡ المفضلة</button>
-<button data-page="settings">⚙ الإعدادات</button>
+<button data-page="home" type="button">
+⌂ الرئيسية
+</button>
+
+<button data-page="rituals" type="button">
+🕋 مناسك الحج
+</button>
+
+<button data-page="places" type="button">
+🗺️ أماكن الحج
+</button>
+
+<button data-page="duas" type="button">
+🤲 الأدعية والأذكار
+</button>
+
+<button data-page="guide" type="button">
+✦ إرشادات الحاج
+</button>
+
+<button data-page="favorites" type="button">
+♡ المفضلة
+</button>
+
+<button data-page="settings" type="button">
+⚙ الإعدادات
+</button>
 
 </div>
 
 </div>
+
 
 <div id="shade"></div>
 
-<div id="page" class="page" hidden>
+
+<!-- =====================================================
+     الصفحات الداخلية
+     ===================================================== -->
+
+<div
+  id="page"
+  class="page"
+  hidden
+>
 
 <header class="page-head">
 
-<button id="backBtn">‹</button>
+<button
+  id="backBtn"
+  type="button"
+>
+‹
+</button>
 
 <h2 id="pageTitle"></h2>
 
@@ -180,15 +410,34 @@
 
 </div>
 
-<div id="detail" class="detail" hidden>
+
+<!-- =====================================================
+     تفاصيل المكان / المنسك
+     ===================================================== -->
+
+<div
+  id="detail"
+  class="detail"
+  hidden
+>
 
 <header class="page-head">
 
-<button id="detailBack">‹</button>
+<button
+  id="detailBack"
+  type="button"
+>
+‹
+</button>
 
 <h2 id="detailTitle"></h2>
 
-<button id="favBtn">♡</button>
+<button
+  id="favBtn"
+  type="button"
+>
+♡
+</button>
 
 </header>
 
@@ -197,6 +446,9 @@
 </div>
 
 </div>
+
+
+<!-- التطبيق -->
 <script src="app.js"></script>
 
 </body>
