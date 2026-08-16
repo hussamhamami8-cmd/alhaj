@@ -853,100 +853,66 @@ function showLoginScreen(){
    تسجيل دخول بطاقة الحاج
 ===================================================== */
 
-async function login(){
-
-  const name =
-    loginName.value.trim();
-
-  const code =
-    loginCode.value.trim();
-
+async function login() {
+  const name = loginName.value.trim();
+  const code = loginCode.value.trim();
 
   loginError.hidden = true;
   loginError.textContent = "";
 
-
-  if(!name){
-
-    loginError.textContent =
-      "يرجى إدخال اسم الحاج.";
-
+  if (!name) {
+    loginError.textContent = "يرجى إدخال اسم الحاج.";
     loginError.hidden = false;
-
     loginName.focus();
-
     return;
-
   }
 
-
-  if(!code){
-
-    loginError.textContent =
-      "يرجى إدخال الشفرة الخاصة.";
-
+  if (!code) {
+    loginError.textContent = "يرجى إدخال الشفرة الخاصة.";
     loginError.hidden = false;
-
     loginCode.focus();
-
     return;
-
   }
-
 
   loginBtn.disabled = true;
   loginLoading.hidden = false;
 
-
-  try{
-try {
+  try {
     // استعلام مباشر على جدول pilgrims
     const { data, error } = await window.hajjSupabaseClient
-        .from("pilgrims")
-        .select("*")
-        .eq("name", name)
-        .eq("code", code)
-        .maybeSingle();
+      .from("pilgrims")
+      .select("*")
+      .eq("name", name)
+      .eq("code", code)
+      .maybeSingle();
 
     if (error) {
-        console.error("Supabase Error:", error);
-        throw new Error("تعذر التحقق من بيانات الحاج.");
+      console.error("Supabase Error:", error);
+      throw new Error("تعذر التحقق من بيانات الحاج.");
     }
 
     if (!data) {
-        loginError.textContent = "اسم الحاج أو الشفرة غير صحيحة.";
-        loginError.hidden = false;
-        return;
+      loginError.textContent = "اسم الحاج أو الشفرة غير صحيحة.";
+      loginError.hidden = false;
+      return;
     }
 
     // تسجيل الدخول ناجح
     showApplication({
-        id: data.id,
-        user_id: data.user_id,
-        name: data.name,
-        code: data.code,
-        created_at: data.created_at || null
+      id: data.id,
+      user_id: data.user_id,
+      name: data.name,
+      code: data.code,
+      created_at: data.created_at || null
     });
-}
-  catch(error){
-
+  } catch (error) {
     console.error(error);
-
-    loginError.textContent =
-      error.message ||
-      "حدث خطأ أثناء تسجيل الدخول.";
-
+    loginError.textContent = error.message || "حدث خطأ أثناء تسجيل الدخول.";
     loginError.hidden = false;
-
-  }
-
-  finally{
-
+  } finally {
     loginBtn.disabled = false;
     loginLoading.hidden = true;
-
   }
-
 }
 
 
