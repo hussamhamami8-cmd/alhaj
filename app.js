@@ -2964,27 +2964,17 @@ setInterval(
       currentPilgrim?.id ||
       null;
 
-
     syncPilgrim();
-
 
     const after =
       currentPilgrim?.id ||
       null;
 
-
-    if (before !== after)
- {
-
+    if (before !== after) {
       updatePilgrimUI();
-
-      if (
-        location.hash === "#pilgrim" &&
-        currentPilgrim
-      ) {
+      if (location.hash === "#pilgrim" && currentPilgrim) {
         loadPilgrimLocation();
       }
-
     }
 
   },
