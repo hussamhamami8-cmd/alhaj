@@ -816,10 +816,9 @@ function enterAsGuest(){
     "hajjPilgrim"
   );
 
-  localStorage.setItem(
-    "hajjGuest",
-    "true"
-  );
+  // وضع الزائر مؤقت: لا نحفظه في localStorage
+  // حتى لا يبقى التطبيق زائرًا إلى الأبد بعد أول اختيار.
+  localStorage.removeItem("hajjGuest");
 
   loginName.value = "";
   loginCode.value = "";
@@ -1088,10 +1087,10 @@ document
       );
 
 
-    const guest =
-      localStorage.getItem(
-        "hajjGuest"
-      ) === "true";
+    // إزالة حالة الزائر القديمة من الإصدارات السابقة.
+    // الزائر الآن حالة مؤقتة فقط ولا تمنع تسجيل الدخول كحاج.
+    localStorage.removeItem("hajjGuest");
+    const guest = false;
 
 
     if(
