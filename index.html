@@ -906,14 +906,12 @@ async function login(){
        تسجيل الدخول في الشاشة الرئيسية يستخدم نفس نظام app.js.
     */
     const { data, error } =
-      await window.hajjSupabaseClient.rpc(
-        "check_pilgrim",
-        {
-          p_name: name,
-          p_code: code
-        }
-      );
-
+  await window.hajjSupabaseClient
+    .rpc("check_pilgrim", {
+      p_name: name,
+      p_code: code
+    })
+    .maybeSingle();
 
     if(error){
 
