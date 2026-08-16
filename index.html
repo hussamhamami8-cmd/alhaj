@@ -900,32 +900,36 @@ async function login(){
 
   try{
 
+    /*
+       التحقق عبر الدالة الآمنة الموجودة في Supabase بدل القراءة
+       المباشرة من جدول pilgrims. هذا يمنع مشاكل RLS ويضمن أن
+       تسجيل الدخول في الشاشة الرئيسية يستخدم نفس نظام app.js.
+    */
     const { data, error } =
-      await window.hajjSupabaseClient
-        .from("pilgrims")
-        .select(
-          "id,user_id,name,code,created_at"
-        )
-        .eq("name", name)
-        .eq("code", code)
-        .maybeSingle();
+      await window.hajjSupabaseClient.rpc(
+        "check_pilgrim",
+        {
+          p_name: name,
+          p_code: code
+        }
+      );
 
 
     if(error){
 
       console.error(
-        "Supabase Error:",
+        "Supabase Login Error:",
         error
       );
 
       throw new Error(
-        "تعذر الاتصال بقاعدة البيانات."
+        "تعذر التحقق من بيانات الحاج. تأكد من إعداد دالة تسجيل الدخول في Supabase."
       );
 
     }
 
 
-    if(!data){
+    if(!Array.isArray(data) || !data.length){
 
       loginError.textContent =
         "اسم الحاج أو الشفرة غير صحيحة.";
@@ -937,7 +941,19 @@ async function login(){
     }
 
 
-    showApplication(data);
+    /*
+       قد تعيد الدالة حقولًا إضافية، ونحتفظ فقط بالحقول التي
+       يحتاجها التطبيق.
+    */
+    const pilgrim = data[0];
+
+    showApplication({
+      id: pilgrim.id,
+      user_id: pilgrim.user_id,
+      name: pilgrim.name,
+      code: pilgrim.code,
+      created_at: pilgrim.created_at || null
+    });
 
   }
 
