@@ -2,105 +2,806 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>لوحة إدارة دليل الحاج</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- الخطوط والأيقونات -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Cairo', system-ui, sans-serif; }
-        body { background: #f2f5f9; color: #1a2e35; min-height: 100vh; padding: 20px; }
-        .admin-container { max-width: 1400px; margin: auto; background: white; border-radius: 24px; padding: 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e5e9e6; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
-        .admin-header h1 { font-size: 24px; color: #075c52; }
-        .admin-header .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        .admin-header .actions a, .admin-header .actions button { padding: 10px 20px; border-radius: 60px; text-decoration: none; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-primary { background: #075c52; color: white; }
-        .btn-primary:hover { background: #064e45; }
-        .btn-outline { background: transparent; border: 2px solid #e2e8f0; color: #4a5568; }
-        .btn-outline:hover { background: #f7fafc; }
-        .btn-gold { background: #c99625; color: white; border: none; }
-        .btn-gold:hover { background: #b8860b; }
-        .btn-danger-outline { background: transparent; border: 2px solid #fc8181; color: #e53e3e; }
-        .btn-danger-outline:hover { background: #fff5f5; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .stat-card { background: #f7fafc; padding: 20px 25px; border-radius: 20px; border-right: 5px solid #075c52; }
-        .stat-card .label { font-size: 14px; color: #718096; }
-        .stat-card .value { font-size: 32px; font-weight: 800; color: #1a2e35; margin-top: 5px; }
-        .stat-card .sub { font-size: 12px; color: #a0aec0; margin-top: 5px; }
-        .stat-card.gold { border-right-color: #c99625; }
-        .stat-card.blue { border-right-color: #3182ce; }
-        .toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; background: #f7fafc; padding: 15px 25px; border-radius: 20px; }
-        .toolbar .search-box { display: flex; align-items: center; background: white; border-radius: 60px; padding: 5px 15px; flex: 1; min-width: 200px; border: 1px solid #e2e8f0; }
-        .toolbar .search-box i { color: #a0aec0; margin-left: 10px; }
-        .toolbar .search-box input { border: none; background: transparent; padding: 12px 0; width: 100%; font-size: 14px; outline: none; }
-        .toolbar .add-btn { background: #075c52; color: white; border: none; padding: 12px 28px; border-radius: 60px; font-weight: 700; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
-        .toolbar .add-btn:hover { background: #064e45; }
-        .table-wrapper { background: white; border-radius: 24px; padding: 10px 0; overflow-x: auto; border: 1px solid #e2e8f0; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { text-align: right; padding: 16px 20px; background: #f7fafc; color: #4a5568; font-weight: 700; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
-        td { padding: 14px 20px; border-bottom: 1px solid #edf2f7; vertical-align: middle; }
-        tr:hover { background: #f7fafc; }
-        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 60px; font-size: 12px; font-weight: 600; }
+        /* =================================================================
+           إعدادات عامة
+        ================================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', system-ui, sans-serif;
+        }
+        :root {
+            --primary: #075c52;
+            --primary-dark: #043d36;
+            --primary-light: #e6f2ef;
+            --gold: #c99625;
+            --gold-light: #f5e7c8;
+            --bg: #f4f7fc;
+            --card-bg: #ffffff;
+            --text: #1a2e35;
+            --text-muted: #718096;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =================================================================
+           شاشة تسجيل الدخول (محسنة وجميلة)
+        ================================================================= */
+        #loginOverlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(145deg, var(--primary-dark), #021f1b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            transition: opacity 0.5s;
+        }
+        #loginOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 45px 35px;
+            border-radius: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            transform: translateY(0);
+            animation: slideUp 0.6s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-container .icon {
+            font-size: 60px;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .login-container h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 800;
+        }
+        .login-container p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .login-container .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .login-container .input-group i {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+        .login-container .input-group input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 60px;
+            font-size: 16px;
+            transition: 0.3s;
+            background: #f7fafc;
+            text-align: right;
+        }
+        .login-container .input-group input:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(201, 150, 37, 0.15);
+        }
+        .login-container .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-container .btn-login:hover {
+            background: var(--primary-dark);
+            transform: scale(1.01);
+        }
+        .login-error {
+            color: #e53e3e;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-container .toggle-pwd {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* =================================================================
+           الشريط الجانبي (Sidebar)
+        ================================================================= */
+        .sidebar {
+            width: 80px;
+            background: var(--primary-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: 0.3s;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar .logo {
+            color: var(--gold);
+            font-size: 28px;
+            margin-bottom: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(201, 150, 37, 0.3);
+        }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+        .sidebar nav button {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .sidebar nav button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+        .sidebar nav button.active {
+            background: var(--gold);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(201, 150, 37, 0.3);
+        }
+        .sidebar nav button .badge {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: #e53e3e;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar .logout-btn {
+            margin-top: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 20px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            transition: 0.3s;
+        }
+        .sidebar .logout-btn:hover {
+            background: rgba(229, 62, 62, 0.2);
+            color: #fc8181;
+        }
+
+        /* =================================================================
+           المحتوى الرئيسي
+        ================================================================= */
+        .main-content {
+            flex: 1;
+            margin-right: 80px;
+            padding: 25px 30px 30px;
+            min-height: 100vh;
+        }
+
+        /* =================================================================
+           الشريط العلوي (Top Bar)
+        ================================================================= */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .topbar .greeting h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .topbar .greeting p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .topbar .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .topbar .actions .date-badge {
+            background: var(--card-bg);
+            padding: 10px 18px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            color: var(--text-muted);
+        }
+        .topbar .actions .date-badge i {
+            margin-left: 8px;
+            color: var(--gold);
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(7, 92, 82, 0.2);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(7, 92, 82, 0.3);
+        }
+        .btn-outline {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover {
+            background: #f7fafc;
+            border-color: var(--primary);
+        }
+
+        /* =================================================================
+           بطاقات الإحصائيات
+        ================================================================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            padding: 22px 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary);
+            transition: 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+        }
+        .stat-card .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text);
+            margin: 5px 0 2px;
+        }
+        .stat-card .sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .stat-card .icon {
+            float: left;
+            font-size: 32px;
+            color: var(--primary-light);
+            opacity: 0.6;
+        }
+        .stat-card.gold { border-right-color: var(--gold); }
+        .stat-card.gold .icon { color: var(--gold-light); }
+
+        /* =================================================================
+           شريط الأدوات والبحث
+        ================================================================= */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border-radius: 60px;
+            padding: 4px 15px;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .search-box:focus-within {
+            border-color: var(--gold);
+            background: #fff;
+        }
+        .search-box i {
+            color: var(--text-muted);
+            margin-left: 10px;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 12px 0;
+            width: 100%;
+            font-size: 14px;
+            outline: none;
+            color: var(--text);
+        }
+        .toolbar .left-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* =================================================================
+           عرض البطاقات (Card View) والجدول
+        ================================================================= */
+        .view-toggle {
+            display: flex;
+            gap: 6px;
+            background: var(--bg);
+            border-radius: 60px;
+            padding: 4px;
+        }
+        .view-toggle button {
+            border: none;
+            background: transparent;
+            padding: 8px 14px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-muted);
+        }
+        .view-toggle button.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        /* الجدول */
+        .table-wrapper {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 5px 0;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th {
+            text-align: right;
+            padding: 16px 20px;
+            background: var(--bg);
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: middle;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+        .pilgrim-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 60px;
+            font-size: 12px;
+            font-weight: 600;
+        }
         .status-badge.active { background: #c6f6d5; color: #276749; }
         .status-badge.inactive { background: #edf2f7; color: #4a5568; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
         .status-dot.green { background: #48bb78; }
         .status-dot.gray { background: #a0aec0; }
-        .action-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-        .action-btns button { border: none; width: 34px; height: 34px; border-radius: 10px; font-size: 14px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; }
-        .action-btns .loc-btn { background: #ebf8ff; color: #2b6cb0; }
-        .action-btns .edit-btn { background: #fefcbf; color: #d69e2e; }
-        .action-btns .del-btn { background: #fed7d7; color: #e53e3e; }
-        .action-btns button:hover { transform: scale(1.1); }
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+        .action-btns button {
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            color: var(--text-muted);
+        }
+        .action-btns button:hover {
+            transform: scale(1.05);
+        }
+        .action-btns .loc-btn:hover { background: #ebf8ff; color: #2b6cb0; }
+        .action-btns .edit-btn:hover { background: #fefcbf; color: #d69e2e; }
+        .action-btns .del-btn:hover { background: #fed7d7; color: #e53e3e; }
+
+        /* =================================================================
+           المودالات (Bottom Sheet في الجوال)
+        ================================================================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
         .modal-overlay.show { display: flex; }
-        .modal-box { background: white; border-radius: 32px; padding: 30px; max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-box .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-box .modal-header h2 { color: #075c52; }
-        .modal-box .modal-header .close-modal { background: none; border: none; font-size: 28px; color: #a0aec0; cursor: pointer; }
-        .modal-box .form-group { margin-bottom: 18px; }
-        .modal-box .form-group label { display: block; font-weight: 600; font-size: 13px; color: #4a5568; margin-bottom: 5px; }
-        .modal-box .form-group input { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 15px; transition: 0.2s; background: white; }
-        .modal-box .form-group input:focus { border-color: #075c52; outline: none; }
-        .modal-box .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .modal-box .save-btn { width: 100%; padding: 16px; background: #075c52; color: white; border: none; border-radius: 60px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        .modal-box .save-btn:hover { background: #064e45; }
-        #locationMap { height: 300px; border-radius: 16px; margin: 15px 0; background: #edf2f7; }
+        .modal-box {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 30px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-box .modal-header h2 {
+            color: var(--primary);
+            font-size: 22px;
+        }
+        .modal-box .modal-header .close-modal {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+        }
+        .modal-box .form-group {
+            margin-bottom: 16px;
+        }
+        .modal-box .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .modal-box .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 15px;
+            transition: 0.3s;
+            background: var(--bg);
+        }
+        .modal-box .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(7, 92, 82, 0.08);
+        }
+        .modal-box .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .modal-box .btn-save {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .modal-box .btn-save:hover { background: var(--primary-dark); }
+
+        #locationMap { height: 250px; border-radius: 16px; margin: 15px 0; background: #edf2f7; }
         .coord-inputs { display: flex; gap: 10px; }
-        .coord-inputs input { flex: 1; }
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1a2e35; color: white; padding: 14px 30px; border-radius: 60px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 9999; opacity: 0; transition: all 0.4s ease; }
+        .coord-inputs input { flex: 1; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; }
+
+        /* =================================================================
+           توهست (Toast) أنيق
+        ================================================================= */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            max-width: 90%;
+        }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        @media (max-width: 768px) { .admin-header { flex-direction: column; align-items: stretch; text-align: center; } .admin-header .actions { justify-content: center; } .toolbar { flex-direction: column; } .toolbar .search-box { width: 100%; } .modal-box .form-row { grid-template-columns: 1fr; } }
+        #toast.error { background: #b91c1c; }
+
+        /* =================================================================
+           سكلتون (تحميل وهمي)
+        ================================================================= */
+        .skeleton {
+            background: linear-gradient(90deg, #edf2f7 25%, #e2e8f0 50%, #edf2f7 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* =================================================================
+           استجابة للجوال
+        ================================================================= */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                padding: 15px 0;
+            }
+            .sidebar .logo { font-size: 20px; width: 40px; height: 40px; }
+            .sidebar nav button { width: 40px; height: 40px; font-size: 16px; }
+            .main-content { margin-right: 60px; padding: 15px; }
+            .topbar .greeting h2 { font-size: 18px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .stat-card { padding: 16px; }
+            .stat-card .value { font-size: 24px; }
+            .modal-box .form-row { grid-template-columns: 1fr; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .search-box { width: 100%; }
+            .topbar .actions .date-badge { display: none; }
+        }
+        @media (max-width: 500px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .sidebar { width: 50px; }
+            .sidebar nav button { width: 36px; height: 36px; font-size: 14px; }
+            .main-content { margin-right: 50px; padding: 10px; }
+            table { font-size: 12px; }
+            th, td { padding: 10px 8px; }
+            .action-btns button { width: 28px; height: 28px; font-size: 12px; }
+            #toast { font-size: 12px; padding: 10px 18px; white-space: normal; }
+        }
     </style>
 </head>
 <body>
-    <div class="admin-container" id="adminContent">
-        <div class="admin-header">
-            <h1><i class="fas fa-user-cog"></i> لوحة تحكم دليل الحاج</h1>
+
+    <!-- =========================================================
+         شاشة الدخول
+    ========================================================= -->
+    <div id="loginOverlay">
+        <div class="login-container">
+            <div class="icon"><i class="fas fa-kaaba"></i></div>
+            <h1>لوحة الإدارة</h1>
+            <p>أدخل كلمة المرور للوصول إلى نظام إدارة الحجاج</p>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="adminPwdInput" placeholder="كلمة المرور">
+                <button class="toggle-pwd" id="togglePwdBtn" type="button"><i class="fas fa-eye"></i></button>
+            </div>
+            <button class="btn-login" onclick="checkLogin()">دخول <i class="fas fa-arrow-left"></i></button>
+            <div class="login-error" id="loginErrorMsg">كلمة المرور غير صحيحة</div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         الشريط الجانبي
+    ========================================================= -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo"><i class="fas fa-kaaba"></i></div>
+        <nav>
+            <button class="active" title="لوحة التحكم"><i class="fas fa-chart-pie"></i></button>
+            <button title="الحجاج" onclick="loadPilgrims()"><i class="fas fa-users"></i><span class="badge" id="sideBadge">0</span></button>
+            <button title="المواقع" onclick="loadPilgrims()"><i class="fas fa-map-marked-alt"></i></button>
+            <button title="الإعدادات" onclick="alert('قريباً')"><i class="fas fa-cog"></i></button>
+        </nav>
+        <button class="logout-btn" onclick="logoutAdmin()" title="خروج"><i class="fas fa-sign-out-alt"></i></button>
+    </aside>
+
+    <!-- =========================================================
+         المحتوى الرئيسي
+    ========================================================= -->
+    <main class="main-content" id="adminContent">
+
+        <!-- الشريط العلوي -->
+        <header class="topbar">
+            <div class="greeting">
+                <h2>👋 مرحباً، مدير الحج</h2>
+                <p id="currentDate">اليوم،</p>
+            </div>
             <div class="actions">
-                <a href="./" target="_blank" class="btn-primary"><i class="fas fa-external-link-alt"></i> فتح التطبيق</a>
+                <span class="date-badge"><i class="far fa-calendar-alt"></i> <span id="hijriDate">تحميل...</span></span>
+                <button class="btn-outline" onclick="loadPilgrims()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                <button class="btn-primary" onclick="openAddModal()"><i class="fas fa-plus"></i> إضافة حاج</button>
+            </div>
+        </header>
+
+        <!-- البطاقات -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <div class="label">إجمالي الحجاج</div>
+                <div class="value" id="totalPilgrims">0</div>
+                <div class="sub">مسجل في النظام</div>
+            </div>
+            <div class="stat-card gold">
+                <div class="icon"><i class="fas fa-map-pin"></i></div>
+                <div class="label">موقع محدد</div>
+                <div class="value" id="locatedPilgrims">0</div>
+                <div class="sub">تم تحديد مواقعهم</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon"><i class="fas fa-clock"></i></div>
+                <div class="label">آخر إضافة</div>
+                <div class="value" id="lastAdded">-</div>
+                <div class="sub">أحدث حاج</div>
             </div>
         </div>
-        <div class="stats-grid">
-            <div class="stat-card"><div class="label">إجمالي الحجاج</div><div class="value" id="totalPilgrims">0</div><div class="sub">مسجل في النظام</div></div>
-            <div class="stat-card gold"><div class="label">موقع محدد</div><div class="value" id="locatedPilgrims">0</div><div class="sub">تم تحديد مواقعهم</div></div>
-            <div class="stat-card blue"><div class="label">آخر إضافة</div><div class="value" id="lastAdded">-</div><div class="sub">أحدث حاج</div></div>
-        </div>
+
+        <!-- شريط الأدوات -->
         <div class="toolbar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="ابحث بالاسم، الكود، الجنسية أو الهاتف..." onkeyup="filterTable()">
             </div>
-            <button class="add-btn" onclick="openAddModal()"><i class="fas fa-plus"></i> إضافة حاج جديد</button>
-            <button class="btn-outline" onclick="exportCSV()"><i class="fas fa-file-csv"></i> CSV</button>
+            <div class="left-actions">
+                <div class="view-toggle">
+                    <button class="active" onclick="setView('table')"><i class="fas fa-table"></i></button>
+                    <button onclick="setView('card')"><i class="fas fa-th-large"></i></button>
+                </div>
+                <button class="btn-outline" onclick="exportCSV()" style="padding:8px 16px;"><i class="fas fa-file-csv"></i> CSV</button>
+            </div>
         </div>
-        <div class="table-wrapper">
+
+        <!-- الجدول -->
+        <div class="table-wrapper" id="tableWrapper">
             <table>
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>الاسم</th>
+                        <th>الحاج</th>
                         <th>الكود</th>
                         <th>رقم الهاتف</th>
                         <th>الجنسية</th>
@@ -109,12 +810,16 @@
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody id="pilgrimsTableBody"><tr><td colspan="8" style="text-align:center;padding:40px;color:#a0aec0;">جاري تحميل البيانات...</td></tr></tbody>
+                <tbody id="pilgrimsTableBody">
+                    <tr><td colspan="8" style="text-align:center;padding:40px;color:#a0aec0;">جاري تحميل البيانات...</td></tr>
+                </tbody>
             </table>
         </div>
-    </div>
+    </main>
 
-    <!-- مودال الإضافة -->
+    <!-- =========================================================
+         مودال الإضافة / التعديل
+    ========================================================= -->
     <div class="modal-overlay" id="addEditModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -123,109 +828,215 @@
             </div>
             <input type="hidden" id="editId">
             <div class="form-row">
-                <div class="form-group"><label>اسم الحاج</label><input type="text" id="inputName" placeholder="مثال: أحمد"></div>
-                <div class="form-group"><label>الشفرة</label><input type="text" id="inputCode" placeholder="مثال: 1234"></div>
+                <div class="form-group"><label>اسم الحاج</label><input type="text" id="inputName" placeholder="أحمد"></div>
+                <div class="form-group"><label>الشفرة</label><input type="text" id="inputCode" placeholder="1234"></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>رقم الهاتف</label><input type="text" id="inputPhone" placeholder="مثال: 0501234567"></div>
-                <div class="form-group"><label>الجنسية</label><input type="text" id="inputNationality" placeholder="مثال: سعودي"></div>
+                <div class="form-group"><label>رقم الهاتف</label><input type="text" id="inputPhone" placeholder="0501234567"></div>
+                <div class="form-group"><label>الجنسية</label><input type="text" id="inputNationality" placeholder="سعودي"></div>
             </div>
-            <div class="form-group"><label>معرف المستخدم (اختياري)</label><input type="text" id="inputUserId" placeholder="اتركه فارغاً للتلقائي"></div>
-            <button class="save-btn" onclick="savePilgrim()"><i class="fas fa-save"></i> حفظ البيانات</button>
+            <div class="form-group"><label>معرف المستخدم (اختياري)</label><input type="text" id="inputUserId" placeholder="اتركه فارغاً"></div>
+            <button class="btn-save" onclick="savePilgrim()"><i class="fas fa-save"></i> حفظ البيانات</button>
         </div>
     </div>
 
-    <!-- مودال الموقع -->
+    <!-- =========================================================
+         مودال الموقع
+    ========================================================= -->
     <div class="modal-overlay" id="locationModal">
         <div class="modal-box">
             <div class="modal-header">
                 <h2><i class="fas fa-map-marked-alt"></i> تحديد موقع الحاج</h2>
                 <button class="close-modal" onclick="closeModal('locationModal')">&times;</button>
             </div>
-            <p style="color:#4a5568;margin-bottom:10px;" id="locPilgrimName">الحاج: ---</p>
+            <p style="color:var(--text-muted);margin-bottom:10px;" id="locPilgrimName">الحاج: ---</p>
             <div id="locationMap"></div>
             <div class="coord-inputs">
                 <input type="text" id="locLat" placeholder="خط العرض (Lat)">
                 <input type="text" id="locLng" placeholder="خط الطول (Lng)">
             </div>
-            <button class="save-btn" onclick="saveLocation()" style="margin-top:15px;"><i class="fas fa-check-circle"></i> حفظ الموقع</button>
+            <button class="btn-save" onclick="saveLocation()" style="margin-top:15px;"><i class="fas fa-check-circle"></i> حفظ الموقع</button>
         </div>
     </div>
 
+    <!-- =========================================================
+         Toast
+    ========================================================= -->
     <div id="toast"></div>
 
+    <!-- =========================================================
+         المكتبات
+    ========================================================= -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <script>
+        // =================================================================
+        // 1. الإعدادات العامة
+        // =================================================================
         const SUPABASE_URL = "https://tmmspfxkmqsivpxchfkk.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        let allPilgrims = [], currentLocationPilgrimId = null, map = null, marker = null;
 
+        // كلمة المرور (حاولنا 1234 أولاً، وإذا في حفظ قديم استخدمه)
+        let ADMIN_PASSWORD = localStorage.getItem('admin_password') || "1234";
+
+        let allPilgrims = [];
+        let currentLocationPilgrimId = null;
+        let map = null, marker = null;
+
+        // =================================================================
+        // 2. الدخول والخروج
+        // =================================================================
+        function checkLogin() {
+            const pwd = document.getElementById('adminPwdInput').value;
+            if (pwd === ADMIN_PASSWORD) {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('loginErrorMsg').style.display = 'none';
+                loadPilgrims();
+                updateDateTime();
+            } else {
+                document.getElementById('loginErrorMsg').style.display = 'block';
+                document.getElementById('adminPwdInput').value = '';
+                document.getElementById('adminPwdInput').focus();
+            }
+        }
+
+        document.getElementById('adminPwdInput').addEventListener('keydown', e => { if(e.key === 'Enter') checkLogin(); });
+        document.getElementById('togglePwdBtn').addEventListener('click', function() {
+            const input = document.getElementById('adminPwdInput');
+            const icon = this.querySelector('i');
+            input.type = input.type === 'password' ? 'text' : 'password';
+            icon.className = input.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+
+        function logoutAdmin() {
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('adminPwdInput').value = '';
+        }
+
+        // =================================================================
+        // 3. التاريخ والتوقيت
+        // =================================================================
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-SA', options);
+            // التقويم الهجري (تقريبي)
+            try {
+                const hijri = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+                document.getElementById('hijriDate').textContent = hijri;
+            } catch(e) { document.getElementById('hijriDate').textContent = '--'; }
+        }
+
+        // =================================================================
+        // 4. تحميل البيانات (مع رسائل خطأ واضحة)
+        // =================================================================
         function showToast(msg, isError = false) {
             const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.background = isError ? '#e53e3e' : '#1a2e35';
-            t.classList.add('show');
+            t.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${msg}`;
+            t.className = 'show' + (isError ? ' error' : '');
             clearTimeout(t._timer);
-            t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+            t._timer = setTimeout(() => t.classList.remove('show'), 4000);
         }
 
         async function loadPilgrims() {
             const tbody = document.getElementById('pilgrimsTableBody');
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#a0aec0;">جاري التحميل...</td></tr>';
-            const { data, error } = await supabase.from('pilgrims').select('*').order('id', { ascending: false });
-            if (error) { tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:red;">خطأ: ${error.message}</td></tr>`; showToast('خطأ في التحميل', true); return; }
-            allPilgrims = data || [];
-            renderTable(allPilgrims);
-            updateStats(allPilgrims);
+            tbody.innerHTML = Array(5).fill(0).map(() => `
+                <tr>
+                    <td><div class="skeleton" style="height:20px;width:30px;"></div></td>
+                    <td><div class="skeleton" style="height:20px;width:120px;"></div></td>
+                    <td><div class="skeleton" style="height:20px;width:80px;"></div></td>
+                    <td><div class="skeleton" style="height:20px;width:100px;"></div></td>
+                    <td><div class="skeleton" style="height:20px;width:80px;"></div></td>
+                    <td><div class="skeleton" style="height:20px;width:100px;"></div></td>
+                    <td><div class="skeleton" style="height:20px;width:60px;"></div></td>
+                    <td><div class="skeleton" style="height:30px;width:100px;"></div></td>
+                </tr>
+            `).join('');
+
+            try {
+                const { data, error } = await supabase.from('pilgrims').select('*').order('id', { ascending: false });
+                if (error) { throw new Error(error.message); }
+                allPilgrims = data || [];
+                renderTable(allPilgrims);
+                updateStats(allPilgrims);
+                document.getElementById('sideBadge').textContent = allPilgrims.length;
+                showToast('✅ تم تحميل ' + allPilgrims.length + ' حاج');
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#e53e3e;"><i class="fas fa-exclamation-triangle"></i> ${e.message}</td></tr>`;
+                showToast('❌ ' + e.message, true);
+            }
         }
 
         function renderTable(list) {
             const tbody = document.getElementById('pilgrimsTableBody');
-            if (!list || list.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#a0aec0;">لا يوجد حجاج مسجلين</td></tr>'; return; }
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">
+                    <i class="fas fa-user-slash" style="font-size:40px;display:block;margin-bottom:10px;"></i> لا يوجد حجاج مسجلين
+                </td></tr>`;
+                return;
+            }
             tbody.innerHTML = list.map((p, i) => {
-                const hasLocation = p.latitude && p.longitude;
-                const dateStr = p.created_at ? new Date(p.created_at).toLocaleDateString('ar-SA') : '-';
+                const hasLoc = p.latitude && p.longitude;
+                const date = p.created_at ? new Date(p.created_at).toLocaleDateString('ar-SA') : '-';
+                const initial = p.name ? p.name.charAt(0) : 'ح';
                 return `<tr>
                     <td>${i+1}</td>
-                    <td><strong>${esc(p.name)}</strong></td>
-                    <td>${esc(p.code)}</td>
-                    <td>${esc(p.phone||'—')}</td>
-                    <td>${esc(p.nationality||'—')}</td>
-                    <td>${dateStr}</td>
-                    <td><span class="status-badge ${hasLocation?'active':'inactive'}"><span class="status-dot ${hasLocation?'green':'gray'}"></span>${hasLocation?'محدد':'غير محدد'}</span></td>
-                    <td><div class="action-btns">
-                        <button class="loc-btn" onclick="openLocationModal('${p.id}','${esc(p.name)}')"><i class="fas fa-map-pin"></i></button>
-                        <button class="edit-btn" onclick="openEditModal('${p.id}','${esc(p.name)}','${esc(p.code)}','${esc(p.phone||'')}','${esc(p.nationality||'')}','${esc(p.user_id||'')}')"><i class="fas fa-edit"></i></button>
-                        <button class="del-btn" onclick="deletePilgrim('${p.id}','${esc(p.name)}')"><i class="fas fa-trash"></i></button>
-                    </div></td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <div class="pilgrim-avatar">${initial}</div>
+                            <strong>${esc(p.name)}</strong>
+                        </div>
+                    </td>
+                    <td><span style="font-family:monospace;background:var(--bg);padding:4px 8px;border-radius:8px;">${esc(p.code)}</span></td>
+                    <td>${esc(p.phone||'-')}</td>
+                    <td><span class="status-badge active" style="background:var(--gold-light);color:var(--gold);">${esc(p.nationality||'-')}</span></td>
+                    <td>${date}</td>
+                    <td><span class="status-badge ${hasLoc?'active':'inactive'}"><span class="status-dot ${hasLoc?'green':'gray'}"></span> ${hasLoc?'محدد':'غير محدد'}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="loc-btn" onclick="openLocationModal('${p.id}','${esc(p.name)}')"><i class="fas fa-map-pin"></i></button>
+                            <button class="edit-btn" onclick="openEditModal('${p.id}','${esc(p.name)}','${esc(p.code)}','${esc(p.phone||'')}','${esc(p.nationality||'')}','${esc(p.user_id||'')}')"><i class="fas fa-edit"></i></button>
+                            <button class="del-btn" onclick="deletePilgrim('${p.id}','${esc(p.name)}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
                 </tr>`;
             }).join('');
         }
 
-        function esc(t){ if(!t) return ''; return String(t).replace(/[&<>"]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; if(m==='"') return '&quot;'; return m; }); }
+        function esc(t) { if(!t) return ''; return String(t).replace(/[&<>"]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[m] || m)); }
 
         function updateStats(data) {
             document.getElementById('totalPilgrims').textContent = data.length;
             document.getElementById('locatedPilgrims').textContent = data.filter(p=>p.latitude&&p.longitude).length;
-            document.getElementById('lastAdded').textContent = data.length&&data[0].created_at?new Date(data[0].created_at).toLocaleDateString('ar-SA'):'-';
+            if(data.length && data[0].created_at) {
+                document.getElementById('lastAdded').textContent = new Date(data[0].created_at).toLocaleDateString('ar-SA');
+            } else {
+                document.getElementById('lastAdded').textContent = '-';
+            }
         }
 
         function filterTable() {
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             if(!q) return renderTable(allPilgrims);
-            renderTable(allPilgrims.filter(p=>p.name.toLowerCase().includes(q)||p.code.toLowerCase().includes(q)||(p.phone&&p.phone.includes(q))||(p.nationality&&p.nationality.toLowerCase().includes(q))));
+            renderTable(allPilgrims.filter(p =>
+                p.name.toLowerCase().includes(q) ||
+                p.code.toLowerCase().includes(q) ||
+                (p.phone && p.phone.includes(q)) ||
+                (p.nationality && p.nationality.toLowerCase().includes(q))
+            ));
         }
 
+        // =================================================================
+        // 5. الإضافة والتعديل والحذف
+        // =================================================================
         function openAddModal() {
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus"></i> إضافة حاج';
             document.getElementById('editId').value = '';
-            document.getElementById('inputName').value = '';
-            document.getElementById('inputCode').value = '';
-            document.getElementById('inputPhone').value = '';
-            document.getElementById('inputNationality').value = '';
-            document.getElementById('inputUserId').value = '';
+            ['inputName','inputCode','inputPhone','inputNationality','inputUserId'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('addEditModal').classList.add('show');
         }
 
@@ -234,13 +1045,16 @@
             document.getElementById('editId').value = id;
             document.getElementById('inputName').value = name;
             document.getElementById('inputCode').value = code;
-            document.getElementById('inputPhone').value = phone||'';
-            document.getElementById('inputNationality').value = nationality||'';
-            document.getElementById('inputUserId').value = userId||'';
+            document.getElementById('inputPhone').value = phone;
+            document.getElementById('inputNationality').value = nationality;
+            document.getElementById('inputUserId').value = userId;
             document.getElementById('addEditModal').classList.add('show');
         }
 
-        function closeModal(id) { document.getElementById(id).classList.remove('show'); if(id==='locationModal'&&map){ map.remove(); map=null; } }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+            if(id === 'locationModal' && map) { map.remove(); map = null; }
+        }
 
         async function savePilgrim() {
             const id = document.getElementById('editId').value;
@@ -248,52 +1062,136 @@
             const code = document.getElementById('inputCode').value.trim();
             const phone = document.getElementById('inputPhone').value.trim();
             const nationality = document.getElementById('inputNationality').value.trim();
-            const userId = document.getElementById('inputUserId').value.trim()||'00000000-0000-0000-0000-000000000000';
-            if(!name||!code){ showToast('⚠️ يرجى ملء الاسم والشفرة', true); return; }
+            const userId = document.getElementById('inputUserId').value.trim() || '00000000-0000-0000-0000-000000000000';
+
+            if(!name || !code) { showToast('⚠️ الاسم والكود مطلوبان', true); return; }
+
             const payload = { name, code, phone, nationality, user_id: userId };
-            let result; if(id) result = await supabase.from('pilgrims').update(payload).eq('id', id); else result = await supabase.from('pilgrims').insert([payload]);
-            if(result.error){ showToast('❌ خطأ: '+result.error.message, true); return; }
-            showToast(id?'✅ تم التعديل':'✅ تم الإضافة');
-            closeModal('addEditModal'); loadPilgrims();
+            try {
+                let result;
+                if(id) { result = await supabase.from('pilgrims').update(payload).eq('id', id); }
+                else { result = await supabase.from('pilgrims').insert([payload]); }
+                if(result.error) throw new Error(result.error.message);
+                showToast(id ? '✅ تم التعديل' : '✅ تم الإضافة');
+                closeModal('addEditModal');
+                loadPilgrims();
+            } catch(e) { showToast('❌ ' + e.message, true); }
         }
 
-        async function deletePilgrim(id, name) { if(!confirm(`حذف "${name}"؟`)) return; const {error} = await supabase.from('pilgrims').delete().eq('id', id); if(error){ showToast('❌ خطأ', true); return; } showToast(`🗑️ تم حذف ${name}`); loadPilgrims(); }
+        async function deletePilgrim(id, name) {
+            if(!confirm(`حذف "${name}" نهائياً؟`)) return;
+            try {
+                const { error } = await supabase.from('pilgrims').delete().eq('id', id);
+                if(error) throw new Error(error.message);
+                showToast('🗑️ تم حذف ' + name);
+                loadPilgrims();
+            } catch(e) { showToast('❌ ' + e.message, true); }
+        }
 
+        // =================================================================
+        // 6. الخريطة
+        // =================================================================
         function openLocationModal(id, name) {
             currentLocationPilgrimId = id;
             document.getElementById('locPilgrimName').textContent = 'الحاج: ' + name;
-            document.getElementById('locLat').value = ''; document.getElementById('locLng').value = '';
+            document.getElementById('locLat').value = '';
+            document.getElementById('locLng').value = '';
             document.getElementById('locationModal').classList.add('show');
+
             setTimeout(() => {
-                if(map){ map.remove(); map=null; }
+                if(map) map.remove();
                 map = L.map('locationMap').setView([21.4225, 39.8262], 6);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
-                supabase.from('pilgrim_locations').select('*').eq('pilgrim_id', id).maybeSingle().then(({data})=>{
-                    if(data && data.latitude && data.longitude){ const lat=parseFloat(data.latitude), lng=parseFloat(data.longitude); document.getElementById('locLat').value=lat; document.getElementById('locLng').value=lng; map.setView([lat,lng],13); marker=L.marker([lat,lng]).addTo(map); } else { if(navigator.geolocation){ navigator.geolocation.getCurrentPosition((pos)=>{ const lat=pos.coords.latitude, lng=pos.coords.longitude; document.getElementById('locLat').value=lat; document.getElementById('locLng').value=lng; map.setView([lat,lng],13); marker=L.marker([lat,lng]).addTo(map); }, ()=>{}); } }
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(map);
+
+                supabase.from('pilgrim_locations').select('*').eq('pilgrim_id', id).maybeSingle().then(({data}) => {
+                    if(data?.latitude && data?.longitude) {
+                        const lat = parseFloat(data.latitude), lng = parseFloat(data.longitude);
+                        document.getElementById('locLat').value = lat; document.getElementById('locLng').value = lng;
+                        map.setView([lat,lng], 13);
+                        marker = L.marker([lat,lng]).addTo(map);
+                    } else if(navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(pos => {
+                            const lat = pos.coords.latitude, lng = pos.coords.longitude;
+                            document.getElementById('locLat').value = lat; document.getElementById('locLng').value = lng;
+                            map.setView([lat,lng], 13);
+                            marker = L.marker([lat,lng]).addTo(map);
+                        }, ()=>{});
+                    }
                 });
-                map.on('click', function(e){ const lat=e.latlng.lat, lng=e.latlng.lng; document.getElementById('locLat').value=lat.toFixed(6); document.getElementById('locLng').value=lng.toFixed(6); if(marker) map.removeLayer(marker); marker=L.marker([lat,lng]).addTo(map); });
+
+                map.on('click', function(e) {
+                    const lat = e.latlng.lat, lng = e.latlng.lng;
+                    document.getElementById('locLat').value = lat.toFixed(6);
+                    document.getElementById('locLng').value = lng.toFixed(6);
+                    if(marker) map.removeLayer(marker);
+                    marker = L.marker([lat,lng]).addTo(map);
+                });
             }, 300);
         }
 
         async function saveLocation() {
-            const lat = parseFloat(document.getElementById('locLat').value), lng = parseFloat(document.getElementById('locLng').value);
-            if(isNaN(lat)||isNaN(lng)){ showToast('⚠️ يرجى تحديد موقع', true); return; }
-            if(!currentLocationPilgrimId){ showToast('⚠️ خطأ', true); return; }
-            const {error} = await supabase.from('pilgrim_locations').upsert({ pilgrim_id: currentLocationPilgrimId, latitude: lat, longitude: lng, updated_at: new Date().toISOString() }, { onConflict: 'pilgrim_id' });
-            if(error){ showToast('❌ خطأ: '+error.message, true); return; }
-            showToast('✅ تم حفظ الموقع'); closeModal('locationModal'); loadPilgrims();
+            const lat = parseFloat(document.getElementById('locLat').value);
+            const lng = parseFloat(document.getElementById('locLng').value);
+            if(isNaN(lat)||isNaN(lng)) { showToast('⚠️ اختر موقعاً على الخريطة', true); return; }
+            if(!currentLocationPilgrimId) { showToast('⚠️ خطأ في المعرف', true); return; }
+            try {
+                const { error } = await supabase.from('pilgrim_locations').upsert({
+                    pilgrim_id: currentLocationPilgrimId,
+                    latitude: lat, longitude: lng,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'pilgrim_id' });
+                if(error) throw new Error(error.message);
+                showToast('✅ تم حفظ الموقع');
+                closeModal('locationModal');
+                loadPilgrims();
+            } catch(e) { showToast('❌ ' + e.message, true); }
         }
 
+        // =================================================================
+        // 7. تصدير CSV
+        // =================================================================
         function exportCSV() {
-            if(!allPilgrims||allPilgrims.length===0){ showToast('لا توجد بيانات', true); return; }
-            let csv = "الاسم,الكود,رقم الهاتف,الجنسية,المعرف,تاريخ الإضافة,الموقع\n";
-            allPilgrims.forEach(p=>{ const hasLoc=(p.latitude&&p.longitude)?'محدد':'غير محدد'; const date=p.created_at?new Date(p.created_at).toLocaleDateString('ar-SA'):'-'; csv+=`"${p.name}","${p.code}","${p.phone||''}","${p.nationality||''}","${p.user_id||''}","${date}","${hasLoc}"\n`; });
-            const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'الحجاج.csv'; link.click(); showToast('📥 تم التصدير');
+            if(!allPilgrims || allPilgrims.length === 0) { showToast('لا توجد بيانات', true); return; }
+            let csv = "الاسم,الكود,الهاتف,الجنسية,المعرف,التاريخ,الموقع\n";
+            allPilgrims.forEach(p => {
+                csv += `"${p.name}","${p.code}","${p.phone||''}","${p.nationality||''}","${p.user_id||''}","${p.created_at?new Date(p.created_at).toLocaleDateString('ar-SA'):''}","${p.latitude&&p.longitude?'محدد':'غير محدد'}"\n`;
+            });
+            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `الحجاج_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            showToast('📥 تم التصدير');
         }
 
-        document.addEventListener('DOMContentLoaded', loadPilgrims);
-        console.log('✅ لوحة إدارة بدون حماية - تعمل فوراً');
+        // =================================================================
+        // 8. عرض البطاقات (غير فعال حالياً، يحتفظ بالجدول)
+        // =================================================================
+        function setView(view) {
+            document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+            event.target.closest('button').classList.add('active');
+            // ببساطة نترك الجدول
+        }
+
+        // =================================================================
+        // 9. التشغيل الأولي
+        // =================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // التحقق من الكاش (إذا فيه ?reset=1)
+            if(window.location.search.includes('reset=1')) {
+                localStorage.removeItem('admin_password');
+                showToast('🔄 تم إعادة ضبط الكاش');
+            }
+            // التحقق من الجلسة
+            const savedPwd = localStorage.getItem('admin_password');
+            if(savedPwd) ADMIN_PASSWORD = savedPwd;
+
+            // إذا دخلنا مباشرة بدون تسجيل (للتطوير)
+            // نعرض شاشة الدخول افتراضياً
+            document.getElementById('adminContent').style.display = 'none';
+        });
+
+        console.log('✅ لوحة الإدارة الجديدة (نسخة التطبيق)');
     </script>
 </body>
 </html>
