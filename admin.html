@@ -282,8 +282,8 @@
         const SUPABASE_ANON_KEY = "sb_publishable_e_UeWsqQTEk0GUhdpMDHYg_nAC3b7vZ";
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // جلب كلمة المرور المحفوظة أو الافتراضية
-        let ADMIN_PASSWORD = localStorage.getItem('admin_password') || "20002000";
+        // جلب كلمة المرور المحفوظة أو الافتراضية (1234)
+        let ADMIN_PASSWORD = localStorage.getItem('admin_password') || "1234";
 
         let allPilgrims = [];
         let currentLocationPilgrimId = null;
