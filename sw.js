@@ -1,4 +1,4 @@
-const CACHE_NAME = "hajj-guide-v15";  // ← هذا التغيير الوحيد
+const CACHE_NAME = "hajj-guide-v20";  // ← هذا التغيير الوحيد
 
 const FILES_TO_CACHE = [
   "./",
